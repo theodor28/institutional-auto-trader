@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Institutional Auto Trader — FULL AUTO</title>
+<style>
+body{background:#0b0f14;color:#cfd8dc;font-family:monospace;padding:16px}
+input,button{background:#111;color:#0f0;border:1px solid #333;padding:6px;margin:4px}
+button{cursor:pointer}
+.slider{width:220px}
+#price{color:#0f0;font-size:18px;margin:6px 0}
+#chat{background:#05080d;border:1px solid #222;padding:8px;height:180px;overflow-y:auto}
+#boleta{position:absolute;right:20px;top:80px;width:300px;background:#05080d;border:2px solid #900;padding:12px}
+#boleta h3{margin:0 0 8px;color:#f00;text-align:center}
+.bo-item{margin:6px 0}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #222;padding:5px;text-align:center;font-size:12px}
+th{background:#111}
+.badge{display:inline-block;border:1px solid #222;padding:4px 8px;margin-right:6px;font-size:11px}
+</style>
+</head>
+<body>
+
+<h2>INSTITUTIONAL AUTO TRADER — FULL AUTO</h2>
+
+<input id="apiKey" type="password" placeholder="GPT API KEY" style="width:420px"><br>
+
+<label>Agressividade</label><br>
+<input id="agro" type="range" min="1" max="5" value="3" class="slider">
+<span id="agroLabel">NORMAL</span><br>
+
+<button onclick="start()">START</button>
+<button onclick="pause()">PAUSE</button>
+
+<div id="price">Preço BTCUSDT: --</div>
+
+<div>
+<span class="badge">MODO: <span id="mood">CALMO</span></span>
+</div>
+
+<div id="chat"></div>
+
+<div id="boleta">
+<h3>BOLETA</h3>
+<div class="bo-item">Status: <span id="bStatus">AGUARDANDO</span></div>
+<div class="bo-item">Direção: <span id="bSide">--</span></div>
+<div class="bo-item">Entrada: <span id="bEntry">--</span></div>
+<div class="bo-item">Stop: <span id="bSL">--</span></div>
+<div class="bo-item">Alvo: <span id="bTP">--</span></div>
+<div class="bo-item">Preço Atual: <span id="bPrice">--</span></div>
+<div class="bo-item">PnL Parcial: <span id="bPnL">0.00</span></div>
+<div class="bo-item">Resultado: <span id="bResult">--</span></div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Hora</th><th>Ação</th><th>Entrada</th><th>Stop</th><th>Alvo</th><th>PnL</th>
+</tr>
+</thead>
+<tbody id="log"></tbody>
+</table>
+
+<script>
+const WS="wss://stream.binance.com:9443/ws/btcusdt@kline_1m";
+const MODEL="gpt-4o-mini";
+let ws,price=0,closes=[],trade=null,paused=false;
+let capital=10000;
+
+const chat=document.getElementById("chat");
+const logBody=document.getElementById("log");
+
+const boStatus=bStatus=document.getElementById("bStatus");
+const boSide=document.getElementById("bSide");
+const boEntry=document.getElementById("bEntry");
+const boSL=document.getElementById("bSL");
+const boTP=document.getElementById("bTP");
+const boPrice=document.getElementById("bPrice");
+const boPnL=document.getElementById("bPnL");
+const boResult=document.getElementById("bResult");
+
+const agro=document.getElementById("agro");
+const agroLabel=document.getElementById("agroLabel");
+
+agro.oninput=()=>{
+  agroLabel.innerText=["CONSERVADOR","SELETIVO","NORMAL","AGRESSIVO","INSANO"][agro.value-1];
+  document.getElementById("mood").innerText=agro.value>=4?"PREDADOR":"CALMO";
+};
+
+const now=()=>new Date().toLocaleTimeString();
+const say=m=>{chat.innerHTML+=`<div>[${now()}] ${m}</div>`;chat.scrollTop=9999};
+const log=(a,e,s,t,p)=>{
+  const r=logBody.insertRow(0);
+  r.innerHTML=`<td>${now()}</td><td>${a}</td><td>${e||"-"}</td><td>${s||"-"}</td><td>${t||"-"}</td><td>${p||"-"}</td>`;
+};
+
+function connect(){
+  ws=new WebSocket(WS);
+  ws.onmessage=e=>{
+    const d=JSON.parse(e.data);
+    if(!d.k) return;
+    price=parseFloat(d.k.c);
+    document.getElementById("price").innerText="Preço BTCUSDT: "+price.toFixed(2);
+    boPrice.innerText=price.toFixed(2);
+    if(d.k.x){
+      closes.push(price);
+      if(closes.length>30) closes.shift();
+    }
+    manageTrade();
+  };
+}
+
+function calcTrade(side){
+  const risk=10+agro.value*5;
+  return{
+    side,
+    entry:price,
+    sl:side==="BUY"?price-risk:price+risk,
+    tp:side==="BUY"?price+risk:price-risk
+  };
+}
+
+function autoEntry(){
+  if(trade||closes.length<10) return;
+  if(Math.random()<(agro.value/6)){
+    const side=Math.random()>0.5?"BUY":"SELL";
+    trade=calcTrade(side);
+    boStatus.innerText="ABERTA";
+    boSide.innerText=side;
+    boEntry.innerText=trade.entry.toFixed(2);
+    boSL.innerText=trade.sl.toFixed(2);
+    boTP.innerText=trade.tp.toFixed(2);
+    say(`Entrei ${side}. Agora é gerenciamento.`);
+    log("OPEN",trade.entry,trade.sl,trade.tp);
+  }
+}
+
+function manageTrade(){
+  if(!trade) return;
+  let pnl=(price-trade.entry)*(trade.side==="BUY"?1:-1);
+  boPnL.innerText=pnl.toFixed(2);
+  if((trade.side==="BUY" && (price>=trade.tp||price<=trade.sl))||
+     (trade.side==="SELL"&&(price<=trade.tp||price>=trade.sl))){
+    boStatus.innerText="FECHADO";
+    boResult.innerText=pnl>0?"GAIN":"LOSS";
+    say(pnl>0?"Pegou alvo. Leitura correta.":"Stopou. Mercado mudou.");
+    log(pnl>0?"WIN":"LOSS",trade.entry,trade.sl,trade.tp,pnl.toFixed(2));
+    trade=null;
+  }
+}
+
+async function narrate(){
+  if(paused) return;
+  const r=await fetch("https://api.openai.com/v1/chat/completions",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+document.getElementById("apiKey").value
+    },
+    body:JSON.stringify({
+      model:MODEL,
+      max_tokens:70,
+      temperature:0.7,
+      messages:[
+        {role:"system",content:"Você é um trader institucional narrando o mercado e comentando decisões em tempo real."},
+        {role:"user",content:`Preço:${price} Histórico:${closes}`}
+      ]
+    })
+  });
+  const j=await r.json();
+  say(j.choices[0].message.content);
+}
+
+function pause(){paused=!paused;say(paused?"Silêncio tático.":"De volta à leitura.");}
+
+function start(){
+  connect();
+  say("Mesa aberta. Mercado na tela.");
+  setInterval(narrate,10000);
+  setInterval(autoEntry,3000);
+}
+</script>
+</body>
+</html>
