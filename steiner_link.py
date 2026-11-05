@@ -373,5 +373,9 @@ def executar():
             server.stopped.set()
         server.server_close()
 
+import sys as _steiner_sys
+import steiner_calls as _steiner_calls
+_steiner_calls.install(_steiner_sys.modules[__name__])
+
 if __name__ == "__main__":
     executar()
