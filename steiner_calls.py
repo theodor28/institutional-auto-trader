@@ -182,7 +182,8 @@ def install(base):
                 "ok":bool(ok),"canais":ok,
                 **({} if ok else {"erro":"Nenhum mestre de chamadas disponivel"})
             })
-    base.MasterHandler=CallMaster
+    import steiner_web
+    base.MasterHandler=steiner_web.wrap_master(CallMaster,base)
     base.ClientHandler=CallClient
     base.UI=base.UI.replace("</main><script>",HTML+"</main><script>")
     base.UI=base.UI.replace("</script></body></html>","</script>"+JS+"</body></html>")
