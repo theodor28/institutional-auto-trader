@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>STEINER LINK • Importar agenda do celular</title>
+<style>
+:root{color-scheme:dark;font:16px system-ui,Segoe UI,Arial,sans-serif;background:#070f1d;color:#eaf3ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px}
+main{width:min(580px,100%);background:#13243a;border:1px solid #304864;border-radius:22px;padding:25px;box-shadow:0 18px 54px #0005}
+.logo{font-weight:850;font-size:21px;letter-spacing:.4px;color:#52d5aa}h1{font-size:27px;margin:10px 0}p{line-height:1.6;color:#c2d1e4}small{color:#9eb5c9}
+button,.link{font:inherit;border:none;border-radius:12px;font-weight:750;cursor:pointer;padding:15px 18px}
+button{background:#33c49b;color:#031e17;width:100%;margin-top:15px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.link{display:block;background:#254362;color:#eaf3ff;text-decoration:none;text-align:center;margin-top:12px}
+.notice{padding:12px 14px;background:#263b57;border-radius:12px;margin-top:15px;line-height:1.5;color:#bfd0e6}
+#result{font-weight:650;margin-top:14px}#result[hidden]{display:none}
+ol{line-height:1.9;color:#cbd6e4;padding-left:25px}
+.badge{display:inline-block;font-size:12px;background:#225448;color:#a8f9ce;padding:5px 10px;border-radius:999px}
+</style></head><body>
+<main>
+<div class="logo">STEINER LINK</div>
+<h1>Importar contatos do celular</h1>
+<span class="badge">Sem copiar número por número</span>
+<p>Abra esta página no <strong>Chrome do Android</strong>. Escolha na agenda os contatos que deseja compartilhar e baixe um arquivo CSV, pronto para o STEINER LINK.</p>
+<button id="choose" type="button">📱 Escolher contatos do meu celular</button>
+<div id="result" role="status" hidden></div>
+<a class="link" href="https://steiner-link-master.onrender.com/contatos">Abrir STEINER LINK 3.0 para importar CSV</a>
+<ol>
+<li>Escolha os contatos no celular e confirme a seleção.</li>
+<li>O navegador baixa <strong>STEINER_AGENDA_DO_CELULAR.csv</strong>.</li>
+<li>Abra o STEINER LINK, entre na sua conta e toque em <strong>Importar agenda</strong>.</li>
+<li>Escolha o CSV baixado e confirme quais contatos serão adicionados.</li>
+</ol>
+<div class="notice">Privacidade: esta página transforma a seleção de contatos em CSV <strong>no próprio aparelho</strong>. Ela não envia números ao ChatGPT, GitHub, Render nem a terceiros. A lista só será enviada ao STEINER LINK se você importar o arquivo posteriormente.</div>
+<p><small>Este método acessa a agenda do Android com sua permissão. Ele não extrai automaticamente números exclusivos do WhatsApp. O recurso de seleção depende do navegador; se não aparecer, exporte sua agenda em VCF e importe diretamente no STEINER LINK.</small></p>
+</main>
+<script>
+(()=>{
+'use strict';
+const btn=document.getElementById('choose'),result=document.getElementById('result');
+function show(message){result.hidden=false;result.textContent=message}
+btn.addEventListener('click',async()=>{
+ if(!navigator.contacts||typeof navigator.contacts.select!=='function'){
+  show('Seu navegador não oferece a seleção de contatos. Abra esta página no Chrome de um celular Android ou exporte os contatos em VCF.');
+  return;
+ }
+ let contacts;
+ // Chamada direta pelo toque; o navegador exibe consentimento antes de ler a agenda.
+ try{contacts=await navigator.contacts.select(['name','tel'],{multiple:true})}
+ catch(e){show(e.name==='AbortError'?'Seleção cancelada.':'Não foi possível abrir a agenda: '+(e.message||e.name));return}
+ if(!Array.isArray(contacts)||!contacts.length){show('Nenhum contato foi selecionado.');return}
+ const unique=new Map();
+ for(const entry of contacts){
+  const rawName=Array.isArray(entry.name)?entry.name[0]:entry.name;
+  const name=String(rawName||'Contato').trim().replace(/[\r\n;,"]/g,' ').slice(0,48)||'Contato';
+  for(const rawNumber of Array.isArray(entry.tel)?entry.tel:[]){
+   let digits=String(rawNumber).replace(/\D/g,'');
+   if(digits.startsWith('00'))digits=digits.slice(2);
+   if(digits.length===10||digits.length===11)digits='55'+digits;
+   if(digits.length<12||digits.length>15)continue;
+   if(!unique.has(digits))unique.set(digits,{name,number:digits})
+  }
+ }
+ if(!unique.size){show('Nenhum número válido foi encontrado na seleção.');return}
+ const entries=Array.from(unique.values());
+ const lines=['nome;numero',...entries.map(e=>e.name+';'+e.number)];
+ const csv='\ufeff'+lines.join('\r\n')+'\r\n';
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob);
+ const anchor=document.createElement('a');
+ anchor.href=url;anchor.download='STEINER_AGENDA_DO_CELULAR.csv';
+ document.body.append(anchor);anchor.click();anchor.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),12000);
+ show('✅ '+entries.length+' números diferentes preparados. Confira o arquivo em Downloads e depois abra o STEINER LINK para importar.');
+});
+})();
+</script>
+</body></html>
