@@ -88,8 +88,10 @@ video{width:min(46%,260px);aspect-ratio:4/3;background:#000;border-radius:10px}
 <div id="sidebarActions">
 <button class="small" id="addToggle">+ Novo contato</button>
 <button class="small" id="shareLink">Convidar</button>
+<button class="small" id="importContacts">Importar agenda</button>
 <button class="small" id="exportContacts">Salvar contatos</button>
 <button class="small" id="logout">Sair</button>
+<input id="importFile" type="file" accept=".vcf,.csv,.json,text/vcard" hidden>
 </div>
 <div id="addPanel" hidden>
 <label>Número de quem você quer chamar</label><input id="addNumber" inputmode="tel" placeholder="(11) 99999-9999">
@@ -190,6 +192,48 @@ $('exportContacts').onclick=()=>{
    exportado_em:new Date().toISOString(),proprietario:me.phone,contatos:contacts.map(c=>({numero:c.phone,nome:c.alias,status:c.status}))
  });
  notice('Sua agenda foi salva em Downloads.')
+};
+$('importContacts').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{
+ const file=e.target.files?.[0];e.target.value='';
+ if(!file)return;
+ if(file.size>1024*1024){notice('Arquivo maior que 1 MB. Exporte uma agenda menor.');return}
+ let contactsToAdd=[];
+ try{
+  const raw=await file.text();
+  if(file.name.toLowerCase().endsWith('.json')){
+   const d=JSON.parse(raw);const rows=Array.isArray(d)?d:d.contatos;
+   if(!Array.isArray(rows))throw Error('JSON sem lista de contatos');
+   contactsToAdd=rows.map(c=>({alias:c.nome||c.alias||c.name||'',phone:c.numero||c.phone||c.telefone||''}));
+  }else if(file.name.toLowerCase().endsWith('.vcf')){
+   const normalized=raw.replace(/\r?\n[ \t]/g,'').replace(/\r/g,'');
+   for(const card of normalized.split(/END:VCARD/i)){
+    const name=card.match(/(?:^|\n)FN(?:;[^\n:]*)?:([^\n]+)/i);
+    const phone=card.match(/(?:^|\n)(?:item\d+\.)?TEL(?:;[^\n:]*)?:([^\n]+)/i);
+    if(name&&phone)contactsToAdd.push({alias:name[1].replace(/\\[,;]/g,' ').trim(),phone:phone[1]})
+   }
+  }else{
+   const lines=raw.replace(/\r/g,'').split('\n').filter(x=>x.trim());
+   for(const line of lines){
+    const cells=line.split(/[;,\t]/).map(s=>s.replace(/^["']|["']$/g,'').trim());
+    if(cells.length<2)continue;
+    const phoneIndex=cells.findIndex(s=>/^\+?[\d()\s-]{10,20}$/.test(s));
+    if(phoneIndex<0)continue;
+    const nameIndex=phoneIndex===0?1:0;
+    contactsToAdd.push({phone:cells[phoneIndex],alias:cells[nameIndex]})
+   }
+  }
+ }catch(err){notice('Não foi possível ler a agenda: '+err.message);return}
+ contactsToAdd=contactsToAdd.filter(c=>typeof c.phone==='string'&&String(c.alias).trim().length>0);
+ contactsToAdd=contactsToAdd.slice(0,100);
+ if(!contactsToAdd.length){notice('Nenhum contato com nome e número identificado.');return}
+ if(!confirm('Importar '+contactsToAdd.length+' contatos? Isso também envia solicitações de contato aos usuários já cadastrados.'))return;
+ let added=0,errors=0;
+ for(const c of contactsToAdd){
+  try{await req('/add','POST',{phone:String(c.phone),alias:String(c.alias).slice(0,48)});added++}
+  catch{errors++}
+ }
+ await fetchContacts();notice('Agenda importada: '+added+' adicionados, '+errors+' não aceitos.');
 };
 $('addToggle').onclick=()=>{$('addPanel').hidden=!$('addPanel').hidden};
 $('shareLink').onclick=async()=>{
