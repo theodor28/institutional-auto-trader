@@ -88,6 +88,7 @@ video{width:min(46%,260px);aspect-ratio:4/3;background:#000;border-radius:10px}
 <div id="sidebarActions">
 <button class="small" id="addToggle">+ Novo contato</button>
 <button class="small" id="shareLink">Convidar</button>
+<button class="small" id="importPhone">📱 Do celular</button>
 <button class="small" id="importContacts">Importar agenda</button>
 <button class="small" id="exportContacts">Salvar contatos</button>
 <button class="small" id="logout">Sair</button>
@@ -234,6 +235,54 @@ $('importFile').onchange=async e=>{
   catch{errors++}
  }
  await fetchContacts();notice('Agenda importada: '+added+' adicionados, '+errors+' não aceitos.');
+};
+$('importPhone').onclick=async()=>{
+ const button=$('importPhone');
+ if(!navigator.contacts||typeof navigator.contacts.select!=='function'){
+  notice('Abra este aplicativo no Chrome do Android para escolher contatos do celular. No computador, use Importar agenda (VCF/CSV).');
+  return;
+ }
+ // O seletor e aberto pelo clique real do usuario. Nao existe acesso silencioso.
+ let picks;
+ try{picks=await navigator.contacts.select(['name','tel'],{multiple:true})}
+ catch(e){if(e.name!=='AbortError')notice('Agenda indisponivel: '+e.message);return}
+ if(!Array.isArray(picks)||!picks.length){notice('Nenhum contato foi selecionado.');return}
+ const found=new Map();
+ for(const c of picks){
+  const alias=String((Array.isArray(c.name)?c.name[0]:c.name)||'Contato').trim().replace(/[\r\n;,]/g,' ').slice(0,48);
+  const numbers=Array.isArray(c.tel)?c.tel:[];
+  for(const raw of numbers){
+   let digits=String(raw).replace(/\D/g,'');
+   if(digits.startsWith('00'))digits=digits.slice(2);
+   if(digits.length===10||digits.length===11)digits='55'+digits;
+   if(digits.length<12||digits.length>15||digits===me.phone)continue;
+   if(!found.has(digits))found.set(digits,{alias:alias||'Contato',phone:digits})
+  }
+ }
+ const rows=Array.from(found.values());
+ if(!rows.length){notice('Nenhum numero valido selecionado.');return}
+ // Primeira etapa: o usuario sempre recebe uma copia local, sem upload.
+ const text=['nome;numero',...rows.map(c=>c.alias+';'+c.phone)].join('\r\n')+'\r\n';
+ const blob=new Blob([new Uint8Array([0xEF,0xBB,0xBF]),text],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob);
+ const save=document.createElement('a');save.href=url;save.download='STEINER_AGENDA_DO_CELULAR.csv';
+ document.body.append(save);save.click();save.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+ const go=confirm('Arquivo CSV salvo com '+rows.length+' numeros.\n\nDeseja TAMBEM importar os contatos no STEINER LINK online?\n\nIsso envia nomes e numeros ao servidor Render e solicita conexao aos usuarios cadastrados. Escolha OK para enviar ou Cancelar para manter apenas o CSV privado.');
+ if(!go){notice(rows.length+' contatos salvos no CSV. Nada foi enviado ao servidor.');return}
+ button.disabled=true;
+ let ok=0,failed=0;
+ try{
+  for(const row of rows){
+   try{await req('/add','POST',{phone:row.phone,alias:row.alias});ok++}
+   catch{failed++}
+   if((ok+failed)%10===0)$('topState').textContent='Importando '+(ok+failed)+'/'+rows.length;
+  }
+  await fetchContacts();
+  notice('Importados '+ok+' contatos; '+failed+' falharam. Copia CSV mantida no aparelho.');
+ }finally{
+  $('topState').textContent='🟢 Online';
+  button.disabled=false;
+ }
 };
 $('addToggle').onclick=()=>{$('addPanel').hidden=!$('addPanel').hidden};
 $('shareLink').onclick=async()=>{
