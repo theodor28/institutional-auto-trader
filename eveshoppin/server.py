@@ -13,7 +13,7 @@ DATA=Path(os.environ.get("EVESHOPPIN_DATA_DIR",str(BASE/"dados")))
 DATA.mkdir(parents=True,exist_ok=True)
 DB=DATA/"eveshoppin.sqlite3"
 PORT=int(os.environ.get("PORT","5260"))
-HOST=os.environ.get("HOST","0.0.0.0")
+HOST=os.environ.get("HOST","127.0.0.1")
 START=time.time()
 SESSIONS_LIMIT=86400*10
 FAILS={}
