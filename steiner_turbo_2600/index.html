@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>STEINER TURBO 2600 — Corrida Retrô</title><meta name="theme-color" content="#090e20"><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090e20;color:#eaf1ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{display:flex;flex-direction:column;align-items:center;padding:15px 12px 25px;gap:12px}.top{width:min(950px,100%);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px}.symbol{display:grid;place-items:center;width:43px;height:43px;border:2px solid #7ac9ff;background:#112b5b;color:#eafbff;font-size:28px;font-weight:950;border-radius:9px;box-shadow:0 0 22px #2e80ff4d}.brand h1{font-size:20px;margin:0;letter-spacing:1px}.brand h1 em{color:#51d8ff;font-style:normal}.brand small{display:block;color:#9caecf;font-size:10px;letter-spacing:2px;font-weight:750;margin-top:3px}.tags{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid #34466b;background:#131f39;padding:7px 11px;border-radius:8px;color:#adc4ed;font-size:11px;font-weight:800}.layout{width:min(950px,100%);display:grid;grid-template-columns:minmax(0,550px) minmax(240px,1fr);gap:17px;align-items:start}.cabinet{border:2px solid #334c7f;padding:9px;background:#111e38;border-radius:16px;box-shadow:0 22px 60px #0009,inset 0 0 25px #33549a33}.screen{aspect-ratio:360/580;position:relative;background:#06132a;border-radius:7px;overflow:hidden;border:3px solid #050b16}canvas{display:block;width:100%;height:100%;image-rendering:pixelated;touch-action:none}.overlay{position:absolute;inset:0;background:#071029dd;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}.overlay.hidden{display:none}.panel-in{background:#0b1932e8;border:2px solid #446ba9;padding:26px 18px;width:min(310px,95%);border-radius:11px;box-shadow:0 20px 60px #0008}.panel-in h2{font-size:25px;color:#66d8ff;margin:0 0 8px;letter-spacing:1px}.panel-in p{font-size:12px;line-height:1.65;color:#c4d4ef;margin:10px 0 20px}.btn{border:0;border-radius:8px;padding:12px 17px;font:900 13px system-ui;cursor:pointer;background:#2f75ed;color:white;box-shadow:0 5px 0 #1643a7;touch-action:manipulation}.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #1643a7}.side{display:grid;gap:13px}.card{background:#111f38;border:1px solid #30456c;border-radius:12px;padding:17px}.card h2{margin:0 0 12px;font-size:13px;letter-spacing:1px;color:#d8e8ff}.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px}.stat{background:#0c172c;border:1px solid #243759;border-radius:9px;padding:12px}.stat span{display:block;font-size:10px;color:#97acca;text-transform:uppercase;letter-spacing:1px;font-weight:800}.stat b{display:block;font-size:24px;letter-spacing:-.5px;margin-top:4px;color:#f0f7ff}.stat b.accent{color:#73e6ca}.instructions{font-size:12px;color:#a7bbda;line-height:1.9}.instructions b{color:#e3f0ff}kbd{font:800 12px system-ui;padding:3px 6px;background:#223657;color:#d9edff;border:1px solid #4b638d;border-radius:5px}.touch{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}.control{min-height:62px;border:2px solid #425c85;background:#1a315a;color:#ebf6ff;font-weight:950;font-size:22px;border-radius:10px;touch-action:none;user-select:none;-webkit-user-select:none}.control:active,.control.pressed{background:#356bd1;border-color:#87c6ff}.control small{display:block;font-size:9px;letter-spacing:.4px;color:#bcd3ff}.smallprint{text-align:center;font-size:10px;line-height:1.5;color:#748ab1;width:min(950px,100%)}.row-btn{display:flex;gap:8px;flex-wrap:wrap}.row-btn .btn{font-size:11px;padding:10px 14px;background:#254879;box-shadow:0 4px 0 #112543}.row-btn .btn:active{box-shadow:0 1px 0 #112543}.alert{font-size:11px;color:#9bb6dc;padding-top:9px;border-top:1px solid #314466;margin-top:8px}@media(max-width:730px){body{padding:10px 9px}.layout{grid-template-columns:1fr;max-width:550px}.cabinet{max-width:550px;margin:auto;width:100%}.side{grid-template-columns:1fr 1fr}.side .card:last-child{grid-column:1/-1}.chip{font-size:10px}.brand h1{font-size:17px}.screen{aspect-ratio:360/580}}@media(max-width:440px){.side{grid-template-columns:1fr}.side .card:last-child{grid-column:auto}.control{min-height:57px}.screen{aspect-ratio:360/520}.top .tags{width:100%}}
+</style></head><body>
+<header class="top"><div class="brand"><div class="symbol">S</div><div><h1>STEINER <em>TURBO 2600</em></h1><small>CORRIDA RETRÔ • ARCADE</small></div></div><div class="tags"><span class="chip">GRÁTIS</span><span class="chip">TECLADO + TOQUE</span><span class="chip">JOGO ORIGINAL</span></div></header>
+<div class="layout"><div class="cabinet"><div class="screen"><canvas id="game" width="360" height="580" aria-label="Jogo de corrida retro"></canvas><div class="overlay" id="overlay"><div class="panel-in"><h2 id="ov-title">STEINER TURBO</h2><p id="ov-desc">Acelere, desvie do trânsito e ultrapasse <b>200 carros</b> antes de acabar o primeiro dia. Depois, o desafio aumenta!<br>Prepare-se para anoitecer, neblina e neve.</p><button class="btn" id="start">▶ COMEÇAR A CORRIDA</button></div></div></div></div>
+<aside class="side"><section class="card"><h2>PAINEL DE CORRIDA</h2><div class="stats"><div class="stat"><span>Ultrapassagens</span><b id="score">0</b></div><div class="stat"><span>Meta do dia</span><b id="goal">200</b></div><div class="stat"><span>Velocidade</span><b id="speed">0</b></div><div class="stat"><span>Recorde</span><b class="accent" id="record">0</b></div><div class="stat"><span>Dia</span><b id="day">1</b></div><div class="stat"><span>Tempo restante</span><b id="time">120s</b></div></div><div class="alert" id="message">Pronto para pegar a estrada.</div></section>
+<section class="card"><h2>COMANDOS</h2><div class="instructions"><div><kbd>←</kbd> <kbd>→</kbd> Virar</div><div><kbd>↑</kbd> Acelerar</div><div><kbd>↓</kbd> Frear</div><div><kbd>ESPAÇO</kbd> Pausar / continuar</div><div>Funciona também com botões de toque.</div></div><div class="row-btn" style="margin-top:13px"><button class="btn" id="pause">⏸ PAUSAR</button><button class="btn" id="sound">♫ SOM: LIGADO</button></div></section>
+<section class="card"><h2>DIRIJA NO CELULAR</h2><div class="touch"><button class="control" data-key="left" aria-label="Virar esquerda">◀<small>ESQ.</small></button><button class="control" data-key="right" aria-label="Virar direita">▶<small>DIR.</small></button><button class="control" data-key="down" aria-label="Frear">▼<small>FREAR</small></button><button class="control" data-key="up" aria-label="Acelerar">▲<small>ACEL.</small></button></div><p class="instructions" style="margin:10px 0 0">Dica: evite colisões para manter a velocidade. Cada ultrapassagem vale um ponto.</p></section></aside></div>
+<footer class="smallprint">STEINER TURBO 2600 © 2026 • Homenagem independente aos jogos de corrida 8-bit. Arte, código, jogabilidade e áudio criados para este jogo.</footer>
+<script>
+(()=>{'use strict';
+const cvs=document.getElementById('game'),c=cvs.getContext('2d'),W=360,H=580;
+const el=id=>document.getElementById(id),key={left:false,right:false,up:false,down:false};
+let sound=true,audio=null,last=0,raf=0,phase='menu',cars=[],particles=[],roadScroll=0,clock=0,day=1,goal=200,passed=0,total=0,hits=0,spawnT=0,speed=0,px=180,shake=0,flash=0,weather=0,best=0,elapsed=0,dayLength=120;
+try{best=Number(localStorage.getItem('steiner-turbo-record')||0)||0}catch(e){}el('record').textContent=best;
+const rnd=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+function tone(freq=150,length=.12,type='square',volume=.04){if(!sound)return;try{if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(volume,audio.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+length);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+length)}catch(e){}}
+const colors=['#f6c44c','#e95367','#f2f0e9','#67d7f6','#9bdd6f','#ca92ed','#ec893e'];
+function reset(){day=1;goal=200;passed=0;total=0;hits=0;clock=0;elapsed=0;dayLength=120;speed=130;px=180;cars=[];particles=[];spawnT=.4;weather=0;roadScroll=0;shake=0;flash=0;phase='playing';el('overlay').classList.add('hidden');el('message').textContent='Ultrapasse 200 carros antes do fim do dia!';el('pause').textContent='⏸ PAUSAR';last=performance.now()}
+function overlay(title,desc,btn){el('ov-title').textContent=title;el('ov-desc').innerHTML=desc;el('start').textContent=btn;el('overlay').classList.remove('hidden')}
+function gameOver(){phase='over';speed=0;tone(170,.25,'sawtooth');overlay('FIM DA CORRIDA','Você ultrapassou <b>'+total+'</b> carros, chegou ao dia <b>'+day+'</b> e bateu em <b>'+hits+'</b> veículos.<br>Quer tentar melhorar seu recorde?','↻ JOGAR NOVAMENTE')}
+function nextDay(){day++;goal=300+Math.max(0,day-2)*70;passed=0;clock=0;dayLength=Math.max(100,120-(day-1)*3);speed=Math.max(speed,110);weather=(day%4===0)?2:(day%3===0)?1:0;flash=1.2;tone(660,.25,'triangle');el('message').textContent='DIA '+day+'! Meta: '+goal+' ultrapassagens.'}
+function updateHud(){el('score').textContent=passed;el('goal').textContent=goal;el('speed').textContent=Math.round(speed)+' km/h';el('record').textContent=best;el('day').textContent=day;el('time').textContent=Math.max(0,Math.ceil(dayLength-clock))+'s'}
+function roadAt(y){const t=clamp((y-127)/(H-127),0,1);let center=180+Math.sin(elapsed*.24+t*2.1)*14*(1-t);return{center,width:24+266*t*t,scale:.17+t*.83}}
+function carPosition(v){let y=130+Math.pow(v.z,1.25)*440,r=roadAt(y),lane=(-1.0+v.lane)*r.width*.30;return{x:r.center+lane,y:y,w:Math.max(9,39*r.scale),h:Math.max(15,69*r.scale)}}
+function collision(a){const p={x:px,y:486,w:37,h:68};return Math.abs(a.x-p.x)<(a.w+p.w)*.44 && Math.abs(a.y-p.y)<(a.h+p.h)*.40}
+function spawn(){const lane=Math.floor(rnd(0,3));let near=cars.some(e=>e.z<.35&&e.lane===lane);if(!near)cars.push({z:0,lane,color:colors[Math.floor(rnd(0,colors.length))],rate:rnd(.18,.46),scored:false})}
+function hit(){hits++;speed=Math.max(24,speed*.37);shake=.45;flash=.3;tone(72,.3,'sawtooth',.08);el('message').textContent='COLISÃO! Recupere a velocidade!'}
+function update(dt){
+ if(phase!=='playing')return;
+ elapsed+=dt;clock+=dt;roadScroll=(roadScroll+speed*dt*.68)%90;
+ const steer=(key.right?1:0)-(key.left?1:0),acc=key.up?140:20,brake=key.down?250:0;
+ speed=clamp(speed+(acc-brake-(speed>235?55:0))*dt,0,285);
+ px=clamp(px+steer*(165+speed*.24)*dt,56,304);
+ if(px<78||px>282)speed=Math.max(35,speed-90*dt);
+ spawnT-=dt;
+ const traffic=Math.max(.36,.86-speed/1100-(day-1)*.028);
+ if(spawnT<=0&&speed>22){spawn();spawnT=traffic+rnd(-.14,.14)}
+ for(let i=cars.length-1;i>=0;i--){
+  const v=cars[i];v.z+=dt*(.14+speed/460)*v.rate*2.25;
+  const pos=carPosition(v);
+  if(!v.scored && v.z>1.02){v.scored=true;passed++;total++;if(total>best){best=total;try{localStorage.setItem('steiner-turbo-record',String(best))}catch(e){}}tone(450,.035,'triangle',.013)}
+  if(!v.hit && v.z>.67 && collision(pos)){v.hit=true;hit()}
+  if(v.z>1.20)cars.splice(i,1)
+ }
+ if(passed>=goal){nextDay()}
+ else if(clock>=dayLength){gameOver()}
+ if(shake>0)shake-=dt;if(flash>0)flash-=dt;
+ if(weather===2){if(Math.random()<.7)particles.push({x:rnd(0,W),y:-10,dx:rnd(-25,25),dy:rnd(70,160)});for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.dx*dt;p.y+=p.dy*dt;if(p.y>H)particles.splice(i,1)}}
+ updateHud()
+}
+function rect(x,y,w,h,fill){c.fillStyle=fill;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))}
+function poly(pts,col){c.fillStyle=col;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill()}
+function carSprite(x,y,w,h,color,player=false){
+ const x0=x-w/2,y0=y-h/2;
+ rect(x0+3,y0+1,w-6,h-2,color);
+ rect(x0+5,y0+7,w-10,h*.33,player?'#102342':'#193148');
+ rect(x0+1,y0+h*.25,w*.14,h*.22,'#121b31');
+ rect(x+w*.36,y0+h*.25,w*.14,h*.22,'#121b31');
+ rect(x0+1,y0+h*.68,w*.14,h*.20,'#101521');
+ rect(x+w*.36,y0+h*.68,w*.14,h*.20,'#101521');
+ rect(x0+7,y0+h*.50,w-14,h*.16,player?'#e9f3fe':'#7b8392');
+ rect(x0+5,y0+h*.82,w*.22,Math.max(3,h*.07),player?'#fc424d':'#ff525a');
+ rect(x+w*.53,y0+h*.82,w*.22,Math.max(3,h*.07),player?'#fc424d':'#ff525a');
+ rect(x0+w*.43,y0+2,w*.15,h*.12,'#ffffff77');
+ if(player){rect(x0+10,y0+h*.10,w-20,h*.13,'#8bc7ff');rect(x0+w*.46,y0+h*.60,w*.08,h*.24,'#fff')}
+}
+function draw(){
+ const t=clock/dayLength,light=Math.cos(Math.PI*2*t*.8),dark=clamp((.10-light)*1.3,0,.92),sunrise=Math.max(0,1-Math.abs(t-.45)*5);
+ c.save();if(shake>0)c.translate(rnd(-5,5)*shake,rnd(-5,5)*shake);
+ let sky=c.createLinearGradient(0,0,0,150);sky.addColorStop(0,dark>.4?'#080f2e':sunrise>.3?'#bd5b7d':'#3578ba');sky.addColorStop(1,dark>.4?'#342953':sunrise>.3?'#efa677':'#afd6ef');
+ rect(0,0,360,145,sky);
+ const orbX=54+(t*250)%250,orbY=53+Math.sin(t*Math.PI*2)*18;
+ c.fillStyle=dark>.45?'#ecf4f5':'#fdeb99';c.beginPath();c.arc(orbX,orbY,dark>.45?11:17,0,Math.PI*2);c.fill();
+ if(dark>.35){for(let i=0;i<24;i++){let x=(i*91+37)%360,y=(i*57+19)%117;rect(x,y,2,2,'#d6e5f5')}}
+ poly([[0,128],[35,110],[87,130],[138,105],[197,129],[251,109],[310,132],[360,112],[360,164],[0,164]],dark>.45?'#141d37':'#557a80');
+ rect(0,145,360,H-145,dark>.45?'#202d29':'#58804c');
+ const v=roadAt(130),b=roadAt(H),edge=dark>.45?'#d3cdbb':'#eef0e5';
+ poly([[v.center-v.width*.54,130],[v.center+v.width*.54,130],[b.center+b.width*.54,H],[b.center-b.width*.54,H]],edge);
+ poly([[v.center-v.width*.49,130],[v.center+v.width*.49,130],[b.center+b.width*.49,H],[b.center-b.width*.49,H]],dark>.45?'#252835':'#50565a');
+ for(let z=0;z<11;z++){
+  let y=140+((z*74+roadScroll)%550);
+  if(y>H)continue;
+  let r=roadAt(y),s=r.width*.245;
+  let length=3+20*Math.pow((y-130)/(H-130),1.3);
+  for(let lane of [-1,1]){
+   rect(r.center+lane*s-Math.max(1,r.scale*2),y,Math.max(1,r.scale*4),length,dark>.45?'#7b8094':'#f7e9b2');
+  }
+  if(z%2===0){rect(r.center-r.width*.55-5,y,4,Math.max(4,10*r.scale),'#f95644');rect(r.center+r.width*.55+1,y,4,Math.max(4,10*r.scale),'#f95644')}
+ }
+ const sorted=[...cars].sort((a,b)=>a.z-b.z);
+ for(const v of sorted){const pos=carPosition(v);carSprite(pos.x,pos.y,pos.w,pos.h,v.color)}
+ carSprite(px,485,45,75,'#2e8dff',true);
+ if(dark>.30){rect(px-12,447,8,4,'#ffffa8');rect(px+5,447,8,4,'#ffffa8')}
+ if(weather===1){rect(0,150,360,400,'#dce8ed52')}
+ if(weather===2){rect(0,150,360,400,'#cfdde322');for(const p of particles){rect(p.x,p.y,2,4,'#fcffff')}}
+ if(dark>.05)rect(0,0,360,H,'rgba(3,8,31,'+(dark*.48)+')');
+ rect(0,0,360,39,'#07142acb');c.fillStyle='#e8f7ff';c.font='bold 14px monospace';c.textAlign='left';c.fillText('DIA '+day+'  '+passed+'/'+goal,12,25);c.textAlign='right';c.fillStyle='#aafde9';c.fillText(Math.round(speed)+' KM/H',348,25);
+ if(flash>0){rect(0,0,360,H,'rgba(255,249,193,'+(flash*.18)+')')}
+ if(phase==='paused'){rect(0,0,360,H,'#050d1c77');c.font='bold 34px monospace';c.textAlign='center';c.fillStyle='#ffffff';c.fillText('PAUSADO',180,275)}
+ c.restore()
+}
+function loop(ts){if(!last)last=ts;let dt=Math.min(.045,(ts-last)/1000);last=ts;update(dt);draw();raf=requestAnimationFrame(loop)}
+function togglePause(){if(phase==='playing'){phase='paused';el('pause').textContent='▶ CONTINUAR'}else if(phase==='paused'){phase='playing';last=performance.now();el('pause').textContent='⏸ PAUSAR'}}
+const keys={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down'};
+document.addEventListener('keydown',e=>{if(keys[e.code]){key[keys[e.code]]=true;e.preventDefault()}if(e.code==='Space'){e.preventDefault();if(phase==='menu'||phase==='over')reset();else togglePause()}});
+document.addEventListener('keyup',e=>{if(keys[e.code])key[keys[e.code]]=false});
+window.addEventListener('blur',()=>{Object.keys(key).forEach(k=>key[k]=false);if(phase==='playing')togglePause()});
+document.querySelectorAll('[data-key]').forEach(btn=>{const k=btn.dataset.key;const press=e=>{e.preventDefault();key[k]=true;btn.classList.add('pressed');if(btn.setPointerCapture&&e.pointerId!=null)btn.setPointerCapture(e.pointerId)};const release=e=>{e.preventDefault();key[k]=false;btn.classList.remove('pressed')};btn.addEventListener('pointerdown',press);btn.addEventListener('pointerup',release);btn.addEventListener('pointercancel',release);btn.addEventListener('lostpointercapture',release)});
+el('start').addEventListener('click',reset);el('pause').addEventListener('click',togglePause);el('sound').addEventListener('click',()=>{sound=!sound;el('sound').textContent=sound?'♫ SOM: LIGADO':'♫ SOM: DESLIGADO'});
+updateHud();raf=requestAnimationFrame(loop);
+})();
+</script></body></html>
