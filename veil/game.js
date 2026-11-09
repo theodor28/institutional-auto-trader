@@ -271,7 +271,8 @@ function updateJourney(dt){
  hero.x=mix(520,1070,ease)+Math.sin(s.time*1.55)*7;
  hero.y=mix(650,550,ease)+Math.sin(s.time*11)*2;
  hero.attackCd=Math.max(0,hero.attackCd-dt);
- E('clockNumber').textContent=String(Math.floor(Math.max(0,DURATION-s.time)/60)).padStart(2,'0')+':'+String(Math.ceil(Math.max(0,DURATION-s.time)%60)).padStart(2,'0');
+ const remain=Math.ceil(Math.max(0,DURATION-s.time));
+ E('clockNumber').textContent=String(Math.floor(remain/60)).padStart(2,'0')+':'+String(remain%60).padStart(2,'0');
  s.spawn-=dt;
  if(s.spawn<=0){
   spawn();const storm=Number.isFinite(M.data.stormPercent)?M.data.stormPercent:0;
@@ -511,7 +512,8 @@ function loop(now){
 }
 E('begin').onclick=unlock;
 E('look').onclick=()=>{
- if(s.phase!=='cover')return;phase('observe');toast('O MUNDO RESPIRA','Use INICIAR JORNADA quando o sinal retornar.','✦')
+ if(s.phase!=='cover')return;
+ toast('O MUNDO RESPIRA','Observe o cenário e escolha INICIAR JORNADA quando o oráculo estiver conectado.','✦')
 };
 E('home').onclick=restart;
 E('continue').onclick=next;
