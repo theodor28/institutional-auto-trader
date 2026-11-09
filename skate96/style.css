@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--bg:#081528;--panel:#102840;--edge:#416278;--lime:#d3ff7c;--orange:#ffa579;--aqua:#6ee5d6;--text:#f2f8fa;--muted:#9eb8c5}
+*{box-sizing:border-box}
+html{background:var(--bg);min-height:100%}
+body{margin:0;color:var(--text);font:500 13px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 15% -15%,#28536870 0,transparent 45%),radial-gradient(ellipse at 90% 55%,#17354f90 0,transparent 45%),#081528}
+button,select,input{font:inherit}button{cursor:pointer}
+button:focus-visible,select:focus-visible,.upload:focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+.hidden{display:none!important}
+.site{width:min(1500px,100%);margin:auto;padding:14px clamp(10px,2.2vw,25px) 25px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:13px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand-mark{width:48px;height:48px;background:var(--lime);color:#122e32;border-radius:11px;display:grid;place-items:center;font:900 34px Barlow Condensed,Arial,sans-serif;transform:rotate(-8deg);box-shadow:0 5px 0 #51876d,0 11px 30px #d2ff7e40;position:relative}
+.brand-mark span{font:900 12px Inter,sans-serif;position:absolute;right:3px;top:0}
+.brand strong{display:block;font:900 30px/.94 "Barlow Condensed",Impact,sans-serif;letter-spacing:.1px}
+.brand strong em{font-style:normal;color:var(--lime)}
+.brand small{display:block;color:#85bbc1;font:700 9px "Space Mono",monospace;letter-spacing:1.1px;margin-top:7px}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.header-chip{border:1px solid #3e6371;background:#19354a;color:#bde6e7;border-radius:7px;padding:9px 11px;font:800 10px "Space Mono"}
+.header-btn{border:1px solid #547388;background:#19334a;color:#e8f6fa;border-radius:8px;padding:9px 12px;font-size:10px;font-weight:850}
+.header-btn:hover{background:#27516a}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 266px;gap:16px;align-items:start}
+.cabinet{background:#172e44;border-radius:16px;border:2px solid #476d7d;padding:7px;box-shadow:0 17px 55px #0007,0 0 0 4px #142e3b}
+.screen{position:relative;overflow:hidden;width:100%;aspect-ratio:960/540;background:linear-gradient(#8bcad4,#3f7a74);border:3px solid #0c1a28;border-radius:8px}
+#game{display:block;width:100%;height:100%;image-rendering:auto;touch-action:none}
+.hud-top{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:6px;pointer-events:none}
+.hud-box{min-width:84px;background:#091c31dc;color:white;border:1px solid #d3fbdc62;border-radius:9px;padding:6px 10px;backdrop-filter:blur(6px);box-shadow:0 5px 18px #071c3155}
+.hud-box small{display:block;color:#a4c5cd;font:800 9px "Space Mono",monospace;letter-spacing:1px}
+.hud-box b{display:block;margin-top:1px;font:900 20px "Barlow Condensed",Impact,sans-serif;letter-spacing:1px;color:#e9ffdf}
+.hud-box .health{color:#ff8d9b;letter-spacing:1px}
+.stage-chip{position:absolute;top:73px;left:10px;background:#103a46d9;border:1px solid #a4f5c189;color:#e5fff1;padding:5px 10px;border-radius:7px;pointer-events:none;font:800 10px "Space Mono";letter-spacing:.5px}
+.combo{position:absolute;top:92px;left:50%;transform:translateX(-50%) scale(.96);width:205px;text-align:center;background:#0a2341ea;border:1px solid #d3ff7cac;border-radius:9px;padding:8px 10px;color:#e5ffd8;opacity:0;transition:opacity .18s,transform .18s;pointer-events:none;box-shadow:0 10px 25px #0006}
+.combo.visible{opacity:1;transform:translateX(-50%) scale(1)}
+.combo>span{display:block;font:800 10px "Space Mono";white-space:nowrap}
+.combo>b{display:block;font:900 34px/.92 "Barlow Condensed";margin:5px 0}
+.combo>b em{font-size:17px;color:var(--lime);font-style:normal}
+.combo-line{background:#375868;height:4px;border-radius:10px;overflow:hidden;margin-top:6px}
+.combo-line i{display:block;height:100%;width:100%;background:var(--lime)}
+.toast{position:absolute;z-index:10;top:27%;left:50%;transform:translate(-50%,-5px);max-width:89%;font:800 12px Inter,sans-serif;text-align:center;background:#102c43ea;color:#f8ffe4;border:1px solid #bdeec2;border-radius:12px;padding:9px 15px;box-shadow:0 8px 28px #0008;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.progress-track{position:relative;height:15px;background:#203d4a;margin-top:7px;border-radius:4px;overflow:hidden}
+.progress-track i{display:block;height:100%;background:linear-gradient(90deg,#38d8bf,#d7fb74);width:0;box-shadow:0 0 17px #d1fa8c80}
+.progress-track span{position:absolute;right:10px;top:0;font:800 9px "Space Mono";color:white;text-shadow:0 1px 2px #000;line-height:15px}
+.game-footer{margin-top:13px;display:flex;justify-content:space-between;gap:13px;align-items:center;flex-wrap:wrap}
+.key-guide{display:flex;flex-wrap:wrap;gap:8px 13px;align-items:center;color:#bad1d7;font-size:10px;font-weight:700}
+kbd{display:inline-block;border:1px solid #567789;border-radius:4px;background:#243d53;font:800 9px "Space Mono",monospace;color:#f4f7fa;padding:3px 5px;margin-right:4px}
+.bottom-actions{display:flex;gap:6px}
+.bottom-actions button{background:#19394e;border:1px solid #54758a;border-radius:7px;color:#e5fff5;padding:8px 10px;font-size:10px;font-weight:900}
+.mobile-pad{display:none}
+.side{display:grid;gap:10px}
+.side-head{background:#caff84;color:#153a36;font:900 11px "Space Mono";border-radius:8px;padding:11px;letter-spacing:1.2px;display:flex;align-items:center;gap:8px}
+.status-light{height:8px;width:8px;background:#135d44;border-radius:50%;box-shadow:0 0 0 3px #6bd59d}
+.mission-panel,.objectives,.score-card,.tip{border:1px solid #3a6477;background:linear-gradient(140deg,#102d42,#0b2639);border-radius:11px;padding:15px;box-shadow:0 11px 26px #0003}
+.small-heading{font:800 9px "Space Mono";letter-spacing:1px;color:#8fbccc}
+.mission-panel h2{font:900 26px/.95 "Barlow Condensed";margin:7px 0;color:#f2ffe8}
+.mission-panel>p{font-size:11px;color:#b5cbd3;line-height:1.62;margin:7px 0 15px}
+.mission-line{display:flex;justify-content:space-between;align-items:center;font:700 10px "Space Mono";color:#adc8ce}.mission-line b{color:var(--lime)}
+.meter{height:7px;background:#275466;border-radius:9px;overflow:hidden;margin-top:7px}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#51d8be,#d5fc7b)}
+.object-head{display:flex;justify-content:space-between;font:800 10px "Space Mono";letter-spacing:1px;color:#c7e3e7;margin-bottom:8px}.object-head span{color:var(--lime)}
+.goal{display:flex;gap:9px;align-items:center;padding:10px 0;border-top:1px solid #cfe6f019}
+.goal:first-of-type{border:0}
+.goal-check{font-size:17px;color:#9db8b9}
+.goal.done .goal-check{color:var(--lime)}
+.goal>div{flex:1;min-width:0}
+.goal b{font-size:11px;font-weight:850;display:block}
+.goal small{color:#93b7c5;font-size:10px;display:block}
+.goal em{color:var(--lime);font:800 9px "Space Mono";font-style:normal}
+.score-card{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.score-card>div{padding:8px;background:#0a2437;border:1px solid #2e5365;border-radius:7px}
+.score-card>div:first-child{grid-column:1/-1}
+.score-card small{font:800 9px "Space Mono";color:#a5c4d2}
+.score-card b{display:block;font:900 25px "Barlow Condensed";color:#f4ffe0}
+.score-card b i{font-size:10px;color:var(--lime);font-style:normal}
+.tip{border-color:#4e6a5e}
+.tip strong{font:800 10px "Space Mono";color:var(--lime)}
+.tip p{font-size:11px;color:#b3cbd0;line-height:1.6;margin:7px 0 0}
+.tip b{color:#e6ffd2}
+.game-modal{z-index:15;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#07162ad9,#07172acd);backdrop-filter:blur(5px);padding:14px;overflow:auto}
+.menu-inner{position:relative;width:min(465px,97%);background:radial-gradient(ellipse at 50% -20%,#20595c,#0b293f 68%);border:2px solid #b8fb99;box-shadow:0 15px 70px #000a,inset 0 0 26px #8dddb01c;border-radius:13px;padding:20px 25px;text-align:center;color:#f2fff4}
+.arcade-kicker{font:800 9px "Space Mono";letter-spacing:2px;color:#aceaca}
+.menu-inner h1{font:900 78px/.88 "Barlow Condensed",Impact,sans-serif;margin:16px 0 4px;color:white;text-shadow:4px 5px 0 #0f5d5d}
+.menu-inner h1 span{color:var(--lime)}
+.menu-sub{font:900 18px "Barlow Condensed";letter-spacing:2px;color:#9be4df}
+.menu-inner p{font-size:11px;color:#c2d9d9;line-height:1.65;max-width:385px;margin:12px auto 14px}
+.menu-inner p b{color:#f2ffe4}
+.menu-tags{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:14px auto}
+.menu-tags span{border:1px solid #5a9086;background:#154a4d;border-radius:5px;padding:5px 8px;font:800 9px "Space Mono";color:#dfffd8}
+.primary{background:linear-gradient(110deg,#e7ff9a,#8ee9a7);border:0;border-radius:8px;padding:12px 16px;color:#17382f;font:900 15px "Barlow Condensed";letter-spacing:.7px;width:100%;box-shadow:0 5px 0 #337b66}
+.primary:hover{filter:brightness(1.05)}
+.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #337b66}
+.secondary{background:#183f4e;color:#d1f5e6;border:1px solid #5e9994;border-radius:8px;padding:9px;font:800 11px Inter;width:100%;margin-top:11px}
+.micro{margin-top:12px;color:#85b0ac;font:800 8px "Space Mono";letter-spacing:.2px}
+.menu-inner.compact{max-width:365px}
+.menu-inner h2{font:900 38px "Barlow Condensed";margin:6px 0}
+.big-emoji{font-size:37px}
+.final-number{font:900 51px "Barlow Condensed";color:var(--lime);margin:12px}
+.dialog-backdrop{position:fixed;inset:0;z-index:40;background:#061226c9;backdrop-filter:blur(9px);display:flex;justify-content:center;align-items:center;overflow:auto;padding:15px}
+.profile-card{position:relative;background:#102b40;border:1px solid #70aaa6;box-shadow:0 20px 80px #000b;border-radius:15px;padding:24px;width:min(465px,96%);max-height:94vh;overflow:auto}
+.close-btn{position:absolute;right:13px;top:13px;background:#224558;border:1px solid #62888b;border-radius:7px;padding:6px 10px;color:#f0fff9}
+.profile-top{display:flex;align-items:center;gap:13px}
+.profile-top>span{font:900 32px "Barlow Condensed";width:50px;height:50px;border-radius:13px;background:#d5ff90;color:#164332;display:grid;place-items:center}
+.profile-kicker{font:800 9px "Space Mono";color:#aedfcb}
+.profile-card h2{font:900 31px "Barlow Condensed";margin:2px 0 0}
+.profile-card p{font-size:12px;color:#b2d4db;line-height:1.6}
+.profile-card p b{color:#f0ffe2}
+.upload{margin:13px 0;cursor:pointer;border:2px dashed #6eaaa1;background:#173f4c;border-radius:13px;padding:15px;display:flex;align-items:center;flex-direction:column;gap:4px;text-align:center}
+.upload>span{font-size:28px}.upload strong{font-size:13px}.upload small{font-size:10px;color:#a7cfc8}
+.preview{background:#0c2335;border:1px solid #385d68;border-radius:11px;display:flex;align-items:center;gap:13px;padding:10px}
+#facePreview{width:76px;height:76px;border:2px solid #9ef1cb;image-rendering:pixelated;border-radius:10px;background:#234454}
+.preview div{flex:1}.preview b{font-size:12px;display:block}.preview small{font-size:10px;color:#9fbbc2;display:block;line-height:1.5;margin:3px 0}.preview button{padding:4px 8px;border:1px solid #5a8190;background:#184452;border-radius:5px;color:#d8f6ed;font-size:10px;margin-top:4px}
+.custom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.custom-grid label{color:#a4d1d5;font:800 10px "Space Mono";display:block}
+.custom-grid select{margin-top:8px;display:block;width:100%;background:#10293b;color:#f6fff9;border:1px solid #4c7686;border-radius:6px;padding:9px;font:700 11px Inter}
+.help .help-rows{display:grid;gap:7px;margin:17px 0}
+.help .help-rows>div{display:grid;grid-template-columns:82px 100px 1fr;align-items:center;gap:7px;padding:8px;background:#0d2436;border-radius:6px}
+.help .help-rows b{font-size:11px}.help .help-rows span{font-size:10px;color:#a9cad0}
+footer{text-align:center;color:#759baa;font-size:10px;margin:18px 0 0}
+@media(max-width:1180px){.layout{grid-template-columns:minmax(0,1fr) 244px}.mission-panel,.objectives,.score-card,.tip{padding:12px}.key-guide{gap:7px}}
+@media(max-width:870px){.layout{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr;gap:9px}.side-head{grid-column:1/-1}.mission-panel,.objectives,.score-card,.tip{padding:11px}.tip{grid-column:1/-1}.mobile-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:11px}.touch-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-height:62px;background:#214b55;border:1px solid #6eaf9b;border-radius:8px;color:#edfcee;font:900 11px "Barlow Condensed";letter-spacing:.4px}.touch-btn span{display:block;font-size:24px;line-height:1}.touch-btn.jump{background:#bbf084;color:#143c35}.touch-btn.grind{background:#3b7282}.touch-btn.pressed,.touch-btn:active{filter:brightness(1.35);transform:translateY(1px)}}
+@media(max-width:540px){.site{padding:8px 7px}.header{margin-bottom:9px;gap:10px}.brand strong{font-size:25px}.brand-mark{width:40px;height:40px;font-size:26px}.brand small{font-size:7px}.header-right{width:100%}.header-chip{padding:6px 8px;font-size:9px}.header-btn{padding:7px 9px;font-size:9px}.cabinet{padding:4px;border-radius:8px}.screen{aspect-ratio:960/610;border-width:2px}.hud-top{top:5px;left:5px;right:5px;gap:4px}.hud-box{padding:4px 5px;min-width:0;border-radius:5px}.hud-box small{font-size:7px;letter-spacing:0}.hud-box b{font-size:14px}.stage-chip{top:43px;left:5px;font-size:8px;padding:3px 6px}.combo{top:72px;width:160px;padding:6px 7px}.combo>b{font-size:26px}.toast{font-size:10px}.menu-inner{width:97%;padding:11px 13px}.arcade-kicker{font-size:7px}.menu-inner h1{font-size:53px;margin:10px 0 3px}.menu-sub{font-size:13px}.menu-inner p{font-size:10px;line-height:1.5;margin:7px auto}.menu-tags{margin:9px 0;gap:4px}.menu-tags span{padding:3px 5px;font-size:8px}.primary{font-size:12px;padding:10px}.secondary{font-size:10px;padding:8px;margin-top:7px}.micro{font-size:7px;margin-top:8px}.mobile-pad{gap:5px}.touch-btn{min-height:57px}.touch-btn span{font-size:20px}.game-footer{gap:7px}.key-guide{gap:5px}.key-guide>span{font-size:9px}.side{grid-template-columns:1fr}.side-head,.tip{grid-column:auto}.objectives{display:grid}.score-card{grid-template-columns:repeat(3,1fr)}.score-card>div:first-child{grid-column:auto}.score-card b{font-size:20px}.profile-card{padding:18px}.help .help-rows>div{grid-template-columns:63px 90px 1fr}}
