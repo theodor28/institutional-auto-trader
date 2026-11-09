@@ -92,7 +92,8 @@ function clues(v,freeze=false){
  E('clue2desc').textContent=p<.44?'As sombras dominam as negociações.':p>.56?'As sombras perdem terreno.':'Nenhum lado domina o reino.';
  E('clue3desc').textContent=v.storm==='tempestade'?'Os ventos sacodem as torres.':'O céu sopra apenas uma brisa.';
  E('clue4desc').textContent=v.passage==='estreita'?'A passagem está estreita.':'A passagem se abriu demais.';
- E('oracleSummary').textContent=freeze?'Pistas registradas no início do enigma. O mundo continua mudando.':'Os símbolos acompanham os dados públicos ao vivo.'
+ const wind=v.alignment==='aliada'?'Os últimos passos acompanham a pressão.':v.alignment==='conflito'?'Os últimos passos contradizem a pressão.':'A direção recente está encoberta pela névoa.';
+ E('oracleSummary').textContent=(freeze?'Pistas preservadas para o enigma. ':'')+wind
 }
 function status(){
  const live=M.fresh(),d=M.data;
