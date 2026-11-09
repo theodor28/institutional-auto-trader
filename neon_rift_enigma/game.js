@@ -266,7 +266,8 @@ function updateMission(dt){
  for(const a of S.friends)a.t+=dt;
  S.friends=S.friends.filter(a=>a.t<7);
  for(const ray of S.rays)ray.t-=dt;S.rays=S.rays.filter(ray=>ray.t>0);
- E('missionTime').textContent='00:'+String(Math.ceil(DURATION-S.time)).padStart(2,'0');
+ const remain=Math.max(0,Math.ceil(DURATION-S.time));
+ E('missionTime').textContent=String(Math.floor(remain/60)).padStart(2,'0')+':'+String(remain%60).padStart(2,'0');
  E('missionRunes').textContent=S.runes;
  E('shieldValue').textContent=Math.round(S.hero.shield)+'%';
  E('shieldMeter').style.width=S.hero.shield+'%';
