@@ -3,6 +3,7 @@
 import {THREE,rig,torso,legs,arms,board} from './world.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 let avatar=null,mixer=null,headBone=null,bones={},fallback=false,ready=false;
+const lerpNumber=(a,b,t)=>a+(b-a)*t;
 let pending=false;
 const skin=new THREE.MeshStandardMaterial({color:'#b98668',roughness:.78});
 const shirt=new THREE.MeshStandardMaterial({color:'#314c5d',roughness:.85});
@@ -89,7 +90,7 @@ export function loadHumanSkater(){
  if(pending)return;pending=true;
  // Realtime fallback ensures a human silhouette even if asset service is unavailable.
  const fallbackAvatar=builtAvatar();
- fallbackAvatar.position.y=.22;fallbackAvatar.rotation.y=Math.PI/2;
+ fallbackAvatar.position.y=.22;fallbackAvatar.userData.baseY=.22;fallbackAvatar.rotation.y=Math.PI/2;
  fallback=true;attachModel(fallbackAvatar);
  const url='https://cdn.jsdelivr.net/gh/mrdoob/three.js@r164/examples/models/gltf/Soldier.glb';
  new GLTFLoader().load(url,gltf=>{
@@ -101,7 +102,7 @@ export function loadHumanSkater(){
   model.scale.setScalar(factor);
   model.position.set(0,-bounding.min.y*factor+.23,0);
   model.rotation.y=Math.PI/2;
-  model.userData.realHuman=true;
+  model.userData.realHuman=true;model.userData.baseY=model.position.y;
   fallback=false;attachModel(model,gltf.animations||[]);
   document.dispatchEvent(new CustomEvent('steiner-skater-ready',{detail:{human:true}}))
  },undefined,err=>{
@@ -134,7 +135,8 @@ export function updateHumanSkater(dt,{speed=0,grounded=true,air=false,grinding=f
    o.elbow.rotation.x=lerp(o.elbow.rotation.x,grab?.9:.12,Math.min(1,dt*10))
   })
  }
- avatar.position.y+=(Math.sin(time*13)*.012*(grounded?Math.min(1,Math.abs(speed)/15):0)-avatar.position.y*.0)*Math.min(1,dt*6);
+ const targetY=(avatar.userData.baseY||.22)+Math.sin(time*13)*.012*(grounded?Math.min(1,Math.abs(speed)/15):0);
+ avatar.position.y=lerpNumber(avatar.position.y,targetY,Math.min(1,dt*6));
  avatar.rotation.z=lerp(avatar.rotation.z,-lean*.38,Math.min(1,dt*7));
  avatar.rotation.x=lerp(avatar.rotation.x,air?-.13:grinding?-.2:.04,Math.min(1,dt*7));
 }
