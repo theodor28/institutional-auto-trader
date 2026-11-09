@@ -25,12 +25,12 @@ let state='menu',curWave=-1,clearUntil=0,startedWave=new Set(),camera=0,prevTime
 let soundOn=true,audioCtx=null;
 try{record=Number(localStorage.getItem('ruas-de-aco-record')||0)||0}catch(e){}
 const sprite=new Image();
-sprite.onload=()=>{assetsReady=true;const box=$('heroPortrait');box.textContent='';box.style.backgroundImage='url('+sprite.src+')';box.style.backgroundRepeat='no-repeat';box.style.backgroundSize='720px 76px';box.style.backgroundPosition='left top'};
+sprite.onload=()=>{assetsReady=true;const box=$('heroPortrait');box.textContent='';box.style.backgroundImage='url('+sprite.src+')';box.style.backgroundRepeat='no-repeat';box.style.backgroundSize='432px 72px';box.style.backgroundPosition='left top'};
 sprite.onerror=()=>{$('heroPortrait').textContent='★';assetsReady=false};
 if(window.STEINER_FIGHT_SPRITES) sprite.src=window.STEINER_FIGHT_SPRITES;
-const SP={idle:0,walk1:1,walk2:2,walk3:3,walk4:4,run:5,crouch:6,jump:7,
-  guard:8,jab:9,punch:10,uppercut:11,kick:12,roundkick:13,jumpkick:14,hit:15,fall:16,win:17};
-const CW=50,CH=82;
+const SP={idle:0,walk1:1,walk2:2,walk3:1,walk4:2,run:1,crouch:4,jump:3,
+  guard:4,jab:5,punch:6,uppercut:6,kick:7,roundkick:7,jumpkick:7,hit:8,fall:8,win:9};
+const CW=36,CH=60;
 function tone(freq=390,dur=.11,type='square',gain=.028){
  if(!soundOn)return;
  try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
@@ -435,9 +435,9 @@ function fallbackBody(x,y,scale,tint='#48a9ad'){
 }
 function drawPerson(e,hero=false){
  if(e.dead&&e.deathT<=0)return;
- const foot=groundScreen(e.d),z=e.z||0,s=e.type==='boss'?2.00:e.type==='brute'?1.80:hero?1.72:1.55;
+ const foot=groundScreen(e.d),z=e.z||0,s=e.type==='boss'?2.70:e.type==='brute'?2.54:hero?2.42:2.30;
  const x=e.x,y=foot-z;
- ellipse(x,foot+7,31*s/1.72,8,'#10243960');
+ ellipse(x,foot+7,31*s/2.42,8,'#10243960');
  ctx.save();
  ctx.globalAlpha=e.dead?clamp(e.deathT/.65,0,1):e.invincible>0&&hero&&Math.floor(nowTime*19)%2===0?.56:1;
  if(assetsReady){
