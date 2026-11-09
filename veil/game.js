@@ -359,6 +359,7 @@ function diary(){
   '<table><tr><th>QUANDO</th><th>CAMINHO</th><th>TESOURO FICTÍCIO</th><th>RUNAS</th></tr>'+ (list||'<tr><td colspan="4">O livro ainda está em branco.</td></tr>')+'</table>'+
   '<p>Expedições: <strong>'+saveData.adventures+'</strong>. Tesouro fictício: <strong>'+fmt(saveData.wallet)+'</strong>. Runas: <strong>'+saveData.runes+'</strong>.</p>'+
   '<button id="resetAll" class="btn-inline">RECOMEÇAR DO ZERO</button>');
+ if(window.VEIL_MASTER?.appendDiary)window.VEIL_MASTER.appendDiary(E('modalContent'));
  E('resetAll').onclick=()=>{
   if(s.phase==='journey'){alert('Conclua ou recue desta expedição antes de limpar o histórico.');return}
   if(!confirm('Apagar definitivamente os créditos fictícios, as runas e o diário deste navegador?'))return;
@@ -558,6 +559,36 @@ document.addEventListener('keydown',e=>{
  }
 });
 phase('cover');M.init();liveUI();requestAnimationFrame(loop);
+/* Dedicated narrow, read-only snapshot interface for autonomous mode.
+ * The agent calls the SAME gameplay actions as a human, with no private market orders.
+ * This API deliberately does not offer direct wallet or market mutation.
+ */
+window.VEIL_ENGINE={
+ state:()=>({
+  phase:s.phase,visible:!document.hidden,modal:s.modal,stale:s.stale,
+  quoteFresh:M.fresh(),quizIndex:s.q,quizAnswered:s.answered,
+  questionTruth:s.snap&&s.phase==='quiz'?s.snap[RIDDLES[s.q]?.key]:null,
+  quizTruthList:s.snap?RIDDLES.map(x=>s.snap[x.key]):[],
+  frozenReading:s.snap?{...s.snap}:null,
+  availableReading:M.snapshot(),
+  road:s.road,elapsed:s.time,enemyCount:s.enemies.length,
+  enemies:s.enemies.map(e=>({kind:e.kind,x:e.x,y:e.y,hp:e.hp,dead:Boolean(e.dead)})),
+  hero:{x:s.hero.x,y:s.hero.y,shield:s.hero.shield,wards:s.hero.wards,attackCd:s.hero.attackCd},
+  unrealized:s.order&&M.fresh()?M.close(s.order)?.net:null,
+  fee:s.order&&M.fresh()?M.close(s.order)?.fees:null,
+  wallet:saveData.wallet,latest:saveData.history[0]?{...saveData.history[0]}:null,
+  history:saveData.history.slice(0,24).map(h=>({...h})),
+  adventures:saveData.adventures,crystals:saveData.runes,
+  currentMarket:{pressure:M.data.pressure,momentumPercent:M.data.momentumPercent,
+    stormPercent:M.data.stormPercent,spreadPercent:M.data.spreadPercent,largestTrade:M.data.largestTrade}
+ }),
+ actions:{start:unlock,answer,next,choose,spell,ward,retreat,restart},
+ summarize:()=>({wins:saveData.history.filter(h=>h.net!=null&&h.net>0).length,
+  losses:saveData.history.filter(h=>h.net!=null&&h.net<0).length,
+  net:saveData.history.reduce((v,h)=>v+(Number.isFinite(h.net)?h.net:0),0),
+  watch:saveData.history.filter(h=>h.road==='watch').length})
+};
+
 window.VEIL_TEST={
  version:'2.0',
  state:()=>({phase:s.phase,live:M.fresh(),q:s.q,answered:s.answered,road:s.road,
