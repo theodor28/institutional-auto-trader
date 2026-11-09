@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#091426">
+<meta name="description" content="SKATE 96: jogo original de plataforma retrô, skate anda sozinho, ollies, kickflips, 360°, crooked grinds, policiais, uma fase e personalização com sua foto.">
+<title>SKATE '96 — Correria de Rua</title>
+<link rel="stylesheet" href="./style.css?v=1">
+</head>
+<body>
+<div class="site">
+ <header class="header">
+   <div class="brand"><div class="brand-mark">S<span>✦</span></div><div><strong>SKATE <em>'96</em></strong><small>CORRERIA DE RUA · PIXEL ARCADE</small></div></div>
+   <div class="header-right"><span class="header-chip">★ 16-BIT STYLE</span><button id="openProfile" class="header-btn">☺ MEU PERSONAGEM</button><button id="soundBtn" class="header-btn" aria-label="Alternar som">♫ SOM: ON</button><button id="helpBtn" class="header-btn" aria-label="Ajuda">?</button></div>
+ </header>
+ <main class="layout">
+  <section class="game-col">
+    <div class="cabinet">
+      <div class="screen">
+       <canvas id="game" width="960" height="540" aria-label="Jogo de skate de plataforma lateral" role="img"></canvas>
+       <div class="hud-top" aria-live="off">
+         <div class="hud-box"><small>SCORE</small><b id="score">000000</b></div>
+         <div class="hud-box"><small>VIDAS</small><b id="health" class="health">♥ ♥ ♥</b></div>
+         <div class="hud-box"><small>LETRAS</small><b id="letters">_ _ _ _ _</b></div>
+         <div class="hud-box"><small>RECORDE</small><b id="record">000000</b></div>
+       </div>
+       <div class="combo" id="combo"><span id="comboName">KICKFLIP</span><b id="comboPts">500 <em>x2</em></b><div class="combo-line"><i id="comboLine"></i></div></div>
+       <div class="stage-chip" id="zoneChip">RUAS DE DREADTOWN</div>
+       <div class="toast" id="toast" role="status"></div>
+       <div class="game-modal" id="menu">
+        <div class="menu-inner">
+          <div class="arcade-kicker">INSIRA SUA CORAGEM • 1996</div>
+          <h1>SKATE <span>'96</span></h1>
+          <div class="menu-sub">CORRERIA DE RUA</div>
+          <p>O skate <b>anda sozinho</b>. Pule obstáculos, fuja dos policiais e faça combos como nos jogos de plataforma dos anos 90.</p>
+          <div class="menu-tags"><span>🛹 OLLIE</span><span>⚡ KICKFLIP</span><span>↻ 360°</span><span>✦ CROOKED GRIND</span></div>
+          <button class="primary" id="playBtn"><span>▶</span> COMEÇAR A FASE</button>
+          <button class="secondary" id="customizeBtn">☺ COLOCAR MINHA APARÊNCIA</button>
+          <div class="micro">UMA FASE · UM CAMINHO · PONTUAÇÃO E RECORDES</div>
+        </div>
+       </div>
+       <div class="game-modal hidden" id="pauseModal"><div class="menu-inner compact"><div class="big-emoji">⏸️</div><h2>PAUSADO</h2><p>Sua correria espera por você.</p><button class="primary" id="resumeBtn">▶ CONTINUAR</button><button class="secondary" id="restartPauseBtn">↻ RECOMEÇAR FASE</button></div></div>
+       <div class="game-modal hidden" id="finishModal"><div class="menu-inner compact"><div class="big-emoji" id="finishEmoji">🏁🏆</div><h2 id="finishTitle">FASE CONCLUÍDA!</h2><p id="finishText">Você chegou ao fim da rua.</p><div class="final-number" id="finishScore">0</div><button class="primary" id="againBtn">↻ JOGAR DE NOVO</button></div></div>
+      </div>
+      <div class="progress-track"><i id="distanceBar"></i><span id="progressText">0% DA FASE</span></div>
+    </div>
+    <div class="mobile-pad" aria-label="Controles por toque">
+      <button class="touch-btn jump" data-tap="jump"><span>↑</span> OLLIE</button>
+      <button class="touch-btn" data-tap="kick"><span>✦</span> KICKFLIP</button>
+      <button class="touch-btn" data-tap="spin"><span>↻</span> 360°</button>
+      <button class="touch-btn grind" data-hold="grind"><span>⚡</span> CROOKED</button>
+      <button class="touch-btn" data-tap="smoke"><span>◉</span> SHOVE-IT</button>
+      <button class="touch-btn" data-hold="duck"><span>▾</span> AGACHAR</button>
+    </div>
+    <div class="game-footer">
+      <div class="key-guide"><span><kbd>ESPAÇO</kbd> OLLIE</span><span><kbd>Z</kbd> KICKFLIP</span><span><kbd>X</kbd> 360°</span><span><kbd>C</kbd> POP SHOVE-IT</span><span><kbd>SHIFT</kbd> CROOKED</span><span><kbd>↓</kbd> AGACHAR</span></div>
+      <div class="bottom-actions"><button id="pauseBtn">⏸ PAUSA</button><button id="restartBtn">↻ REINICIAR</button></div>
+    </div>
+  </section>
+  <aside class="side">
+    <div class="side-head"><span class="status-light"></span> SUA MISSÃO</div>
+    <div class="mission-panel">
+      <span class="small-heading">OBJETIVO PRINCIPAL</span>
+      <h2>FUGA DE RUA</h2>
+      <p>Chegue à linha de chegada pulando policiais, cones, carros e abismos. Entre pelo menos uma vez em cada trilho de grind.</p>
+      <div class="mission-line"><span>PROGRESSO DA PISTA</span><b id="sideProgress">0%</b></div>
+      <div class="meter"><i id="sideMeter"></i></div>
+    </div>
+    <div class="objectives">
+      <div class="object-head">DESAFIOS <span id="objectiveDone">0/4</span></div>
+      <div class="goal" id="goal1"><span class="goal-check">○</span><div><b>Rei do Ollie</b><small>Faça 5 saltos</small></div><em id="goal1n">0/5</em></div>
+      <div class="goal" id="goal2"><span class="goal-check">○</span><div><b>Linha de respeito</b><small>5 manobras especiais</small></div><em id="goal2n">0/5</em></div>
+      <div class="goal" id="goal3"><span class="goal-check">○</span><div><b>Crooked Master</b><small>Grinde 3 corrimãos</small></div><em id="goal3n">0/3</em></div>
+      <div class="goal" id="goal4"><span class="goal-check">○</span><div><b>SKATE Completo</b><small>Encontre as 5 letras</small></div><em id="goal4n">0/5</em></div>
+    </div>
+    <div class="score-card">
+      <div><small>VELOCIDADE</small><b><span id="speed">0</span> <i>km/h</i></b></div>
+      <div><small>MELHOR COMBO</small><b id="bestCombo">0</b></div>
+      <div><small>COMBOS FEITOS</small><b id="tricks">0</b></div>
+    </div>
+    <div class="tip"><strong>COMO JOGAR</strong><p>Você não dirige: o skate segue sozinho. Aperte <b>Espaço</b> para pular, use as manobras no ar e segure <b>Shift</b> ao chegar perto de um corrimão para encaixar o <b>Crooked Grind</b>.</p></div>
+  </aside>
+ </main>
+ <footer>SKATE '96 é um jogo original de plataforma com estética dos anos 90, não um jogo oficial de Mario ou Tony Hawk. Foto de personagem processada localmente no navegador.</footer>
+</div>
+<div class="dialog-backdrop hidden" id="profileDialog" role="dialog" aria-modal="true" aria-label="Personalizar meu personagem">
+  <div class="profile-card">
+   <button class="close-btn" id="closeProfile" aria-label="Fechar">✕</button>
+   <div class="profile-top"><span>☺</span><div><div class="profile-kicker">CRIE SEU SKATISTA</div><h2>O JOGADOR É VOCÊ</h2></div></div>
+   <p>Use uma foto do seu rosto para aparecer no personagem de skate. A imagem é transformada em pixels <b>dentro do seu navegador</b>, sem ser enviada ao servidor.</p>
+   <label for="photoInput" class="upload"><span>📷</span><strong>COLOCAR MINHA FOTO</strong><small>Escolha uma foto nítida, olhando para frente</small></label>
+   <input id="photoInput" type="file" accept="image/*" hidden>
+   <div class="preview"><canvas id="facePreview" width="96" height="96" aria-label="Prévia do rosto"></canvas><div><b id="photoStatus">Avatar padrão</b><small>A foto aparece no rosto do skatista durante a fase.</small><button id="removePhoto">Remover foto</button></div></div>
+   <div class="custom-grid"><label>ROUPA <select id="shirtColor"><option value="#f3b96b">Laranja 90s</option><option value="#e25c64">Vermelho</option><option value="#61c1ac">Verde água</option><option value="#6aa9e5">Azul</option><option value="#e3d6ee">Branco</option></select></label>
+   <label>CABELO <select id="hairStyle"><option value="cap">Boné</option><option value="long">Cabelo comprido</option><option value="short">Cabelo curto</option><option value="dread">Dreadlocks</option></select></label></div>
+   <button id="saveProfile" class="primary">SALVAR MEU PERSONAGEM ✓</button>
+  </div>
+</div>
+<div class="dialog-backdrop hidden" id="helpDialog" role="dialog" aria-modal="true" aria-label="Instruções">
+ <div class="profile-card help"><button id="closeHelp" class="close-btn">✕</button><h2>MANUAL DO SKATE '96</h2><p>Seu personagem acelera sozinho. Você só controla quando e como faz a manobra. Os comandos funcionam no teclado e nos botões grandes do celular.</p>
+ <div class="help-rows"><div><kbd>ESPAÇO</kbd><b>Ollie</b><span>Pule cones, policiais e buracos.</span></div><div><kbd>Z</kbd><b>Kickflip</b><span>Gire o shape no ar e ganhe pontos.</span></div><div><kbd>X</kbd><b>360°</b><span>Gire o corpo no ar.</span></div><div><kbd>C</kbd><b>Pop Shove-it</b><span>Giro rápido do skate.</span></div><div><kbd>SHIFT</kbd><b>Crooked grind</b><span>Segure ao passar por cima de trilhos.</span></div><div><kbd>↓</kbd><b>Agachar</b><span>Desvie de obstáculos elevados.</span></div><div><kbd>P</kbd><b>Pausar</b><span>Pare a corrida para respirar.</span></div></div><button id="helpGotIt" class="primary">BORA JOGAR</button></div>
+</div>
+<script defer src="./game.js?v=1"></script>
+</body></html>
