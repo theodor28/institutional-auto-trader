@@ -1,0 +1,17 @@
+{
+  "name": "steiner-life-world",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mundo social 3D original multiplayer no navegador",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
