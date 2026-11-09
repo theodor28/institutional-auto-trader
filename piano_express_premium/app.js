@@ -86,8 +86,8 @@ if(form){
     const url='https://wa.me/'+phone+'?text='+encodeURIComponent(message);
     // Open only in direct response to the user's form submission.
     // The visitor must still approve and send the message in WhatsApp.
-    const windowRef=window.open(url,'_blank','noopener,noreferrer');
-    if(!windowRef){window.location.assign(url)}
+    // Same-tab navigation is dependable even when popups are blocked.
+    window.location.assign(url)
   });
 }
 $$('#quoteForm input, #quoteForm select, #quoteForm textarea').forEach(el=>
