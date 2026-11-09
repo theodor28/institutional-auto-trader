@@ -1,0 +1,60 @@
+<!doctype html><html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071119"><meta name="description" content="VEIL — O Limiar. Uma aventura cinematográfica alimentada por dados públicos reais BTC/USDT Binance, com enigmas, jornadas, guardiões e créditos 100% fictícios.">
+<title>VEIL — O Limiar · Jogue a história do mercado</title>
+<link rel="stylesheet" href="./style.css?v=2"></head>
+<body>
+<div class="application" id="app">
+<header class="header">
+ <button class="wordmark" id="home" aria-label="VEIL, iniciar nova jornada"><span class="crest">◈</span><span class="logo-label"><strong>VEIL</strong><small>O LIMIAR</small></span></button>
+ <div class="header-center"><span class="signal" id="signalLamp"></span><span id="liveStatus">SINTONIZANDO O ORÁCULO</span><span class="feedTag">BTC / USDT</span></div>
+ <div class="header-right"><div class="bank"><span>TESOURO DA JORNADA <i>· FICTÍCIO</i></span><strong><span class="bank-symbol">◈</span> <span id="wallet">10.000,00</span></strong></div><button class="round-button" id="audio" aria-label="Ligar ou desligar som"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"><path d="m11 5-5 4H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"/></svg></button><button class="round-button" id="menu" aria-label="Abrir o livro da jornada"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button></div>
+</header>
+<main class="stage">
+ <div class="cinematic" id="cinematic">
+  <canvas id="world" width="1536" height="864" aria-label="Personagem atravessando um desfiladeiro cinematográfico, sob um portal antigo"></canvas>
+  <div class="film-grain" aria-hidden="true"></div><div class="letter-top"></div><div class="letter-bottom"></div>
+  <div class="upper-hud">
+    <div><span class="chapter" id="chapter">ATO I / OS SUSSURROS</span><h1 id="realmTitle">A passagem das cinzas</h1></div>
+    <div class="upper-right"><div class="clock hidden" id="clock"><span>O PORTAL FECHA EM</span><strong id="clockNumber">01:06</strong></div><div class="risk-status hidden" id="riskStatus">Ventos calmos</div></div>
+  </div>
+  <div class="hero-chip hidden" id="heroChip"><span class="chip-icon">✦</span><div><strong>O VIAJANTE</strong><div class="chip-meter"><i id="shield"></i></div></div><span id="shieldPct">100%</span></div>
+  <div class="reward-floats" id="floats" aria-live="off"></div>
+  <div class="event-caption hidden" id="event"><span class="event-icon" id="eventIcon">◈</span><div><strong id="eventTitle">O VENTO MUDOU</strong><p id="eventBody">O caminho perdeu sua luz.</p></div></div>
+  <div class="cover" id="cover">
+   <div class="cover-inner"><span class="cover-kicker">UMA HISTÓRIA ESCRITA PELO MUNDO REAL</span><h2>Nem todo caminho<br><em>merece seus passos.</em></h2>
+   <p>Há quatro segredos sob as pedras. Observe o reino, interprete os sinais e atravesse apenas quando fizer sentido.</p>
+   <button id="begin" class="button main"><span>INICIAR JORNADA</span><span class="button-icon">↗</span></button>
+   <button id="look" class="text-button">Apenas contemplar o mundo <span>↗</span></button>
+   <small id="coverInfo">O oráculo está procurando as primeiras leituras...</small></div>
+  </div>
+  <div class="dialogue hidden" id="dialogue">
+   <div class="dialogue-top"><span class="speaker"><i></i> O ORÁCULO</span><div class="question-progress" id="pips"><span class="active"></span><span></span><span></span><span></span></div></div>
+   <h2 id="question">O que o reino tenta dizer?</h2><p id="questionHint">As pedras guardam um segredo.</p>
+   <div class="choices" id="choices"></div>
+   <div class="dialogue-foot"><span id="questionCount">SEGREDO 01 DE 04</span><button class="continue hidden" id="continue">CONTINUAR <span>↗</span></button></div>
+  </div>
+  <div class="journey-controls hidden" id="controls">
+    <div class="journey-info"><span id="pathLabel">O CAMINHO</span><strong id="pathStory">O viajante avança pelo desfiladeiro.</strong><small>Toque no cenário para lançar uma runa · Espaço: runa</small></div>
+    <div class="journey-actions"><button id="ward" class="subtle-action"><span>◈</span> PROTEGER <b id="wards">2</b></button><button id="retreat" class="subtle-action retreat">↶ RECUAR</button></div>
+  </div>
+  <div class="outcome hidden" id="outcome">
+   <span class="outcome-overline" id="outcomeOverline">CAPÍTULO ENCERRADO</span>
+   <h2 id="outcomeTitle">O reino se lembra.</h2>
+   <div class="outcome-value" id="outcomeValue">◈ +0,00</div>
+   <p id="outcomeDesc">Seu caminho foi registrado no diário.</p>
+   <div class="outcome-actions"><button id="again" class="button main">NOVA JORNADA <span class="button-icon">↗</span></button><button id="review" class="text-button">Abrir diário ↗</button></div>
+  </div>
+  <div class="scene-footer"><div id="sceneFooter">PRÓLOGO · AS RUÍNAS ADORMECIDAS</div><div class="scene-right"><span id="sceneHint">A HISTÓRIA MUDA EM TEMPO REAL</span><span class="icon-tiny">✦</span></div></div>
+ </div>
+</main>
+<footer class="footer">
+ <div class="footer-left"><span class="foot-mark">✦</span> UM JOGO DE ESTRATÉGIA SOBRE INCERTEZA <span class="foot-sep">/</span> NÃO HÁ DINHEIRO REAL, DEPÓSITOS OU ORDENS NA BINANCE</div>
+ <button id="how" class="footer-link">COMO FUNCIONA <span>↗</span></button>
+</footer>
+</div>
+<div class="modal hidden" id="modal"><section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal-head"><div><small>O LIVRO DO LIMIAR</small><h2 id="modalTitle">A história por trás do mundo</h2></div><button id="closeModal" aria-label="Fechar">✕</button></div>
+ <div id="modalContent"></div></section></div>
+<script src="./market.js?v=2" defer></script><script src="./game.js?v=2" defer></script>
+</body></html>
