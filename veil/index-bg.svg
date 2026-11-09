@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 864" width="1536" height="864">
+<defs>
+ <linearGradient id="sky" x1=".16" x2=".77" y1="0" y2="1">
+   <stop stop-color="#050d17"/><stop offset=".39" stop-color="#0c2033"/>
+   <stop offset=".74" stop-color="#233a4a"/><stop offset="1" stop-color="#a27a68"/>
+ </linearGradient>
+ <radialGradient id="sunset"><stop stop-color="#f7bb8d" stop-opacity=".57"/><stop offset=".5" stop-color="#ad806f" stop-opacity=".21"/><stop offset="1" stop-color="#edaf82" stop-opacity="0"/></radialGradient>
+ <radialGradient id="moonGlow"><stop stop-color="#d4edf2" stop-opacity=".39"/><stop offset=".4" stop-color="#84bac8" stop-opacity=".18"/><stop offset="1" stop-color="#6396ab" stop-opacity="0"/></radialGradient>
+ <linearGradient id="backMountain" x2="0" y2="1"><stop stop-color="#476070"/><stop offset=".3" stop-color="#1d3b4a"/><stop offset="1" stop-color="#0a1e2e"/></linearGradient>
+ <linearGradient id="midMountain" x2="0" y2="1"><stop stop-color="#243c4c"/><stop offset="1" stop-color="#061722"/></linearGradient>
+ <linearGradient id="nearLeft" x1="0" x2=".8" y1="0" y2="1"><stop stop-color="#1d3542"/><stop offset=".4" stop-color="#0d222e"/><stop offset="1" stop-color="#030b13"/></linearGradient>
+ <linearGradient id="nearRight" x1=".1" x2=".9" y1="0" y2="1"><stop stop-color="#081722"/><stop offset="1" stop-color="#040d14"/></linearGradient>
+ <linearGradient id="path" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#2c3b42"/><stop offset=".35" stop-color="#43535a"/><stop offset=".7" stop-color="#35454b"/><stop offset="1" stop-color="#0d1b23"/></linearGradient>
+ <linearGradient id="arch" x1=".1" x2=".95" y1="0" y2="1"><stop stop-color="#6e7776"/><stop offset=".32" stop-color="#394b53"/><stop offset="1" stop-color="#172a31"/></linearGradient>
+ <linearGradient id="archHighlight" x1="0" x2="1"><stop stop-color="#93a6a0" stop-opacity=".9"/><stop offset=".45" stop-color="#4a6163" stop-opacity=".5"/><stop offset="1" stop-color="#182c32" stop-opacity=".6"/></linearGradient>
+ <radialGradient id="threshold"><stop stop-color="#c8e6dc" stop-opacity=".76"/><stop offset=".35" stop-color="#7dd2bf" stop-opacity=".48"/><stop offset=".75" stop-color="#2b998f" stop-opacity=".22"/><stop offset="1" stop-color="#246a68" stop-opacity="0"/></radialGradient>
+ <linearGradient id="ground" x2="0" y2="1"><stop stop-color="#31414a"/><stop offset=".45" stop-color="#162833"/><stop offset="1" stop-color="#0b151c"/></linearGradient>
+ <radialGradient id="mist"><stop stop-color="#8db3ae" stop-opacity=".36"/><stop offset="1" stop-color="#7eaaad" stop-opacity="0"/></radialGradient>
+ <radialGradient id="torch"><stop stop-color="#f8aa6a" stop-opacity=".85"/><stop offset=".2" stop-color="#e8a16e" stop-opacity=".52"/><stop offset="1" stop-color="#fdaf86" stop-opacity="0"/></radialGradient>
+ <filter id="blur12" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter>
+ <filter id="blur32" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="32"/></filter>
+ <filter id="softLight" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="7"/></filter>
+ <filter id="stoneNoise" x="0" y="0" width="100%" height="100%">
+  <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="17" result="n"/>
+  <feColorMatrix in="n" type="saturate" values="0"/>
+  <feComponentTransfer><feFuncA type="linear" slope=".13"/></feComponentTransfer>
+ </filter>
+ <pattern id="cobbles" width="118" height="69" patternUnits="userSpaceOnUse">
+  <path d="M0 7Q32 3 60 6T118 8M0 54Q55 47 118 51M25 7V52M89 7V51M58 51V69" fill="none" stroke="#a9aa93" stroke-opacity=".15" stroke-width="3"/>
+  <path d="M4 14L17 13M69 13L81 15M28 59L42 57" stroke="#bcc6be" stroke-opacity=".08" stroke-width="4"/>
+ </pattern>
+</defs>
+<!-- Deep cinematic night, side-lit dusk -->
+<rect width="1536" height="864" fill="url(#sky)"/>
+<ellipse cx="1120" cy="416" rx="560" ry="370" fill="url(#sunset)"/>
+<ellipse cx="425" cy="230" rx="340" ry="300" fill="url(#moonGlow)"/>
+<circle cx="422" cy="184" r="62" fill="#b8ccd0" opacity=".64"/>
+<circle cx="431" cy="176" r="55" fill="#e1e7df" opacity=".24"/>
+<path d="M395 156q17-8 22 6t-12 19M431 209q10-5 18 6" stroke="#778e96" stroke-opacity=".4" stroke-width="4" fill="none"/>
+<!-- Debris and distant astronomy -->
+<g opacity=".6" fill="#dbece8">
+ <circle cx="76" cy="61" r="1.4"/><circle cx="167" cy="182" r="1.2"/><circle cx="282" cy="90" r="1.7"/>
+ <circle cx="580" cy="72" r=".9"/><circle cx="706" cy="107" r="1.4"/><circle cx="783" cy="193" r="1"/>
+ <circle cx="917" cy="62" r="1.3"/><circle cx="1124" cy="121" r="1.4"/><circle cx="1313" cy="67" r=".9"/>
+ <circle cx="1477" cy="187" r="1.5"/><circle cx="992" cy="248" r=".8"/><circle cx="1072" cy="45" r="1.1"/>
+ <circle cx="318" cy="309" r=".8"/><circle cx="621" cy="233" r="1.2"/><circle cx="1385" cy="275" r=".7"/>
+</g>
+<!-- layered mountains -->
+<path d="M0 489L90 335L152 416L247 259L344 409L458 309L551 436L645 245L752 392L840 288L971 430L1087 313L1184 410L1325 285L1455 422L1536 357V688H0Z" fill="#3a5365" opacity=".64"/>
+<path d="M0 499L90 335L152 416L247 259L344 409L458 309L551 436L645 245L752 392L840 288L971 430L1087 313L1184 410L1325 285L1455 422L1536 357" fill="none" stroke="#849c9d" stroke-width="3" stroke-opacity=".17"/>
+<path d="M0 574L88 428L175 507L279 378L379 508L496 413L593 539L701 371L803 485L904 367L1012 503L1154 368L1256 467L1420 338L1536 420V708H0Z" fill="url(#backMountain)"/>
+<path d="M0 596L106 465L177 557L283 410L384 559L479 453L585 574L688 426L810 550L902 397L1029 553L1179 435L1260 553L1426 387L1536 471V751H0Z" fill="url(#midMountain)"/>
+<path d="M0 616Q326 538 603 601T1179 584Q1339 571 1536 625" stroke="#b4d0bc" stroke-width="22" opacity=".24" filter="url(#blur32)" fill="none"/>
+<!-- river of fog below bridge -->
+<path d="M0 648Q280 573 512 629T1033 646Q1292 621 1536 572V864H0Z" fill="#0e2936"/>
+<path d="M0 705Q357 616 729 692T1536 673" stroke="#78aea9" stroke-width="46" opacity=".17" filter="url(#blur32)" fill="none"/>
+<path d="M0 762Q258 687 606 744T1536 730" stroke="#bad4c2" stroke-width="21" opacity=".10" filter="url(#blur32)" fill="none"/>
+<!-- left canyon wall -->
+<path d="M0 0H109L160 105L121 210L196 283L125 341L208 455L190 532L284 671L172 864H0Z" fill="url(#nearLeft)"/>
+<path d="M0 0H47L113 113L78 217L160 301L102 367L185 465" stroke="#6c8686" stroke-opacity=".18" stroke-width="9" fill="none"/>
+<path d="M0 310L73 311L98 394L65 451L124 539L81 632L172 864" fill="none" stroke="#476677" stroke-opacity=".27" stroke-width="15"/>
+<path d="M0 348L40 350L61 419L33 457L92 555L54 636" fill="none" stroke="#95a998" stroke-opacity=".11" stroke-width="8"/>
+<!-- right canyon wall -->
+<path d="M1536 0H1457L1424 117L1468 196L1384 295L1451 385L1360 497L1390 568L1315 655L1389 864H1536Z" fill="url(#nearRight)"/>
+<path d="M1536 58L1479 126L1503 196L1430 291L1482 370L1400 471" fill="none" stroke="#779b97" stroke-opacity=".23" stroke-width="7"/>
+<path d="M1536 463L1467 483L1420 557L1466 621L1413 693L1468 775" stroke="#416c77" stroke-opacity=".23" stroke-width="9" fill="none"/>
+<!-- ascending stone bridge/path, vanishing into the temple -->
+<path d="M0 864L360 679L715 526L894 490L1142 546L1536 864Z" fill="url(#path)" stroke="#576c6a" stroke-width="8"/>
+<path d="M0 864L360 679L715 526L894 490L1142 546L1536 864Z" fill="url(#cobbles)" opacity=".95"/>
+<path d="M170 864L472 687L740 546L892 511" stroke="#b4a69c" stroke-width="6" stroke-opacity=".3" fill="none"/>
+<path d="M1391 864L1118 592L943 525" stroke="#c2ae9a" stroke-width="6" stroke-opacity=".25" fill="none"/>
+<path d="M525 864L675 652L845 516" stroke="#a7c2b3" stroke-width="4" stroke-opacity=".16" fill="none"/>
+<path d="M1050 864L1013 649L920 522" stroke="#8ebfc4" stroke-width="5" stroke-opacity=".15" fill="none"/>
+<!-- ancient stone arch, realism with carved cutouts and warm side light -->
+<g transform="translate(896 223)">
+ <ellipse cx="5" cy="265" rx="243" ry="225" fill="url(#threshold)" opacity=".5" filter="url(#blur32)"/>
+ <path d="M-198 311V129Q-186-62 1-73Q190-61 204 131V311H116V131Q103 23 0 21Q-108 29-109 133V311Z" fill="#1b343e" stroke="#738c86" stroke-width="7"/>
+ <path d="M-186 306V130Q-170-50 1-63Q182-44 192 131V307" fill="none" stroke="url(#archHighlight)" stroke-width="20"/>
+ <path d="M-126 306V133Q-113 7 0 7Q120 14 131 134V307" fill="none" stroke="#091b27" stroke-width="22"/>
+ <path d="M-111 303V132Q-96 29 0 29Q98 36 112 132V305" fill="none" stroke="#90afa1" stroke-width="5" stroke-opacity=".5"/>
+ <!-- central illuminated gateway -->
+ <path d="M-108 301V134Q-105 43 0 40Q107 48 109 135V301Z" fill="#041d29"/>
+ <ellipse cx="0" cy="190" rx="110" ry="146" fill="url(#threshold)" opacity=".95"/>
+ <path d="M-90 295Q-67 215-24 180L0 164L24 179Q68 212 88 295Z" fill="#629e94" opacity=".14"/>
+ <path d="M0 60V290" stroke="#92ffda" stroke-width="2" opacity=".23"/>
+ <g fill="none" stroke="#7db7ab" opacity=".3" stroke-width="3">
+  <path d="M-173 126L-130 134M130 134L174 128M-180 215H-114M116 216H183M-161 294H-117M118 297H162"/>
+  <path d="M-170 95l39 14M129 107l40-12M-131 68l38 18M95 87l35-18"/>
+  <path d="M-64 -11l29 40M36 30l36-40"/>
+ </g>
+ <!-- carved keystone -->
+ <path d="M-18-75L18-75L27-10L0 10L-28-10Z" fill="#8b9a8d" opacity=".77"/>
+ <path d="M-10-39L10-39L15-18L0-7L-16-18Z" fill="#143c45"/>
+ <path d="M0-42L5-25L0-11L-5-25Z" fill="#89e7c0" opacity=".85"/>
+ <g stroke="#a6b8a3" stroke-opacity=".35" stroke-width="5">
+  <path d="M-200 310h95M115 310h97M-204 275h91M112 278h101"/>
+ </g>
+ <path d="M-220 312h121M104 312h124" stroke="#263e47" stroke-width="28"/>
+ <path d="M-213 298h115M104 299h118" stroke="#788c84" stroke-opacity=".6" stroke-width="6"/>
+ <path d="M-227 325h139M92 326h150" stroke="#142e36" stroke-width="23"/>
+</g>
+<!-- muted gold side torches -->
+<ellipse cx="713" cy="503" rx="117" ry="124" fill="url(#torch)" opacity=".55" filter="url(#blur32)"/>
+<ellipse cx="1074" cy="496" rx="115" ry="112" fill="url(#torch)" opacity=".45" filter="url(#blur32)"/>
+<g>
+ <path d="M700 514l7-93h12l8 93" fill="#1a343d" stroke="#596c67" stroke-width="5"/>
+ <path d="M1084 514l7-93h12l7 93" fill="#152e3b" stroke="#697b73" stroke-width="5"/>
+ <ellipse cx="716" cy="413" rx="10" ry="21" fill="#e9a473"/>
+ <ellipse cx="1098" cy="413" rx="10" ry="21" fill="#f0ac7a"/>
+ <path d="M716 431q-13-16 0-37q12 16 0 37M1098 430q-15-18 0-37q14 18 0 37" fill="#fff0b7" opacity=".7"/>
+</g>
+<!-- silhouetted pillars and foreground accent -->
+<path d="M170 864V670h42v194M1313 864V652h39v212" fill="#122732" stroke="#496572" stroke-width="5"/>
+<path d="M159 666h68v23h-68M1302 649h63v25h-63" fill="#344b54" stroke="#6d837f" stroke-width="4"/>
+<path d="M84 864l44-136 9 136M1407 864l44-127 13 127" fill="#091b24" stroke="#375f60" stroke-width="4"/>
+<path d="M242 861l-9-47 20-12 17 59M1370 861l12-63 21-16 16 79" fill="#0a1b23"/>
+<!-- fine cinematic fog layers and vignette -->
+<ellipse cx="895" cy="579" rx="594" ry="101" fill="url(#mist)" opacity=".67" filter="url(#blur32)"/>
+<ellipse cx="699" cy="756" rx="900" ry="118" fill="url(#mist)" opacity=".16" filter="url(#blur32)"/>
+<rect x="0" y="0" width="1536" height="864" opacity=".22" filter="url(#stoneNoise)" fill="#fff"/>
+</svg>
