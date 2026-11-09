@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js';
+import * as THREE from 'three';
 /* STEINER SKATE 3D — Original park, materials and character geometry. */
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const lerp=(a,b,t)=>a+(b-a)*t;
@@ -6,15 +6,16 @@ const smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
 const scene=new THREE.Scene();scene.background=new THREE.Color('#b0d0d9');
 scene.fog=new THREE.FogExp2('#a0b8c5',.0044);
 const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,600);
-const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+const lowPower=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || innerWidth < 780;
+const renderer=new THREE.WebGLRenderer({antialias:!lowPower,powerPreference:'high-performance',precision:'mediump'});
 renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,lowPower?1:1.35));
+renderer.shadowMap.enabled=!lowPower;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;
 document.getElementById('viewport').append(renderer.domElement);
 const sky=new THREE.HemisphereLight('#ebf6ff','#648a73',1.9);scene.add(sky);
 const sun=new THREE.DirectionalLight('#ffe2bb',3.2);sun.position.set(-93,135,41);
-sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
+sun.castShadow=!lowPower;sun.shadow.mapSize.set(1024,1024);
 sun.shadow.camera.left=-105;sun.shadow.camera.right=105;sun.shadow.camera.top=105;sun.shadow.camera.bottom=-105;
 sun.shadow.normalBias=.025;scene.add(sun);
 const mat=(color,rough=.8,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
@@ -65,7 +66,7 @@ const windows=makeTexture(256,512,(g,w,h)=>{
  }
 });
 const skylineMat=new THREE.MeshStandardMaterial({map:windows,roughness:.8});
-for(let i=0;i<58;i++){
+for(let i=0;i<40;i++){
  const a=i*Math.PI*2/58,r=119+i%6*5;
  const x=Math.cos(a)*r,z=Math.sin(a)*r,h=13+(i*47)%49,w=9+(i*11)%12;
  box(x,h/2,z,w,h,w,skylineMat);box(x,h+.2,z,w+.4,.4,w+.4,M.dark)
@@ -83,8 +84,8 @@ function sign(str,x,y,z,w=49,h=8,rotation=0){
 }
 box(0,5.4,-70,68,11,.9,M.dark);sign('STEINER SKATE',0,6,-69.5,62,9);
 sign('CONCRETE CITY',17,7,72,35,6,Math.PI);
-for(let i=0;i<26;i++){
- const x=-80+(i%13)*13,z=i<13?-65:65;
+for(let i=0;i<18;i++){
+ const x=-80+(i%9)*13,z=i<9?-65:65;
  const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(.68+(i%3)*.12);scene.add(g);
  box(0,2,0,.6,4,.6,M.wood,g);
  ball(0,5,0,2.4,M.green,g);ball(1.2,5.9,.6,2.0,mat('#63ac74'),g);ball(-.9,6,-.5,1.7,mat('#3d765e'),g)
