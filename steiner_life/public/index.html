@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c1629"><title>STEINER LIFE — Seu mundo começa aqui</title>
+<meta name="description" content="Explore um mundo social 3D, crie seu avatar, converse e construa. Jogo original e gratuito.">
+<link rel="stylesheet" href="/style.css"></head><body>
+<div id="shell">
+<div id="scene"><div id="loading"><div class="loader-dot">S</div><strong>STEINER LIFE</strong><span id="loadingMessage">Criando seu mundo 3D...</span></div></div>
+<header class="topbar">
+  <div class="wordmark"><div class="logo">S<span>✦</span></div><div><b>STEINER <em>LIFE</em></b><small>YOUR WORLD. YOUR STORY.</small></div></div>
+  <div class="top-nav">
+    <button class="pill active" data-place="plaza">◈ Praça Central</button>
+    <button class="pill" data-place="beach">☀ Praia</button>
+    <button class="pill" data-place="forest">♣ Floresta</button>
+    <button class="pill" data-place="club">♫ Balada</button>
+    <button class="pill" data-place="homes">⌂ Vila</button>
+  </div>
+  <div class="top-actions"><span id="connection" class="network"><i></i> Conectando</span><span class="coin">✦ <b id="coinCount">120</b></span><button id="helpBtn" class="round-btn" title="Ajuda">?</button><button id="photoBtn" class="round-btn" title="Tirar foto">▣</button></div>
+</header>
+<div class="left-panel glass">
+  <div class="status-label">VOCÊ ESTÁ EM</div><h2 id="zoneName">Praça Central</h2><p id="zoneDesc">Explore, converse e conheça o mundo.</p>
+  <div class="divider"></div>
+  <div class="status-label">NO MUNDO AGORA <span id="onlineCount" class="online-count">1</span></div>
+  <div id="people" class="people"><div class="hint">Carregando jogadores...</div></div>
+  <div class="divider"></div>
+  <div class="status-label">SEU AVATAR</div>
+  <div class="profile"><span class="avatar-dot" id="profileColor"></span><div><b id="profileName">Explorador</b><small id="profileLoc">Na praça</small></div><button id="editAvatar" title="Editar avatar">✎</button></div>
+  <button id="openBuild" class="side-cta">✦ Construir no mundo <span>＋</span></button>
+</div>
+<div class="right-panel glass">
+  <div class="chat-head"><div><b>CHAT DO MUNDO</b><small>Mensagens públicas em tempo real</small></div><button id="chatToggle" class="mini-btn" title="Mostrar ou esconder chat">–</button></div>
+  <div id="messages" class="messages"><div class="notice">Bem-vindo ao STEINER LIFE. Converse com pessoas reais que estiverem conectadas. Não compartilhe informações pessoais.</div></div>
+  <form id="chatForm" class="chat-form"><input id="chatInput" maxlength="240" placeholder="Escreva sua mensagem..." autocomplete="off" aria-label="Mensagem de chat"><button type="submit" title="Enviar">➤</button></form>
+  <div class="chat-tip">Enter para conversar · Clique num jogador para mensagem privada</div>
+</div>
+<div class="bottom-bar glass"><div class="controls"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Andar</span><span><kbd>SHIFT</kbd> Correr</span><span><kbd>SPACE</kbd> Pular</span><span>🖱 Arraste para girar câmera</span></div>
+<div class="actions"><button data-emote="wave">👋 Acenar</button><button data-emote="dance">♫ Dançar</button><button data-emote="sit">▾ Sentar</button><button data-emote="cheer">★ Celebrar</button></div></div>
+<div id="mobileControls"><div class="dpad"><button id="up" aria-label="Frente">▲</button><div><button id="left" aria-label="Esquerda">◀</button><button id="down" aria-label="Trás">▼</button><button id="right" aria-label="Direita">▶</button></div></div><div class="mobile-right"><button id="jump" aria-label="Pular">PULAR</button><button id="mobileChat" aria-label="Abrir chat">CHAT</button></div></div>
+<div id="toasts" aria-live="polite"></div>
+<div id="welcome" class="backdrop">
+  <div class="welcome-card">
+    <div class="welcome-title"><div class="logo big">S<span>✦</span></div><small>UM NOVO MUNDO ESPERA POR VOCÊ</small><h1>Bem-vindo ao <em>STEINER LIFE</em></h1><p>Crie seu personagem, explore uma cidade 3D e encontre outros jogadores. Gratuito, direto no navegador.</p></div>
+    <div class="welcome-fields"><label>COMO VOCÊ QUER SER CHAMADO?<input id="playerName" maxlength="20" placeholder="Seu apelido" autocomplete="nickname"></label>
+    <label>COR DO AVATAR</label><div class="swatches" id="swatches"><button class="selected" data-color="#61c6f7" style="--dot:#61c6f7" title="Azul"></button><button data-color="#ed8cce" style="--dot:#ed8cce" title="Rosa"></button><button data-color="#80d99e" style="--dot:#80d99e" title="Verde"></button><button data-color="#ffc27c" style="--dot:#ffc27c" title="Laranja"></button><button data-color="#b8a0ff" style="--dot:#b8a0ff" title="Lilás"></button><button data-color="#f0eee5" style="--dot:#f0eee5" title="Branco"></button></div>
+    <div class="welcome-options"><label>CABELO<select id="hairSelect"><option value="0">Curto</option><option value="1">Longo</option><option value="2">Cacheado</option><option value="3">Moderno</option><option value="4">Raspado</option><option value="5">Topete</option></select></label><label>ROUPA<select id="outfitSelect"><option value="0">Casual</option><option value="1">Esportivo</option><option value="2">Elegante</option><option value="3">Festa</option><option value="4">Futurista</option></select></label></div>
+    <button id="enterWorld" class="join-btn">ENTRAR NO MUNDO <span>↗</span></button><p id="joinError" class="error"></p><p class="privacy">Mundo social público: não compartilhe dados pessoais. As conversas são visíveis aos participantes. Não há verificação de identidade ou moderação permanente.</p></div>
+  </div>
+</div>
+<div id="buildModal" class="modal-backdrop hidden"><div class="modal glass"><button class="close" data-close="buildModal">✕</button><small>CRIAR E PERSONALIZAR</small><h2>Construa seu espaço</h2><p>Escolha um objeto. Ele será criado alguns passos à sua frente e poderá ser visto por outros jogadores.</p><div class="build-grid"><button data-build="house"><span>⌂</span><b>Casa</b><small>Lar virtual</small></button><button data-build="tree"><span>♣</span><b>Árvore</b><small>Natureza</small></button><button data-build="bench"><span>▤</span><b>Banco</b><small>Encontro</small></button><button data-build="art"><span>✦</span><b>Escultura</b><small>Arte pública</small></button><button data-build="lamp"><span>♧</span><b>Poste</b><small>Iluminação</small></button><button data-build="garden"><span>❀</span><b>Jardim</b><small>Flores</small></button></div><div class="footnote">Até 12 objetos por visitante nesta sessão. Mudanças compartilhadas podem ser perdidas em reinicializações do servidor gratuito.</div></div></div>
+<div id="helpModal" class="modal-backdrop hidden"><div class="modal glass"><button class="close" data-close="helpModal">✕</button><small>GUIA DO MUNDO</small><h2>Explore do seu jeito</h2><p>Mova-se com WASD ou as setas. Segure Shift para correr, espaço para pular e arraste a tela para girar a câmera. Visite a praia, floresta, balada e vila pelo menu superior.</p><p>Converse no chat, envie mensagens privadas clicando no nome de alguém, personalize o avatar e construa objetos. Pessoas reais aparecem quando entram no mesmo mundo.</p><div class="footnote">Protótipo 3D original: sem economia com dinheiro real, voz, sistema de contas verificadas ou inventário permanente. Requer navegador com WebGL e internet.</div></div></div>
+<div id="dmModal" class="modal-backdrop hidden"><div class="modal glass"><button class="close" data-close="dmModal">✕</button><small>CONVERSA PRIVADA NESTA SESSÃO</small><h2 id="dmName">Mensagem privada</h2><form id="dmForm"><input id="dmInput" maxlength="220" placeholder="Digite sua mensagem..." required><button class="join-btn" type="submit">ENVIAR ➤</button></form></div></div>
+</div><script type="module" src="/app.js"></script></body></html>
