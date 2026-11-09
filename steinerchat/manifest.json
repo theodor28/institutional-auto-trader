@@ -1,0 +1,11 @@
+{
+  "name": "STEINER Conecta",
+  "short_name": "Conecta",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#0d6458",
+  "background_color": "#e9f0ed",
+  "description": "Conversa privada por convite entre dois dispositivos",
+  "icons": []
+}
