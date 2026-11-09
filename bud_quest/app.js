@@ -167,9 +167,9 @@ function hasGround(x){
 function jump(){
  if(s.mode!=='playing')return;
  if(p.grounded){
-  p.vy=-635;p.grounded=false;p.jumpCount=1;tone(420,.11)
+  p.vy=-705;p.grounded=false;p.jumpCount=1;tone(420,.11)
  }else if(s.hasDouble&&p.jumpCount<2){
-  p.vy=-580;p.jumpCount++;splash(p.x,p.y,'#bafca7',10);tone(650,.11)
+  p.vy=-655;p.jumpCount++;splash(p.x,p.y,'#bafca7',10);tone(650,.11)
  }
 }
 function puff(){
