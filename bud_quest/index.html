@@ -1,53 +1,153 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>BUD QUEST — Missão Verde | Jogue grátis</title>
-<meta name="theme-color" content="#061b1b"><meta name="description" content="Jogo arcade original de aventura: colete buds mágicos, complete missões, explore a ilha e fuja dos fiscais da vibe.">
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BUD QUEST: Dreadland — Aventura de Plataforma</title>
+<meta name="theme-color" content="#0b1322">
+<meta name="description" content="BUD QUEST Dreadland: aventura original de plataforma com personagem de dreadlocks, buds colecionáveis, plantações, fases, música e missões. Jogue grátis.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
-:root{--dark:#081a1c;--panel:#0e2929;--edge:#2d5c55;--green:#88ed94;--lime:#cefa65;--gold:#ffda71;--text:#e9f5e6;--muted:#96bdb5}
-*{box-sizing:border-box}html{min-height:100%;background:var(--dark)}body{margin:0;color:var(--text);background:radial-gradient(ellipse at 18% -17%,#244b38 0,transparent 45%),radial-gradient(ellipse at 90% 30%,#174338 0,transparent 43%),#07191b;font-family:Outfit,system-ui,-apple-system,Segoe UI,sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
-.app{width:min(1450px,100%);margin:0 auto;padding:18px clamp(10px,2.5vw,30px) 22px}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:17px}.brand{display:flex;align-items:center;gap:12px}.mark{height:51px;width:51px;border:2px solid #a6f18d;border-radius:17px;background:linear-gradient(155deg,#164f35,#0f3b38);font-size:26px;display:grid;place-items:center;box-shadow:0 4px 28px #72df813e;transform:rotate(-5deg)}.brand h1{font-weight:900;letter-spacing:-1.3px;font-size:27px;line-height:1;margin:0}.brand h1 em{font-style:normal;color:var(--lime)}.brand small{display:block;color:#80af9a;font-size:9px;font-weight:900;letter-spacing:2.2px;margin-top:7px}.top-right{display:flex;gap:9px;align-items:center}.tag{padding:8px 12px;background:#112e2e;border:1px solid #315d51;border-radius:9px;color:#bce5cc;font-weight:800;font-size:11px}.tag.n{color:#fbe18c}.top-btn{border-radius:9px;padding:9px 13px;border:1px solid #496960;color:#e5f8e7;background:#153737;font-size:12px;font-weight:850}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 286px;gap:17px;align-items:start}
-.frame{position:relative;overflow:hidden;border:2px solid #4f8470;border-radius:17px;background:#081f1f;box-shadow:0 19px 45px #0007,0 0 0 5px #13332f}.canvas-wrap{position:relative;width:100%;aspect-ratio:960/610;background:linear-gradient(#92dcc5,#376c59)}canvas{display:block;width:100%;height:100%;touch-action:none;image-rendering:auto}
-.canvas-head{position:absolute;z-index:3;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}.glass{background:#092728dd;border:1px solid #7cd5a85b;box-shadow:0 4px 16px #07140d67;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.canvas-chip{font-family:'Space Mono',monospace;border-radius:10px;padding:10px 13px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:10px}.canvas-chip b{font-size:14px;color:var(--lime)}.hearts{color:#ff8b98;letter-spacing:1.5px;font-size:18px}.world-toast{position:absolute;z-index:5;left:50%;top:83px;transform:translateX(-50%);background:#0f3534ee;border:1px solid #83f6b2;color:#f0fff2;border-radius:999px;padding:10px 19px;text-align:center;font-weight:850;box-shadow:0 8px 25px #081e1b99;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}.world-toast.show{opacity:1}
-.action-prompt{position:absolute;z-index:5;bottom:17px;left:50%;transform:translateX(-50%);background:#092c2bed;color:#e8fff6;border:1px solid #a2ecc7;border-radius:10px;padding:9px 13px;font-size:12px;font-weight:700;white-space:nowrap;max-width:95%;overflow:hidden;text-overflow:ellipsis;pointer-events:none;display:none}.action-prompt.show{display:block}.action-prompt kbd{background:#d2ffad;color:#15372a;padding:2px 6px;border-radius:5px;font-weight:900}
-.overlay{position:absolute;z-index:8;inset:0;display:grid;place-items:center;background:#071a1de9;backdrop-filter:blur(8px);padding:20px;text-align:center}.overlay.hidden{display:none}.overlay-card{width:min(480px,96%);padding:24px 23px;background:radial-gradient(ellipse at 50% -25%,#306648,#0d2a29 68%);border:2px solid #6cc28d;border-radius:22px;box-shadow:0 24px 75px #000b}.poster{font-size:62px;line-height:1.12;filter:drop-shadow(0 9px 18px #0006)}.eyebrow{font-family:'Space Mono',monospace;color:#a8efb9;font-size:10px;letter-spacing:2.4px;font-weight:700;margin-top:12px}.overlay h2{font-size:43px;line-height:1.02;margin:10px 0 5px;letter-spacing:-1.5px;color:#f2ffe9;text-shadow:0 2px 0 #23734c}.overlay h2 span{color:var(--lime)}.overlay p{line-height:1.65;font-size:13px;color:#b6d9bd;max-width:400px;margin:12px auto 23px}.hero-btn{background:linear-gradient(115deg,#cafa6d,#69dd8e);border:0;border-radius:12px;color:#15352d;padding:15px 22px;font-weight:950;letter-spacing:1px;width:100%;font-size:15px;box-shadow:0 5px 0 #27694e}.hero-btn:active{transform:translateY(4px);box-shadow:0 1px 0 #27694e}.overlay .micro{color:#8db09f;font-size:10px;margin:14px auto 0}
-.deck{display:grid;gap:13px}.card{background:linear-gradient(150deg,#102d2b,#0a2525);border:1px solid #366859;border-radius:15px;padding:17px;box-shadow:0 10px 26px #0003}.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#8cceab;font-size:10px;letter-spacing:1.7px;font-weight:950;font-family:'Space Mono',monospace}.mission-icon{font-size:24px}.mission-title{font-size:19px;font-weight:900;margin:13px 0 5px;line-height:1.2}.mission-desc{font-size:12px;color:#a4cbb4;line-height:1.55;margin:0 0 16px}.progress-meta{font-size:11px;color:#c4eccb;font-weight:800;display:flex;justify-content:space-between;margin-bottom:7px}.progress{height:10px;background:#21483f;border-radius:20px;overflow:hidden;border:1px solid #396a56}.progress i{height:100%;width:0;display:block;background:linear-gradient(90deg,#68dba0,#d2fb61);border-radius:20px;transition:width .2s}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat{background:#09211f;border:1px solid #2d5148;border-radius:11px;padding:12px}.stat small{font-size:9px;letter-spacing:1.3px;font-weight:850;color:#86b79c;display:block}.stat b{font-size:22px;font-family:'Space Mono',monospace;color:#f3ffeb;display:block;margin-top:4px}.stat.gold b{color:var(--gold)}
-.shop{display:grid;gap:8px;margin-top:13px}.shop button{display:flex;align-items:center;gap:11px;text-align:left;border:1px solid #34564e;background:#13372f;border-radius:10px;color:#e6fbe9;padding:11px;transition:background .15s}.shop button:hover{background:#1d4d39}.shop button:disabled{opacity:.43}.shop button .emoji{font-size:23px;min-width:27px}.shop button .name{flex:1;font-size:11px;font-weight:850}.shop button .sub{display:block;font-weight:500;font-size:10px;color:#9fcbb0}.shop button .price{color:#ffda74;font-size:12px;font-weight:900}
-.controls-help{display:grid;gap:9px;color:#a9d2bd;font-size:11px}.controls-help b{color:#f6ffec}.controls-help kbd{display:inline-block;background:#1f5245;border:1px solid #5b9475;border-radius:5px;padding:2px 6px;color:#f2ffe8;font:700 11px 'Space Mono',monospace}
-.toolbar{margin-top:11px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.toolbar .hint{font-size:11px;color:#83ad9b}.toolbar .hint b{color:#d9f4d4}.toolbar-actions{display:flex;gap:8px}.toolbar-actions button{background:#173b35;border:1px solid #3f7662;border-radius:9px;color:#d5f9dc;padding:9px 13px;font-size:11px;font-weight:850}
-.mobile{display:none;gap:12px;justify-content:space-between;padding:12px 4px}.arrows{display:grid;grid-template-columns:repeat(3,53px);grid-template-rows:repeat(2,48px);gap:7px}.arrows button,.mobile-actions button{touch-action:none;user-select:none;-webkit-user-select:none;background:#255443b6;border:2px solid #78c999;color:white;border-radius:12px;font-size:20px;font-weight:900}.arrows button:active,.mobile-actions button:active,.arrows button.down,.mobile-actions button.down{background:#4fb97b}.arrows .up{grid-column:2}.arrows .left{grid-column:1;grid-row:2}.arrows .downkey{grid-column:2;grid-row:2}.arrows .right{grid-column:3;grid-row:2}.mobile-actions{display:flex;align-items:end;gap:10px}.mobile-actions button{font-size:12px;padding:15px 12px;min-height:48px}.mobile-actions .run{background:#386b53}.mobile-actions .act{background:#9fea79;color:#183d30}
-.footer{text-align:center;margin-top:20px;font-size:10px;line-height:1.6;color:#648d81}.footer b{color:#96c1a4}
-@media(max-width:1150px){.layout{grid-template-columns:minmax(0,1fr) 250px}.card{padding:13px}.brand h1{font-size:24px}.mission-title{font-size:17px}.overlay h2{font-size:36px}}
-@media(max-width:820px){.layout{grid-template-columns:1fr}.deck{grid-template-columns:1fr 1fr}.deck .card:last-child{grid-column:1/-1}.mobile{display:flex}.controls-help{grid-template-columns:1fr 1fr}.toolbar{margin-top:5px}.canvas-head{top:8px;left:8px;right:8px}.canvas-chip{padding:6px 8px;font-size:9px}.canvas-chip b{font-size:11px}.top{margin-bottom:12px}.frame{border-radius:11px}}
-@media(max-width:510px){.app{padding:10px 8px}.top-right{width:100%}.brand h1{font-size:21px}.mark{height:44px;width:44px;font-size:22px;border-radius:13px}.tag{font-size:10px}.layout{gap:12px}.deck{grid-template-columns:1fr 1fr;gap:9px}.deck .card:first-child{grid-column:1/-1}.deck .card:nth-child(2){grid-column:1/-1}.card{padding:12px}.card-head{font-size:9px}.stats{grid-template-columns:repeat(4,1fr)}.stat{padding:8px}.stat small{font-size:8px}.stat b{font-size:16px}.deck .card:last-child{grid-column:1/-1}.canvas-wrap{aspect-ratio:960/700}.arrows{grid-template-columns:repeat(3,49px);grid-template-rows:repeat(2,47px);gap:6px}.mobile-actions button{padding:13px 9px}.overlay-card{padding:19px}.overlay h2{font-size:33px}.poster{font-size:45px}.overlay p{font-size:11px;margin:9px auto 16px}.hero-btn{padding:12px}.toolbar .hint{font-size:10px}.world-toast{top:58px;font-size:10px}.canvas-chip{font-size:9px}}
+:root{--ink:#071323;--panel:#101f36;--edge:#35546c;--cream:#f8f5e8;--lime:#caff66;--aqua:#73efd8;--muted:#9bb0c4;--orange:#ffc06a}
+*{box-sizing:border-box}
+html{background:var(--ink);min-height:100%}
+body{margin:0;background:radial-gradient(ellipse at 15% -15%,#184a3e 0,transparent 42%),radial-gradient(ellipse at 86% 20%,#272f60 0,transparent 40%),#071323;min-height:100vh;color:var(--cream);font:500 14px/1.5 Outfit,system-ui,sans-serif}
+button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #dafa73;outline-offset:3px}
+.shell{width:min(1470px,100%);padding:16px clamp(9px,2vw,25px) 28px;margin:auto}
+.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.logomark{height:49px;width:49px;display:grid;place-items:center;background:linear-gradient(145deg,#1c8657,#2c6a8c);border:2px solid #9cf2a6;box-shadow:0 0 22px #57eda03a;border-radius:14px;font-size:27px;transform:rotate(-5deg)}
+.brand h1{font-weight:900;font-size:26px;line-height:1;letter-spacing:-1.1px;margin:0}
+.brand h1 em{font-style:normal;color:var(--lime)}
+.brand small{display:block;color:#9bbfb8;font:700 9px 'Space Mono',monospace;letter-spacing:1.5px;margin-top:7px}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chip,.header-right button{border:1px solid #3b625e;background:#122c3b;padding:8px 11px;border-radius:9px;font-size:11px;font-weight:850;color:#d4f3e1;white-space:nowrap}
+.header-right .live{color:#caff66}
+.container{display:grid;grid-template-columns:minmax(0,1fr) 293px;gap:15px;align-items:start}
+.game-panel{background:#17263c;border:2px solid #507a77;border-radius:17px;overflow:hidden;box-shadow:0 22px 65px #0009,0 0 0 4px #123a3e}
+.game-area{width:100%;aspect-ratio:960/560;min-height:0;position:relative;background:#4a91a6}
+#game{display:block;width:100%;height:100%;touch-action:none}
+.top-hud{position:absolute;top:12px;left:12px;right:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;pointer-events:none}
+.hud-pill{background:#0a2031e0;backdrop-filter:blur(8px);border:1px solid #a1dbb76f;border-radius:11px;box-shadow:0 6px 16px #0019;padding:8px 12px;font:900 11px 'Space Mono',monospace;display:flex;align-items:center;gap:9px;white-space:nowrap}
+.hud-pill b{font-size:16px;color:var(--lime)}.hud-pill .lives{color:#ff8189;font-size:18px;letter-spacing:2px}
+.level-label{position:absolute;top:58px;left:12px;background:#072a32b8;color:#ebfbef;border-radius:8px;font-size:10px;letter-spacing:1px;font-weight:800;padding:6px 10px;pointer-events:none}
+#notice{position:absolute;top:100px;left:50%;transform:translateX(-50%) translateY(-5px);background:#0c2a36eb;border:1px solid #b4edba;color:#f4fff1;padding:10px 16px;border-radius:10px;opacity:0;transition:opacity .2s,transform .2s;font-weight:850;text-align:center;z-index:5;font-size:12px;max-width:94%;pointer-events:none;box-shadow:0 10px 27px #0008}
+#notice.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+.prompt{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:#102c31eb;padding:8px 15px;border-radius:9px;color:#e8ffef;border:1px solid #98dbb4;display:none;font-size:12px;font-weight:800;white-space:nowrap;z-index:3}
+.prompt.visible{display:block}.prompt kbd{font:800 12px 'Space Mono',monospace;background:var(--lime);color:#173529;padding:3px 7px;border-radius:5px}
+.overlay{position:absolute;z-index:7;inset:0;display:grid;place-items:center;background:#07162de5;backdrop-filter:blur(10px);padding:15px;text-align:center}
+.overlay.hidden{display:none}.overlay-card{width:min(440px,96%);max-height:100%;overflow:auto;border:2px solid #74bb9d;background:radial-gradient(ellipse at 40% -20%,#315348,#0b2431 67%);border-radius:19px;box-shadow:0 24px 80px #000c;padding:24px 20px}
+.overlay-illustration{font-size:43px;line-height:1.3;filter:drop-shadow(0 8px 14px #0008)}
+.kicker{font:800 9px 'Space Mono',monospace;color:#a4f1b5;letter-spacing:2px;margin-top:8px}
+.overlay h2{font-size:33px;letter-spacing:-1.1px;font-weight:900;line-height:1.06;margin:10px 0;color:#f5ffe5}
+.overlay h2 em{color:var(--lime);font-style:normal}
+.overlay p{font-size:12px;line-height:1.65;color:#c3d8d1;max-width:355px;margin:11px auto 18px}
+.primary{width:100%;background:linear-gradient(105deg,#dafa62,#71e3a2);color:#15372b;border:0;border-radius:11px;padding:14px 13px;font-size:13px;font-weight:950;letter-spacing:.5px;box-shadow:0 5px 0 #22664c}
+.primary:active{transform:translateY(4px);box-shadow:0 1px 0 #22664c}
+.small{color:#88a4a6;font-size:9px;margin:12px 0 0}
+.sidebar{display:grid;gap:12px}
+.card{border:1px solid #3b5f6f;background:linear-gradient(135deg,#13283a,#0d2530);box-shadow:0 10px 26px #0003;border-radius:13px;padding:17px}
+.card-h{font:800 10px 'Space Mono',monospace;letter-spacing:1.1px;color:#a6d8bf;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-h span{font-size:18px}
+.mission-title{font-size:18px;font-weight:900;line-height:1.2;margin:11px 0 5px}
+.mission-copy{font-size:12px;color:#b4cccf;line-height:1.55;min-height:37px;margin:0 0 13px}
+.mission-meta{display:flex;justify-content:space-between;color:#ceeed5;font-size:11px;font-weight:750;margin-bottom:6px}
+.progress{height:10px;background:#203b47;border-radius:12px;overflow:hidden}.progress>i{display:block;background:linear-gradient(90deg,#71dda3,#ccfa6c);height:100%;width:0;transition:width .2s}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{background:#0b2030;border:1px solid #304e5b;border-radius:9px;padding:11px}
+.stat small{font-size:9px;letter-spacing:1px;color:#92bac1;display:block;font-weight:850}
+.stat b{font:800 22px 'Space Mono',monospace;color:#f1fff1;display:block;margin-top:3px}
+.stat .gold{color:#ffe28c}
+.shop{display:grid;gap:8px;margin-top:11px}
+.shop button{background:#16343b;border:1px solid #396665;border-radius:10px;display:flex;align-items:center;gap:9px;color:#e7fff0;text-align:left;padding:10px 9px}
+.shop button:hover{background:#1d4d4e}.shop button:disabled{opacity:.46}
+.shop .ico{font-size:24px;min-width:27px}.shop .copy{flex:1;min-width:0;font-weight:850;font-size:11px}.shop .copy small{display:block;font-size:10px;font-weight:500;color:#94b9b9}.shop .cost{font-size:11px;color:#ffdd7f;font-weight:850}
+.tips{color:#b8d2d1;font-size:11px;display:grid;gap:7px}.tips kbd{font:800 10px 'Space Mono',monospace;padding:3px 5px;border-radius:5px;background:#24495c;color:#eff9ef;border:1px solid #4f747b}
+.controls{display:flex;justify-content:space-between;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 2px 0}
+.controls .help{font-size:11px;color:#a8c4c5}
+.controls .buttons{display:flex;gap:7px}
+.controls button{background:#163842;color:#e5fff0;border:1px solid #4f7880;padding:8px 10px;border-radius:8px;font-size:11px;font-weight:800}
+.mobile{display:none;justify-content:space-between;align-items:end;margin-top:11px;gap:10px}
+.mobile .move,.mobile .actions{display:flex;align-items:center;gap:8px}
+.mobile button{touch-action:none;user-select:none;-webkit-user-select:none;border-radius:12px;padding:10px 12px;min-width:60px;min-height:60px;border:2px solid #9ddebc;background:#1b5147b8;color:#e9fff3;font-size:23px;font-weight:900}
+.mobile button.pressed{background:#397b61}
+.mobile .actions button{min-width:68px;font-size:11px;background:#39778c}
+.mobile .actions .jump{background:#97e26b;color:#1b4033;border-color:#d8ffa0}
+footer{text-align:center;color:#7ea5a8;font-size:10px;line-height:1.6;margin-top:17px}
+footer b{color:#c5e3c9}
+@media(max-width:1130px){.container{grid-template-columns:minmax(0,1fr) 258px}.card{padding:13px}.mission-title{font-size:16px}}
+@media(max-width:850px){.container{grid-template-columns:1fr}.sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar .card:last-child{grid-column:1/-1}.mobile{display:flex}.game-area{aspect-ratio:960/540}}
+@media(max-width:530px){.shell{padding:10px 8px 17px}.top{margin-bottom:10px}.brand h1{font-size:21px}.brand small{font-size:8px}.logomark{height:43px;width:43px;font-size:23px}.header-right{width:100%}.chip,.header-right button{padding:6px 9px;font-size:10px}
+.game-area{aspect-ratio:960/650}.top-hud{top:7px;left:7px;right:7px}.hud-pill{font-size:8px;padding:6px 8px;gap:4px}.hud-pill b{font-size:11px}.hud-pill .lives{font-size:13px;letter-spacing:0}.level-label{top:41px;left:7px;font-size:9px;padding:4px 7px}
+.overlay-card{padding:15px}.overlay-illustration{font-size:35px}.overlay h2{font-size:28px}.overlay p{font-size:11px;margin:8px auto 13px}.primary{padding:11px}.overlay .small{font-size:8px}
+.mobile button{min-width:49px;min-height:51px;padding:8px}.mobile .actions{gap:6px}.mobile .actions button{min-width:60px}.controls .help{font-size:9px}
+.sidebar{gap:9px}.card{padding:11px}.card-h{font-size:9px}.mission-title{font-size:15px}.stat b{font-size:18px}.stat{padding:8px}.shop button{padding:7px 5px}.shop .copy{font-size:10px}.shop .copy small{font-size:9px}}
 </style></head>
-<body><div class="app">
-<header class="top"><div class="brand"><div class="mark">🌿</div><div><h1>BUD <em>QUEST</em></h1><small>MISSÃO VERDE · ARCADE ADVENTURE</small></div></div><div class="top-right"><span class="tag">🎮 JOGO ORIGINAL</span><span class="tag n">★ GRÁTIS</span><button class="top-btn" id="audioBtn">♫ SOM: ON</button></div></header>
-<div class="layout"><div class="main">
-<div class="frame"><div class="canvas-wrap"><canvas id="game" width="960" height="610" aria-label="Mundo do Bud Quest"></canvas>
-<div class="canvas-head"><span class="canvas-chip glass">💚 <span id="hearts" class="hearts">♥ ♥ ♥</span></span><span class="canvas-chip glass">🌿 BUDS <b id="hudBuds">0</b> <span>•</span> ★ <b id="hudLevel">1</b></span></div>
-<div class="world-toast" id="toast" role="status" aria-live="polite"></div><div class="action-prompt" id="prompt"><kbd>E</kbd> <span id="promptText">Conversar</span></div>
-<div class="overlay" id="overlay"><div class="overlay-card"><div class="poster" id="poster">🌿🎮✨</div><div class="eyebrow">UMA AVENTURA NO MUNDO VERDE</div><h2 id="overlayTitle">BUD <span>QUEST</span></h2>
-<p id="overlayDesc">Encontre buds mágicos, complete missões dos moradores, descubra novas regiões e fuja dos <b>Fiscais da Vibe</b>. Uma ilha cheia de segredos para explorar!</p>
-<button class="hero-btn" id="startBtn">▶ COMEÇAR A AVENTURA</button><p class="micro">WASD ou setas para andar • E para conversar • Shift para correr</p></div></div>
-</div></div>
-<div class="mobile"><div class="arrows"><button class="up" data-hold="up">▲</button><button class="left" data-hold="left">◀</button><button class="downkey" data-hold="down">▼</button><button class="right" data-hold="right">▶</button></div><div class="mobile-actions"><button class="run" data-hold="run">⚡ CORRER</button><button class="act" id="touchAction">✦ AÇÃO</button></div></div>
-<div class="toolbar"><div class="hint"><b>CONTROLES:</b> <span>WASD / ← ↑ ↓ →</span> andar · <span>E</span> interagir · <span>ESPAÇO</span> impulso · <span>P</span> pausar</div><div class="toolbar-actions"><button id="pauseBtn">⏸ PAUSA</button><button id="mapBtn">🗺 MAPA</button><button id="restartBtn">↻ REINICIAR</button></div></div>
+<body>
+<div class="shell">
+ <header class="top">
+  <div class="brand"><div class="logomark">🌿</div><div><h1>BUD QUEST <em>DREADLAND</em></h1><small>PLATAFORMA · REGGAE · AVENTURA</small></div></div>
+  <div class="header-right"><span class="chip live">● JOGUE GRÁTIS</span><span class="chip">🎮 4 FASES</span><button id="soundBtn">♫ SOM: ON</button></div>
+ </header>
+ <div class="container">
+  <div>
+   <div class="game-panel">
+    <div class="game-area">
+     <canvas id="game" width="960" height="560" aria-label="Bud Quest Dreadland, jogo de plataforma"></canvas>
+     <div class="top-hud"><div class="hud-pill">VIDAS <span class="lives" id="hearts">♥♥♥</span></div><div class="hud-pill">🌿 BUDS <b id="hudBuds">0</b> <span>💰</span><b id="hudCoins">0</b></div><div class="hud-pill">FASE <b id="hudStage">1/4</b></div></div>
+     <div class="level-label" id="stageName">VILA DO GROOVE</div>
+     <div id="notice" role="status" aria-live="polite"></div>
+     <div class="prompt" id="prompt"><kbd>E</kbd> Conversar</div>
+     <div class="overlay" id="overlay">
+      <div class="overlay-card">
+       <div class="overlay-illustration" id="poster">🌿🎧🎮</div>
+       <div class="kicker">UMA AVENTURA ORIGINAL EM PLATAFORMA</div>
+       <h2 id="ovTitle">BUD QUEST <em>DREADLAND</em></h2>
+       <p id="ovText">Conheça <b>Jahzin</b>, nosso herói de dreadlocks. Salte entre plantações, cate buds detalhados, enfrente a Patrulha da Seca, faça missões e curta o Festival da Lua. Tem animação de fumaça, música, upgrades e quatro fases!</p>
+       <button class="primary" id="mainBtn">▶ COMEÇAR A JOGAR</button>
+       <p class="small">Setas ou A/D para andar · Espaço para pular · F para soltar fumaça · E para conversar</p>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="mobile" aria-label="Controles para celular">
+    <div class="move"><button data-hold="left" aria-label="Andar para esquerda">◀</button><button data-hold="right" aria-label="Andar para direita">▶</button></div>
+    <div class="actions"><button data-action="smoke" aria-label="Fumaça">💨<span style="display:block;font-size:9px">FUMAÇA</span></button><button data-action="interact" aria-label="Conversar">✦<span style="display:block;font-size:9px">AÇÃO</span></button><button class="jump" data-hold="jump" aria-label="Pular">↑<span style="display:block;font-size:9px">PULAR</span></button></div>
+   </div>
+   <div class="controls"><span class="help"><b>CONTROLES:</b> A/D ou ← → mover · Espaço pular · Shift correr · F fumaça · E falar · P pausar</span>
+    <div class="buttons"><button id="pauseBtn">⏸ PAUSA</button><button id="restartBtn">↻ RECOMEÇAR</button></div>
+   </div>
+  </div>
+  <aside class="sidebar">
+   <section class="card">
+    <div class="card-h">MISSÃO PRINCIPAL <span>📜</span></div>
+    <h2 class="mission-title" id="missionTitle">O Chamado do Groove</h2>
+    <p class="mission-copy" id="missionText">Recolha buds espalhados pela fase e alcance o portal brilhante.</p>
+    <div class="mission-meta"><span>PROGRESSO</span><b id="missionValue">0 / 12</b></div>
+    <div class="progress"><i id="missionBar"></i></div>
+   </section>
+   <section class="card">
+    <div class="card-h">MOCHILA DO JAHZIN <span>🎒</span></div>
+    <div class="statgrid"><div class="stat"><small>BUDS LIVRES</small><b id="wallet">0</b></div>
+    <div class="stat"><small>COLETADOS</small><b id="picked">0</b></div>
+    <div class="stat"><small>MOEDAS</small><b class="gold" id="coins">0</b></div>
+    <div class="stat"><small>PONTOS</small><b id="score">0</b></div></div>
+   </section>
+   <section class="card"><div class="card-h">LOJA DO GROOVE <span>🛍️</span></div>
+    <div class="shop">
+     <button data-buy="double"><span class="ico">🦘</span><span class="copy">Pulo Duplo<small>Mais liberdade entre plataformas</small></span><span class="cost">120 💰</span></button>
+     <button data-buy="smoke"><span class="ico">💨</span><span class="copy">Fumaça Turbinada<small>Área maior, patrulhas atordoadas</small></span><span class="cost">85 💰</span></button>
+     <button data-buy="heart"><span class="ico">❤️</span><span class="copy">Coração Extra<small>Recupere +1 vida</small></span><span class="cost">65 💰</span></button>
+    </div>
+   </section>
+   <section class="card"><div class="card-h">MUNDOS DE DREADLAND <span>🗺️</span></div>
+    <div class="tips"><div>🌞 <b>1.</b> Vila do Groove</div><div>🌱 <b>2.</b> Plantação da Colina</div><div>🌅 <b>3.</b> Estrada da Neblina</div><div>🌙 <b>4.</b> Festival da Lua</div></div>
+   </section>
+   <section class="card"><div class="card-h">DICA RÁPIDA <span>💡</span></div>
+    <p class="mission-copy" style="margin:10px 0 0">Colete buds das plataformas, pule por cima dos fiscais e aperte <b>F</b> para fazer uma nuvem que atrapalha os inimigos. A fumaça consome 2 buds da mochila.</p>
+   </section>
+  </aside>
+ </div>
+ <footer><b>BUD QUEST: DREADLAND</b> — Jogo independente, personagem original, plantas e itens fictícios. Representações humorísticas para entretenimento, sem instruções de consumo ou cultivo no mundo real.</footer>
 </div>
-<aside class="deck"><section class="card"><div class="card-head">MISSÃO ATUAL <span class="mission-icon">📜</span></div><h2 class="mission-title" id="missionTitle">Conheça Mestre Broto</h2><p class="mission-desc" id="missionDesc">Siga a estrela amarela e converse com o mestre na praça.</p>
-<div class="progress-meta"><span>PROGRESSO</span><b id="missionProgress">0 / 1</b></div><div class="progress"><i id="missionBar"></i></div></section>
-<section class="card"><div class="card-head">SUA MOCHILA <span>🎒</span></div><div class="stats">
-<div class="stat"><small>BUDS</small><b id="buds">0</b></div>
-<div class="stat gold"><small>MOEDAS</small><b id="coins">0</b></div>
-<div class="stat"><small>PONTOS</small><b id="points">0</b></div>
-<div class="stat"><small>RECORDE</small><b id="high">0</b></div></div></section>
-<section class="card"><div class="card-head">LOJA DA ILHA <span>🛍️</span></div><div class="shop">
-<button data-buy="speed"><span class="emoji">👟</span><span class="name">Tênis Turbo<span class="sub">+ Velocidade permanente</span></span><span class="price">💰 50</span></button>
-<button data-buy="magnet"><span class="emoji">🧲</span><span class="name">Ímã Verde<span class="sub">Colete buds de mais longe</span></span><span class="price">💰 75</span></button>
-<button data-buy="shield"><span class="emoji">🛡️</span><span class="name">Escudo Extra<span class="sub">Proteção contra colisões</span></span><span class="price">💰 40</span></button>
-</div></section>
-<section class="card"><div class="card-head">O ROLÊ <span>🌎</span></div><div class="controls-help"><div>🌳 <b>Bosque Neon</b></div><div>🏖️ <b>Praia do Sol</b></div><div>🎵 <b>Festival Verde</b></div><div>🏘️ <b>Vila Central</b></div></div></section>
-</aside></div><div class="footer"><b>BUD QUEST</b> — Aventura fictícia e humorística com plantas mágicas colecionáveis. Sem compras reais ou instruções de produção/consumo. Salvo no navegador.</div></div>
-<script src="./app.js" defer></script></body></html>
+<script defer src="./app.js?v=2"></script>
+</body></html>
