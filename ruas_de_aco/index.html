@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10192a">
+<meta name="description" content="RUAS DE AÇO 96: jogo arcade original de luta de rua, com protagonista em pixel art, combos, inimigos, chefão e uma fase completa.">
+<title>RUAS DE AÇO '96 — Arcade Beat 'Em Up</title>
+<link rel="stylesheet" href="./style.css?v=2">
+</head><body>
+<div class="shell">
+<header class="topbar">
+  <div class="logo"><span class="logo-mark">R<span>★</span></span><div><h1>RUAS DE <em>AÇO</em> <i>'96</i></h1><small>O ARCADE DE LUTA DAS RUAS</small></div></div>
+  <div class="top-actions"><span class="chip"><span class="light"></span> ARCADE 16-BIT</span><button id="soundBtn" aria-label="Alternar som">♫ SOM ON</button><button id="helpBtn" aria-label="Como jogar">? AJUDA</button><button id="fullscreenBtn" aria-label="Tela cheia">⛶</button></div>
+</header>
+<main class="layout">
+  <div class="game-col">
+    <div class="cabinet">
+      <div class="screen">
+        <canvas id="game" width="960" height="540" aria-label="Jogo arcade de luta de rua"></canvas>
+        <div class="top-hud">
+          <div class="life-panel"><span class="portrait" id="heroPortrait">★</span><div class="hero-info"><div class="hero-header"><strong>THEO</strong><span id="lifeText">100 / 100</span></div><div class="lifebar"><i id="lifeBar"></i></div><div class="hero-sub">LIVES <span id="lives">♥ ♥ ♥</span></div></div></div>
+          <div class="center-hud"><small>STAGE 01 • CIDADE NOTURNA</small><b id="score">000000</b><span>SCORE</span></div>
+          <div class="stage-panel"><small>GRUPO</small><strong id="waveNum">1 / 5</strong><span>INIMIGOS <b id="enemyCount">0</b></span></div>
+        </div>
+        <div class="boss-hud hidden" id="bossHud"><span>⚠ REI DO ASFALTO</span><div><i id="bossLifeBar"></i></div></div>
+        <div class="combo-pop" id="comboPop"><b id="comboTitle">3 HIT COMBO</b><span id="comboScore">+600</span></div>
+        <div class="game-toast" id="toast" role="status" aria-live="polite"></div>
+        <div class="level-chip" id="placeLabel">CENTRO DE DREADTOWN</div>
+        <div class="hint-arrow" id="hintArrow">GO <strong>▶▶</strong></div>
+        <div class="curtain" id="menu">
+          <div class="menu-card">
+            <div class="insert-coin">✦ <span>1 PLAYER · ORIGINAL ARCADE</span> ✦</div>
+            <h2>RUAS<br>DE <em>AÇO</em></h2>
+            <div class="year">★ 1996 ★</div>
+            <p>Entre no mundo dos fliperamas! Lute pelas ruas com o personagem que criamos, enfrente gangues, faça combos e derrote o chefão do bairro.</p>
+            <div class="feature-row"><span>👊 SOCOS</span><span>🦵 CHUTES</span><span>⚡ ESPECIAL</span><span>👑 CHEFÃO</span></div>
+            <button id="startBtn" class="primary"><span>▶</span> COMEÇAR O JOGO</button>
+            <div class="tiny">1 FASE COMPLETA · TECLADO OU CELULAR</div>
+          </div>
+        </div>
+        <div class="curtain hidden" id="pauseScreen"><div class="small-modal"><span class="big-symbol">Ⅱ</span><h2>PAUSADO</h2><p>A cidade espera pela sua próxima luta.</p><button id="resumeBtn" class="primary">▶ CONTINUAR</button><button id="restartPauseBtn" class="secondary">↻ RECOMEÇAR</button></div></div>
+        <div class="curtain hidden" id="endScreen"><div class="small-modal"><span class="big-symbol" id="endIcon">🏆</span><h2 id="endTitle">VOCÊ VENCEU!</h2><p id="endDesc">As ruas estão livres.</p><div id="endScore" class="end-score">0</div><button id="playAgainBtn" class="primary">↻ JOGAR DE NOVO</button></div></div>
+      </div>
+      <div class="level-progress"><i id="progressFill"></i><span id="progressLabel">DREADTOWN • 0%</span></div>
+    </div>
+    <div class="virtual-controls" aria-label="Controles para celular">
+      <div class="dpad"><button data-hold="up" aria-label="Mover cima">▲</button><button data-hold="left" aria-label="Mover esquerda">◀</button><button data-hold="down" aria-label="Mover baixo">▼</button><button data-hold="right" aria-label="Mover direita">▶</button></div>
+      <div class="actionpad"><button data-action="jump" class="jump">↥<span>PULAR</span></button><button data-action="punch" class="punch">J<span>SOCO</span></button><button data-action="kick" class="kick">K<span>CHUTE</span></button><button data-action="special" class="special">⚡<span>ESPECIAL</span></button><button data-action="grab" class="grab">✊<span>AGARRAR</span></button></div>
+    </div>
+    <div class="bottom-row"><div class="keyhelp"><b>CONTROLES</b> <span><kbd>WASD</kbd> mover</span><span><kbd>J</kbd> soco</span><span><kbd>K</kbd> chute</span><span><kbd>L</kbd> especial</span><span><kbd>ESPAÇO</kbd> pular</span><span><kbd>U</kbd> agarrar</span><span><kbd>P</kbd> pausar</span></div><div class="bottom-buttons"><button id="pauseBtn">⏸ PAUSA</button><button id="restartBtn">↻ REINICIAR</button></div></div>
+  </div>
+  <aside class="sidebar">
+    <section class="mission"><small>ARCADE MODE · STAGE 01</small><h3>NOITE DE JUSTIÇA</h3><p>Enfrente cinco grupos de criminosos pelas ruas de Dreadtown e derrote o Rei do Asfalto para libertar a cidade.</p><div class="progress-meta"><span>MISSÃO</span><b id="missionPct">0%</b></div><div class="progress"><i id="sideProgress"></i></div></section>
+    <section class="sidebar-card">
+      <div class="card-head">SEU PROGRESSO <span>⚡</span></div>
+      <div class="stats"><div><small>INIMIGOS DERROTADOS</small><b id="kills">0</b></div><div><small>MELHOR COMBO</small><b id="bestCombo">0</b></div><div><small>RECORDE</small><b id="record">0</b></div><div><small>VIDAS RESTANTES</small><b id="lifeCount">3</b></div></div>
+    </section>
+    <section class="sidebar-card"><div class="card-head">GOLPES DO LUTADOR <span>🥊</span></div>
+      <div class="moves"><div><kbd>J</kbd><b>Soco rápido</b><span>Combine até 3</span></div><div><kbd>K</kbd><b>Chute forte</b><span>Maior alcance</span></div><div><kbd>ESPAÇO</kbd><b>Salto</b><span>Chute voador com K</span></div><div><kbd>U</kbd><b>Agarrão</b><span>Jogue o inimigo</span></div><div><kbd>L</kbd><b>Golpe especial</b><span>Área ampla, usa energia</span></div></div>
+    </section>
+    <section class="sidebar-card"><div class="card-head">DICAS DA RUA <span>★</span></div><p class="tiptext">Enfrente os inimigos na mesma linha da rua. Combine <b>soco, chute e salto</b> para fazer combos. Recolha comida para recuperar energia. Quando derrotar uma turma, avance para a direita.</p></section>
+  </aside>
+</main><footer>JOGO ORIGINAL • PIXEL ART CRIADA NESTA CONVERSA • INSPIRADO NO GÊNERO BEAT 'EM UP DOS ANOS 90 • SEM PERSONAGENS OU MARCAS DE TERCEIROS</footer>
+</div>
+<div id="helpDialog" class="dialog hidden"><div class="dialog-card"><button id="helpClose" class="close" aria-label="Fechar">✕</button><h2>COMO JOGAR</h2><p>Movimente o lutador pelas ruas com <strong>WASD ou setas</strong>. Aproxime-se dos inimigos na mesma faixa da rua e ataque. Socos são rápidos; chutes alcançam mais longe; o especial atinge vários inimigos, mas consome energia.</p><p>Para golpes aéreos, pule com <strong>Espaço</strong> e aperte <strong>K</strong> no ar. Use <strong>U</strong> para agarrar inimigos próximos e jogá-los. Avance sempre para a direita depois de vencer uma onda.</p><button id="helpOk" class="primary">ENTENDI! BORA LUTAR</button></div></div>
+<script defer src="./sprites_data.js?v=1"></script>
+<script defer src="./game.js?v=2"></script>
+</body></html>
