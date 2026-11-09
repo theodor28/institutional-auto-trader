@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d1b">
+<meta name="description" content="NEON RIFT: jogo arcade de defesa espacial conectado ao mercado público BTC/USDT da Binance. Previsões viram missões; ganhos e perdas são exclusivamente fictícios.">
+<title>NEON RIFT — A Guerra dos Fluxos</title>
+<link rel="stylesheet" href="./style.css?v=1">
+</head><body>
+<div class="shell">
+<header class="topbar">
+ <div class="logo"><div class="logo-mark">N<span>✦</span></div><div><strong>NEON <em>RIFT</em></strong><small>A GUERRA DOS FLUXOS · BTC GALAXY</small></div></div>
+ <div class="header-actions"><div class="source-status"><span id="sourceDot" class="dot"></span><span id="sourceLabel">CONECTANDO À GALÁXIA</span></div><button id="soundBtn" title="Ativar/desativar áudio">♫ ON</button><button id="helpBtn" title="Como funciona">? COMO JOGAR</button></div>
+</header>
+<div class="layout">
+<main class="main">
+<div class="arcade">
+ <div class="playfield">
+  <canvas id="game" width="1152" height="648" aria-label="Campo de batalha futurista de naves" tabindex="0"></canvas>
+  <div class="hud" aria-live="off">
+   <div class="hud-stat"><span>ESCUDO</span><div class="shield-track"><i id="shieldFill"></i></div><strong id="shieldText">100%</strong></div>
+   <div class="hud-stat"><span>PONTOS DE COMBATE</span><strong id="scoreText">000000</strong></div>
+   <div class="hud-stat"><span>SETOR</span><strong id="sectorText">01 / 03</strong></div>
+   <div class="hud-stat"><span>CONTAGEM</span><strong id="timeText">01:15</strong></div>
+  </div>
+  <div class="game-message" id="gameMessage"></div>
+  <div class="combo" id="comboPop"><strong id="comboLabel">COMBO x4</strong><span id="comboBonus">+120</span></div>
+  <div class="pause-overlay hidden" id="pauseOverlay"><div><span class="pause-glyph">Ⅱ</span><h2>PAUSADO</h2><p>O campo de batalha está congelado.</p><button id="resumeBtn" class="main-btn">▶ CONTINUAR</button></div></div>
+  <div class="start-overlay" id="startOverlay">
+   <div class="start-card">
+    <div class="kicker"><span>✦</span> TEMPORADA ZERO · PRIMEIRA MISSÃO</div>
+    <div class="crest">◈</div>
+    <h1>NEON <em>RIFT</em></h1>
+    <h2>O UNIVERSO REAGE AO BTC REAL</h2>
+    <p>A pressão das negociações cria exércitos, o movimento do mercado muda a tempestade e suas decisões alteram o destino da missão.</p>
+    <div class="startup-dots"><span>◉ ATIRE</span><span>✦ ESQUIVE</span><span>◎ ESCOLHA SUA FACÇÃO</span></div>
+    <div class="start-status" id="startStatus"><span class="loader"></span> Buscando preços e negociações públicas da Binance…</div>
+    <button class="main-btn" id="startBtn">▶ ENTRAR NA ARENA</button>
+    <button class="ghost-btn" id="offlineBtn">TREINAR APENAS COMBATE (SEM DADOS)</button>
+    <small>EXCLUSIVAMENTE UM JOGO. SEM DINHEIRO REAL, DEPÓSITOS OU SAQUES.</small>
+   </div>
+  </div>
+  <div id="resultOverlay" class="result-overlay hidden">
+    <div class="result-card">
+      <div id="resultIcon" class="result-icon">✦</div>
+      <div class="result-eyebrow">RELATÓRIO DA EXPEDIÇÃO</div>
+      <h2 id="resultTitle">PORTAL CONCLUÍDO</h2>
+      <p id="resultDesc">Uma batalha nunca conta a história inteira.</p>
+      <div class="result-grid">
+        <div><small>RESULTADO DOS DADOS</small><strong id="resultMoney">—</strong></div>
+        <div><small>CRISTAIS DE COMBATE</small><strong id="resultPoints">0</strong></div>
+        <div><small>PRECISÃO</small><strong id="resultAccuracy">0%</strong></div>
+      </div>
+      <div id="resultDetail" class="result-note"></div>
+      <button class="main-btn" id="retryBtn">▶ OUTRA MISSÃO</button>
+      <button class="ghost-btn" id="reviewBtn">VER HISTÓRICO DAS MISSÕES</button>
+    </div>
+  </div>
+ </div>
+ <div class="bottom-strip"><span><span class="live-pip"></span><strong id="arenaMode">ARENA INICIAL</strong></span><span id="worldEvent">AGUARDANDO O PORTAL</span><div class="strip-actions"><button id="pauseBtn">Ⅱ PAUSAR</button><button id="restartBtn">↻ REINICIAR</button></div></div>
+</div>
+<div class="gate-area">
+ <div class="gate-label"><span>ESCOLHA SUA ALIANÇA</span><small>Uma missão por vez · Resultado decidido pela variação real do BTC</small></div>
+ <div class="gates">
+  <button id="solarBtn" class="gate solar"><span class="gate-symbol">✹</span><div><strong>PORTAL AURORA</strong><span>Aposte sua estratégia na expansão da energia</span></div><em>[1]</em></button>
+  <button id="shadowBtn" class="gate shadow"><span class="gate-symbol">☾</span><div><strong>PORTAL ECLIPSE</strong><span>Proteja o reino quando a energia recua</span></div><em>[2]</em></button>
+ </div>
+ <p class="gate-explain">Aurora corresponde a uma previsão de alta; Eclipse, de baixa. O resultado usa cotações reais, spreads e custos fictícios. Nenhum clique envia ordens à Binance.</p>
+</div>
+<div class="mobile-controls">
+ <div class="mobile-hint">DESLIZE NO CAMPO PARA MOVER A NAVE</div>
+ <button id="mobileShoot" class="mobile-fire">◎<span>DISPARAR</span></button><button id="mobilePulse" class="mobile-pulse">✦<span>PULSO [E]</span></button>
+</div>
+<div class="how-strip"><span><kbd>WASD / SETAS</kbd> MOVER</span><span><kbd>ESPAÇO / MOUSE</kbd> ATIRAR</span><span><kbd>E</kbd> PULSO</span><span><kbd>1 / 2</kbd> ESCOLHER PORTAL</span><span><kbd>P</kbd> PAUSAR</span></div>
+</main>
+<aside class="side">
+ <div class="side-card title-card">
+   <div class="eyebrow">SEU INVENTÁRIO</div>
+   <div class="bank-line"><span>TESOURO SIMULADO</span><strong id="walletText">10.000,00</strong><small>USDT FICTÍCIOS</small></div>
+   <div class="bank-sub"><span>◇ CRISTAIS</span><b id="crystalText">0</b><span>✦ PATENTE</span><b id="rankText">CADETE</b></div>
+ </div>
+ <div class="side-card">
+  <div class="card-heading">✦ FORÇAS DO UNIVERSO <span id="dataAge">—</span></div>
+  <p class="card-sub">Os sinais são cenários do mundo, não recomendações.</p>
+  <div class="force-label"><span>✹ IMPULSO SOLAR</span><strong id="sunLevel">—</strong></div><div class="meter solarbar"><i id="sunFill"></i></div>
+  <div class="force-label"><span>☾ MARÉ SOMBRIA</span><strong id="moonLevel">—</strong></div><div class="meter moonbar"><i id="moonFill"></i></div>
+  <div class="field-line"><span>⚡ TEMPESTADE</span><b id="stormLabel">SEM LEITURA</b></div>
+  <div class="field-line"><span>◉ FLUXO</span><b id="flowLabel">SEM LEITURA</b></div>
+ </div>
+ <div class="side-card mission-card">
+   <div class="card-heading">✦ MISSÕES</div>
+   <div class="quest"><span id="task1" class="task-state">○</span><div><strong>PRIMEIROS DISPAROS</strong><small>Destrua 12 drones</small></div><b id="task1Num">0/12</b></div>
+   <div class="quest"><span id="task2" class="task-state">○</span><div><strong>GUARDIÃO DA BASE</strong><small>Sobreviva por 35 segundos</small></div><b id="task2Num">0/35</b></div>
+   <div class="quest"><span id="task3" class="task-state">○</span><div><strong>MAESTRIA DE PULSO</strong><small>Acione 2 pulsos</small></div><b id="task3Num">0/2</b></div>
+   <div class="quest"><span id="task4" class="task-state">○</span><div><strong>REI DA ARENA</strong><small>Derrote o colosso final</small></div><b id="task4Num">0/1</b></div>
+ </div>
+ <div class="side-card">
+   <div class="card-heading">◈ SUA NAVE</div>
+   <div class="resource"><span>CARGAS DE PULSO</span><strong id="chargesText">2 / 2</strong></div>
+   <div class="resource"><span>DRONES ABATIDOS</span><strong id="killsText">0</strong></div>
+   <div class="resource"><span>MISSÕES COMPLETAS</span><strong id="missionsText">0</strong></div>
+   <div class="resource"><span>COMBOS</span><strong id="bestComboText">0</strong></div>
+ </div>
+ <div class="side-card side-buttons"><button id="historyBtn">▤ DIÁRIO DAS MISSÕES</button><button id="rulesBtn">ⓘ COMO A BINANCE MUDA O JOGO</button><button id="resetProgressBtn">↻ ZERAR JOGO</button></div>
+</aside>
+</div>
+<footer>NEON RIFT • JOGO EDUCATIVO ORIGINAL • DADOS PÚBLICOS BTC/USDT SPOT DA BINANCE • SEM CONTA DE CORRETORA, SEM ORDENS, SEM SAQUES, SEM PROMESSA DE LUCRO REAL</footer>
+</div>
+<div class="modal-back hidden" id="modalBack"><section class="modal"><div class="modal-head"><h2 id="modalTitle">MANUAL DO JOGO</h2><button id="modalClose" aria-label="Fechar">✕</button></div><div id="modalBody"></div></section></div>
+<script src="./game.js?v=1" defer></script>
+</body></html>
