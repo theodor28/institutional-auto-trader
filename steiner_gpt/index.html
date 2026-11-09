@@ -1,0 +1,61 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c172a"><meta name="referrer" content="no-referrer">
+<meta name="description" content="STEINER GPT — assistente pessoal com chat, memória controlada, histórico, correções e IA online ou local pelo Ollama.">
+<title>STEINER GPT — Sua inteligência pessoal</title>
+<link rel="stylesheet" href="./style.css?v=1"></head><body>
+<div id="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand"><div class="brand-icon">S<span>✦</span></div><div><strong>STEINER <em>GPT</em></strong><small>INTELIGÊNCIA PARTICULAR</small></div></div>
+ <button id="newChat" class="new-chat">＋ <span>Nova conversa</span><kbd>Ctrl K</kbd></button>
+ <div class="search-wrap"><span>⌕</span><input id="searchChats" type="search" placeholder="Buscar conversas" aria-label="Buscar conversas"></div>
+ <div class="section-label">SEU HISTÓRICO <span id="chatCount">0</span></div><div id="chatList" class="chat-list" role="list"></div>
+ <div class="side-bottom">
+  <button id="memoryNav" class="side-item"><span>◈</span><b>Memórias</b><i id="memoryCount">0</i></button>
+  <button id="knowledgeNav" class="side-item"><span>▤</span><b>Conhecimento</b></button>
+  <button id="exportNav" class="side-item"><span>⇩</span><b>Exportar meus dados</b></button>
+  <button id="settingsNav" class="side-item"><span>⚙</span><b>Configurações</b></button>
+  <div class="owner"><span class="owner-logo">S</span><div><strong>Minha inteligência</strong><small>Você controla o que ela lembra</small></div><span>✓</span></div>
+ </div>
+</aside>
+<div id="mobileVeil" class="mobile-veil hidden"></div>
+<div class="main">
+ <header class="topbar">
+  <div class="top-left"><button id="menuBtn" class="iconbtn mobile-only" aria-label="Abrir menu">☰</button><div class="head-title"><b id="chatTitle">Nova conversa</b><small><span id="statusDot" class="status-dot"></span><span id="engineStatus">Verificando IA…</span></small></div></div>
+  <div class="top-right"><span id="modelChip" class="chip">◈ Modelo de IA</span><button id="modeBtn" class="top-button">⚡ <span id="modeLabel">IA online</span></button><button id="infoBtn" class="iconbtn" title="Como funciona" aria-label="Como funciona">ⓘ</button></div>
+ </header>
+ <section id="welcome" class="welcome"><div class="welcome-content">
+   <div class="hero-mark">✦</div><div class="eyebrow">O SEU ESPAÇO DE INTELIGÊNCIA</div>
+   <h1>O que vamos <em>construir hoje?</em></h1>
+   <p>Uma IA para conversar, criar, pesquisar ideias e melhorar com aquilo que você decidir ensinar. Sua memória e suas conversas ficam sob seu controle.</p>
+   <div class="suggestions">
+    <button data-prompt="Quero criar um projeto novo. Ajude-me a definir objetivo, arquitetura, etapas e como testar o resultado." ><span>⌘</span><strong>Criar um projeto</strong><small>Da ideia à execução</small></button>
+    <button data-prompt="Explique um assunto difícil em português simples com exemplos práticos." ><span>◎</span><strong>Aprender algo</strong><small>Entenda sem complicação</small></button>
+    <button data-prompt="Quero analisar uma ideia de negócio. Identifique potencial, limitações e como validar com dados reais." ><span>↗</span><strong>Explorar ideias</strong><small>Pense mais longe</small></button>
+    <button data-prompt="Me ajude a organizar meus projetos e escolher a próxima ação útil." ><span>◈</span><strong>Organizar projetos</strong><small>Prioridades inteligentes</small></button>
+   </div></div>
+ </section>
+ <section id="messages" class="messages hidden" role="log" aria-label="Mensagens da conversa" aria-live="polite"></section>
+ <div id="pendingBanner" class="pending-banner hidden" role="status"><span class="pulse"></span> <span id="pendingText">Pensando…</span><button id="stopBtn" aria-label="Interromper resposta">Parar</button></div>
+ <div class="composer-zone"><div id="attachmentBadge" class="attachment-badge hidden"></div>
+   <form id="composer" class="composer" autocomplete="off"><textarea id="prompt" placeholder="Pergunte qualquer coisa à STEINER GPT…" rows="1" maxlength="10000" aria-label="Sua mensagem"></textarea>
+     <div class="compose-row"><div class="compose-tools">
+       <button type="button" id="attachBtn" title="Anexar texto local" aria-label="Anexar documento">＋ <span>Anexar</span></button>
+       <button type="button" id="rememberBtn" title="Ensinar uma lembrança" aria-label="Ensinar memória">◈ <span>Ensinar</span></button>
+       <button type="button" id="voiceBtn" title="Ditado por voz" aria-label="Falar">♬ <span>Voz</span></button>
+      </div><div class="compose-right"><span id="charHint"></span><button type="submit" id="sendBtn" class="send" aria-label="Enviar mensagem">➤</button></div>
+     </div>
+   </form>
+   <p class="disclaimer" id="disclaimer">A STEINER GPT pode cometer erros. Confira informações importantes. Memória local neste navegador; chamadas online passam pelo provedor de IA escolhido.</p>
+ </div>
+</div>
+</div>
+<div id="dialog" class="dialog-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog-card">
+ <div class="dialog-head"><div><span class="dialog-kicker">STEINER GPT • CONTROLE PESSOAL</span><h2 id="dialogTitle">Configurações</h2></div><button id="dialogClose" aria-label="Fechar">✕</button></div>
+ <div id="dialogBody"></div>
+</div></div>
+<input id="docInput" type="file" accept=".txt,.md,.csv,.json,text/plain,text/markdown,text/csv,application/json" hidden>
+<input id="backupInput" type="file" accept=".json,application/json" hidden>
+<script src="https://js.puter.com/v2/" defer></script>
+<script src="./app.js?v=1" defer></script>
+</body></html>
