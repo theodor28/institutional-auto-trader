@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071326"><meta name="description" content="NEON RIFT: o Enigma dos Quatro Caminhos. Mistério arcade com quatro enigmas, herói animado e dados públicos ao vivo da Binance BTC/USDT. Missões com tesouro fictício.">
+<title>NEON RIFT — O Enigma dos 4 Caminhos</title>
+<link rel="stylesheet" href="./style.css?v=1"></head>
+<body><div class="app">
+<header class="topbar">
+ <div class="brand"><span class="brand-icon">✦</span><div><strong>NEON <em>RIFT</em></strong><small>O ENIGMA DOS QUATRO CAMINHOS</small></div></div>
+ <div class="top-stats"><div class="stat"><span>AVENTUREIRO</span><strong>NÍVEL <b id="level">01</b></strong></div><div class="stat"><span>CRISTAIS</span><strong>◇ <b id="crystals">0</b></strong></div><div class="stat"><span>TESOURO FICTÍCIO</span><strong>◈ <b id="treasure">10.000,00</b></strong></div><div class="stat"><span>REINO</span><strong id="chapter">01 / 04</strong></div></div>
+ <div class="top-options"><button id="soundBtn" aria-label="Alternar som">♫</button><button id="rulesBtn" aria-label="Ver regras">?</button></div>
+</header>
+<div class="statusline"><div><span id="liveDot" class="live-dot"></span><b id="liveText">Buscando o pulso do reino...</b><span id="ageText">—</span></div><div class="story-status" id="storyStatus">Os portais aguardam o viajante</div></div>
+<div class="game-layout">
+ <aside class="panel clues">
+   <div class="panel-title">✦ PISTAS DO ORÁCULO <span>4 SINAIS</span></div>
+   <p class="mini-intro">O reino traduz acontecimentos verdadeiros em símbolos. Leia as pistas antes de decidir.</p>
+   <div class="clue" id="clue1"><span class="clue-icon sun">☀</span><div><strong>PRESSÃO SOLAR</strong><small id="clue1desc">Aguardando os ventos...</small></div></div>
+   <div class="clue" id="clue2"><span class="clue-icon eclipse">◑</span><div><strong>SOMBRA PROFUNDA</strong><small id="clue2desc">Os guardiões ainda dormem.</small></div></div>
+   <div class="clue" id="clue3"><span class="clue-icon storm">ϟ</span><div><strong>TEMPESTADE QUÂNTICA</strong><small id="clue3desc">O céu oculta sua mensagem.</small></div></div>
+   <div class="clue" id="clue4"><span class="clue-icon spread">◎</span><div><strong>SUSSURRO DO PORTAL</strong><small id="clue4desc">A passagem não foi medida.</small></div></div>
+   <div class="oracle-foot"><span class="glow-dot"></span> <span id="oracleSummary">Decifre o reino pela observação, não pela sorte.</span></div>
+ </aside>
+ <main class="realm">
+   <div class="realm-title"><div><span class="kicker">LIVRO I · O REINO OCULTO</span><h1>DESCUBRA O CAMINHO CERTO</h1><p>Quatro portais, quatro perguntas. A história muda quando o mundo muda.</p></div></div>
+   <div class="scene-box" id="sceneBox">
+     <canvas id="scene" width="1100" height="650" role="img" aria-label="Aventureiro de capa azul caminhando por um reino de quatro portais mágicos"></canvas>
+     <div class="scene-cover" id="sceneCover">
+       <span class="cover-symbol">✦</span>
+       <h2>O ORÁCULO DESPERTOU</h2>
+       <p>As forças do reino são alimentadas pelo fluxo real do BTC. Para desvendar a trilha, leia as quatro pistas.</p>
+       <button id="beginBtn" class="big-green">▶ INICIAR O ENIGMA</button>
+       <button id="observeBtn" class="secondary">◎ OBSERVAR O MAPA</button>
+       <small id="coverSignal">Conectando às fontes públicas da Binance...</small>
+     </div>
+     <button class="portal aurora" id="portalAurora" data-route="aurora"><small>☀ A CHAMA DO REINO</small><strong>TRILHA DA<br>AURORA</strong></button>
+     <button class="portal eclipse" id="portalEclipse" data-route="eclipse"><small>♛ SALÃO DO REI</small><strong>TEMPLO DO<br>ECLIPSE</strong></button>
+     <button class="portal echo" id="portalEcho" data-route="echo"><small>◉ SEM JURAMENTO</small><strong>CAVERNA<br>DO ECO</strong></button>
+     <button class="portal vortex" id="portalVortex" data-route="vortex"><small>↶ RETORNO SEGURO</small><strong>PONTE DO<br>VÓRTICE</strong></button>
+     <div class="story-bubble hidden" id="storyBubble">O oráculo sussurra...</div>
+     <div class="scene-bottom"><span id="sceneMode">CAMINHO NÃO REVELADO</span><span id="sceneClock">◷ --:--</span></div>
+     <div class="scene-alert hidden" id="sceneAlert"><strong id="alertTitle">O perigo se aproxima!</strong><span id="alertDesc">As sombras despertaram.</span></div>
+   </div>
+   <div class="story-flow">
+     <div class="flow-heading">◈ O CICLO DA AVENTURA <span id="flowPhase">1 · INVESTIGAR</span></div>
+     <div class="flow-nodes"><span id="flow1" class="active">1. LER PISTAS</span><i>›</i><span id="flow2">2. 4 ENIGMAS</span><i>›</i><span id="flow3">3. ABRIR PORTAL</span><i>›</i><span id="flow4">4. CAMINHAR</span><i>›</i><span id="flow5">5. RECUAR OU VENCER</span></div>
+   </div>
+   <div class="tale-line"><span>✦</span><p id="narrator">Nas ruínas de Neon Rift, cada pista revela uma força invisível. Descubra quem governa o reino antes de seguir adiante.</p></div>
+ </main>
+ <aside class="panel quest-panel">
+   <div class="panel-title">♧ AS QUATRO QUESTÕES <span id="quizProgress">0 / 4</span></div>
+   <div id="questionPanel" class="question-panel">
+     <div class="question-seal" id="questionIcon">?</div>
+     <span class="eyebrow" id="questionCount">PRÓLOGO</span>
+     <h2 id="questionTitle">O reino guarda quatro segredos.</h2>
+     <p id="questionHint">Estude as pistas à esquerda. Quando a energia estiver conectada, inicie os enigmas.</p>
+     <div id="answers" class="answers"></div>
+     <div id="quizFeedback" class="quiz-feedback hidden"></div>
+     <button id="nextQuestion" class="question-next hidden">PRÓXIMO ENIGMA ›</button>
+     <button id="quizStart" class="question-start">✦ DESVENDAR O ENIGMA</button>
+   </div>
+   <div id="expeditionPanel" class="expedition-panel hidden">
+     <div class="panel-title">◈ SUA JORNADA <span id="expeditionStage">EM CAMINHO</span></div>
+     <h2 id="missionHeading">A trilha foi escolhida</h2>
+     <p id="missionText">O herói caminha pelo reino. Observe o céu e os guardiões.</p>
+     <div class="shield-label"><span>PROTEÇÃO DO HERÓI</span><b id="shieldValue">100%</b></div><div class="shield-meter"><i id="shieldMeter"></i></div>
+     <div class="mission-stat"><span>RUNAS CONQUISTADAS</span><b id="missionRunes">0</b></div>
+     <div class="mission-stat"><span>TEMPO DO PORTAL</span><b id="missionTime">01:00</b></div>
+     <div class="mission-choices"><button id="wardBtn">✦ ESCUDO MÍSTICO</button><button id="retreatBtn" class="retreat">↶ RECUAR PELO VÓRTICE</button></div>
+     <small>Recuar encerra a jornada na cotação atual, desde que os dados estejam recentes.</small>
+   </div>
+   <div class="route-note" id="routeNote"><strong>✦ CONSELHO DO ORÁCULO</strong><p>O caminho é uma escolha, não uma certeza. As pistas explicam o presente, mas não garantem o futuro.</p></div>
+   <button id="diaryBtn" class="diary">▤ DIÁRIO DAS JORNADAS</button>
+ </aside>
+</div>
+<div class="game-footer">
+ <div class="footer-progress"><span id="missionStatus">✦ O MISTÉRIO COMEÇA AQUI</span><div class="footer-track"><i id="missionBar"></i></div></div>
+ <div class="footer-buttons"><button id="newQuestBtn">↺ NOVO ENIGMA</button><button id="learnBtn">ⓘ ENTENDA A MAGIA</button></div>
+</div>
+<footer>NEON RIFT · JOGO DE FANTASIA E EDUCAÇÃO FINANCEIRA COM DADOS PÚBLICOS DE BTC/USDT BINANCE · NENHUMA ORDEM REAL · NENHUM DEPÓSITO · CRÉDITOS 100% FICTÍCIOS</footer>
+</div>
+<div class="dialog-back hidden" id="dialogBack"><div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog-header"><h2 id="dialogTitle">LIVRO DAS RUNAS</h2><button id="dialogClose" aria-label="Fechar">✕</button></div><div id="dialogBody"></div></div></div>
+<script defer src="./market.js?v=1"></script><script defer src="./game.js?v=1"></script>
+</body></html>
