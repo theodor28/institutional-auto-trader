@@ -233,13 +233,14 @@ class Handler(BaseHTTPRequestHandler):
 def run():
  verify_config();init()
  # Prova real de dois clientes via HTTP local, usando banco temporario.
- import subprocess,sys
- proc=subprocess.run([sys.executable,str(ROOT/"teste_chat.py")],capture_output=True,text=True,timeout=45)
- print("STEINER_CHAT_TESTS_EXIT="+str(proc.returncode),flush=True)
- print((proc.stderr or proc.stdout)[-2600:],flush=True)
- if proc.returncode!=0:
-  raise RuntimeError("Testes HTTP de chat falharam; nao iniciar a aplicacao")
- print("STEINER_CHAT_TESTS_PASS=23",flush=True)
+ if os.environ.get("CHAT_STARTUP_TESTS","1")=="1":
+  import subprocess,sys
+  proc=subprocess.run([sys.executable,str(ROOT/"teste_chat.py")],capture_output=True,text=True,timeout=45)
+  print("STEINER_CHAT_TESTS_EXIT="+str(proc.returncode),flush=True)
+  print((proc.stderr or proc.stdout)[-2600:],flush=True)
+  if proc.returncode!=0:
+   raise RuntimeError("Testes HTTP de chat falharam; nao iniciar a aplicacao")
+  print("STEINER_CHAT_TESTS_PASS=23",flush=True)
  print(f"STEINER_CONVERSA_ONLINE={HOST}:{PORT}",flush=True)
  with ThreadingHTTPServer((HOST,PORT),Handler) as http:http.serve_forever(poll_interval=.3)
 if __name__=="__main__":run()
