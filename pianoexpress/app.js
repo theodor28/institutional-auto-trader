@@ -9,7 +9,7 @@ function messageFromForm(form){
 }
 async function copyText(value){if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(value);return;}const t=document.createElement("textarea");t.value=value;t.style.position="fixed";t.style.left="-9999px";document.body.appendChild(t);t.select();const ok=document.execCommand("copy");t.remove();if(!ok)throw new Error("Selecione e copie manualmente o texto.");}
 document.addEventListener("DOMContentLoaded",()=>{
- const f=document.getElementById("orcamento");
+ const f=document.getElementById("pedidoForm");
  if(f)f.addEventListener("submit",async e=>{
   e.preventDefault();
   const status=document.getElementById("formStatus"),result=document.getElementById("resultBox"),output=document.getElementById("requestText");
