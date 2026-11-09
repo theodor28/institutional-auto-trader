@@ -1,0 +1,22 @@
+name: Testar STEINER Conecta
+on:
+  push:
+    branches:
+      - steiner-chat-privado-v1
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Testar troca de mensagens e autorizacao
+        run: python steinerchat/teste_chat.py
+      - name: Validar sintaxe da interface
+        run: node --check steinerchat/app.js
