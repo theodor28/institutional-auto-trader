@@ -19,7 +19,7 @@ const letterPositions=[
  {value:'S',x:680,y:342},{value:'K',x:2940,y:345},
  {value:'A',x:5270,y:350},{value:'T',x:7410,y:325},{value:'E',x:11250,y:345}
 ];
-const checkpoints=[0,2200,4600,7100,9200];
+const checkpoints=[0,1350,2200,3600,4600,5900,7100,8300,9200,10200];
 const zones=[
  {from:0,label:'PRAÇA DO ASFALTO',sky:['#67c6ce','#b9eed1'],back:'#4e97a6',ground:'#3d556a'},
  {from:2450,label:'BAIRRO DO SKATE',sky:['#77a6d4','#b7cddd'],back:'#6f81a9',ground:'#434e6e'},
@@ -176,7 +176,7 @@ function restoreHigh(){
 }
 function saveHigh(v){try{localStorage.setItem('skate96-highscore',String(v))}catch(e){}}
 function reset(){
- state={speed:298,health:3,score:0,record:restoreHigh(),jumpCount:0,trickCount:0,
+ state={speed:298,health:5,score:0,record:restoreHigh(),jumpCount:0,trickCount:0,
   grindCount:0,bestCombo:0,comboBase:0,comboMult:1,comboNames:[],comboTimer:0,comboActive:false,
   collected:new Set(),checkpoint:100,objectiveDone:new Set(),coinCount:0,time:0};
  makeLevel();sparks.length=0;player.x=100;player.y=groundY(100);player.vy=0;player.grounded=true;player.grinding=null;
@@ -240,9 +240,9 @@ function loseHeart(reason,fall=false){
  particles(player.x,player.y-65,'#ff8b9c',17);
  beep(170,.24,'sawtooth',.04);
  if(state.health<=0){finish(false);return}
- player.invulnerable=2.0;player.grinding=null;player.vy=0;player.spin=0;player.flip=0;
+ player.invulnerable=3.0;player.grinding=null;player.vy=0;player.spin=0;player.flip=0;
  if(fall){player.x=state.checkpoint;player.y=groundY(player.x);player.grounded=true}
- else{player.y=Math.min(player.y,GROUND-30);player.grounded=false;player.vy=-290}
+ else{player.x+=75;player.y=Math.min(player.y,GROUND-34);player.grounded=false;player.vy=-350}
  notice('♥ '+reason+'! RESTAM '+state.health+' VIDAS',2)
 }
 function jump(){
@@ -419,7 +419,7 @@ function hud(force=false){
  if(!state||!('health'in state))return;
  E('score').textContent=Math.round(state.score).toLocaleString('en-US').padStart(6,'0');
  E('record').textContent=Math.round(state.record).toLocaleString('en-US').padStart(6,'0');
- E('health').textContent='♥ '.repeat(state.health)+'♡ '.repeat(3-state.health);
+ E('health').textContent='♥ '.repeat(state.health)+'♡ '.repeat(5-state.health);
  E('letters').textContent='SKATE'.split('').map(ch=>state.collected.has(ch)?ch:'_').join(' ');
  const prog=clamp(player.x/(END-150),0,1);
  E('distanceBar').style.width=(prog*100).toFixed(1)+'%';
@@ -788,7 +788,7 @@ for(const button of document.querySelectorAll('[data-hold]')){
  }
 }
 profileLoad();makeLevel();
-state={health:3,speed:298,score:0,record:restoreHigh(),collected:new Set(),objectiveDone:new Set(),
+state={health:5,speed:298,score:0,record:restoreHigh(),collected:new Set(),objectiveDone:new Set(),
  jumpCount:0,trickCount:0,grindCount:0,bestCombo:0,comboBase:0,comboMult:1,comboNames:[],comboTimer:0,comboActive:false,
  checkpoint:100,time:0,coinCount:0};
 hud(true);requestAnimationFrame(frame);
