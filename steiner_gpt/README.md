@@ -1,0 +1,3 @@
+# STEINER GPT
+
+Aplicação pessoal independente com interface de chat, memórias explícitas, correções, histórico e documentos locais. O site estático público usa Puter.js com login da própria pessoa e franquia gratuita limitada. O serviço local `server.py` usa Ollama em 127.0.0.1:11434 e SQLite em `data/steiner_gpt.sqlite3`. Não expor à internet o backend local. Os dados de memória e conversas no site público ficam no `localStorage` do navegador; enviar uma pergunta transmite mensagens, memórias e textos relevantes ao provedor de IA. As correções são contexto, não retreinamento. Iniciar local com `abrir_gpt.py` no Windows; teste em `teste_steiner_gpt.py`. A aplicação não possui parâmetros internos nem a API do ChatGPT original.
