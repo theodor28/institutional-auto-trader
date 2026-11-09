@@ -88,7 +88,7 @@ function floatNumber(value,subtitle='VARIAÇÃO EM CURSO',x=s.hero.x,y=s.hero.y-
  const label=document.createElement('small');label.textContent=subtitle;
  node.append(main,label);
  const rect=cv.getBoundingClientRect(),scale=Math.max(rect.width/W,rect.height/H);
- const offsetX=(rect.width-W*scale)/2,offsetY=(rect.height-H*scale)/2;
+ const crop=Math.max(0,W*scale-rect.width),offsetX=-crop*cameraPosition(),offsetY=(rect.height-H*scale)/2;
  node.style.left=(offsetX+x*scale)+'px';node.style.top=(offsetY+y*scale)+'px';
  host.append(node);setTimeout(()=>node.remove(),1900);
  if(host.children.length>12)host.firstElementChild?.remove()
@@ -267,9 +267,9 @@ function updateJourney(dt){
  if(s.stale){s.stale=false;toast('O VENTO RETORNOU','O mercado voltou a transmitir. A jornada continua.','✦')}
  s.time+=dt;s.walking+=dt;ambiance(dt);
  if(s.time>=DURATION){end('concluida');return}
- const hero=s.hero,u=clamp(s.time/55,0,1),ease=u*u*(3-2*u);
- hero.x=mix(520,1070,ease)+Math.sin(s.time*1.55)*7;
- hero.y=mix(650,550,ease)+Math.sin(s.time*11)*2;
+ const hero=s.hero,u=clamp(s.time/55,0,1);
+ hero.x=mix(520,1070,u)+Math.sin(s.time*1.55)*3;
+ hero.y=mix(650,550,u)+Math.sin(s.time*11)*2;
  hero.attackCd=Math.max(0,hero.attackCd-dt);
  const remain=Math.ceil(Math.max(0,DURATION-s.time));
  E('clockNumber').textContent=String(Math.floor(remain/60)).padStart(2,'0')+':'+String(remain%60).padStart(2,'0');
@@ -378,9 +378,18 @@ function details(){
  '<div class="note">Último BTC/USDT observado: '+p+' créditos por BTC; spread: '+spread+'; fonte: '+d.source+'. O mundo pausa e a apuração é bloqueada se a cotação ficar antiga.</div>'+
  '<p><strong>Somente educação e entretenimento:</strong> sem dinheiro real, depósitos, saques, prêmios, conta Binance, promessas de ganhos ou execução de ordens.</p>')
 }
+function cameraPosition(){
+ const r=cv.getBoundingClientRect(),scale=Math.max(r.width/W,r.height/H),overflow=W*scale-r.width;
+ if(overflow<=1){cv.style.objectPosition='50% center';E('cinematic').style.backgroundPosition='50% center';return .5}
+ const hero=s.hero.x,desired=hero*scale-r.width*.5;
+ const pct=clamp(desired/overflow,0,1);
+ cv.style.objectPosition=(pct*100).toFixed(2)+'% center';
+ E('cinematic').style.backgroundPosition=(pct*100).toFixed(2)+'% center';return pct
+}
 function coordinateFromPointer(e){
  const r=cv.getBoundingClientRect(),scale=Math.max(r.width/W,r.height/H),
- ox=(r.width-W*scale)/2,oy=(r.height-H*scale)/2;
+ overflow=Math.max(0,W*scale-r.width),pct=cameraPosition(),
+ ox=-overflow*pct,oy=(r.height-H*scale)/2;
  return{x:(e.clientX-r.left-ox)/scale,y:(e.clientY-r.top-oy)/scale}
 }
 function stepEffects(dt){
@@ -507,13 +516,16 @@ function loop(now){
  s.sceneTime+=dt;
  if(s.phase==='journey')updateJourney(dt);
  stepEffects(dt);
+ cameraPosition();
  draw(now);
  uiClock+=dt;if(uiClock>.4){uiClock=0;liveUI()}
 }
 E('begin').onclick=unlock;
 E('look').onclick=()=>{
  if(s.phase!=='cover')return;
- toast('O MUNDO RESPIRA','Observe o cenário e escolha INICIAR JORNADA quando o oráculo estiver conectado.','✦')
+ s.phase='observe';E('cover').classList.add('hidden');
+ toast('O MUNDO RESPIRA','Por alguns instantes, contemple o vale antes da jornada.','✦',4);
+ setTimeout(()=>{if(s.phase==='observe'){s.phase='cover';E('cover').classList.remove('hidden')}},5600)
 };
 E('home').onclick=restart;
 E('continue').onclick=next;
