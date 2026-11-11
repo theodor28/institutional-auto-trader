@@ -118,7 +118,7 @@ def execute(conf, action, args):
         name = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-") + safe_segment(title, "nota") + "-" + uuid.uuid4().hex[:6] + ".txt"
         p = create_unique_file(dest / name, title + "\n\n" + text + "\n")
         digest = hashlib.sha256(p.read_bytes()).hexdigest()
-        return {"saved": True, "relative_path": str(p.relative_to(output)),
+        return {"saved": True, "relative_path": p.relative_to(output).as_posix(),
                 "bytes": p.stat().st_size, "sha256": digest}
     if action == "create_site":
         title = str(args.get("title", "Novo site")).strip()[:100]
@@ -139,7 +139,7 @@ def execute(conf, action, args):
         digest = hashlib.sha256(p.read_bytes()).hexdigest()
         if digest != hashlib.sha256(src.encode("utf-8")).hexdigest():
             raise RuntimeError("Integrity check failed")
-        return {"created": True, "relative_path": str(p.relative_to(output)),
+        return {"created": True, "relative_path": p.relative_to(output).as_posix(),
                 "sha256": digest, "bytes": len(src.encode("utf-8")),
                 "preview_html": src[:11000]}
     if action == "list_outputs":
@@ -152,11 +152,11 @@ def execute(conf, action, args):
                 if item.is_symlink():
                     continue
                 if folder == "notes" and item.is_file():
-                    entries.append(str(item.relative_to(output)))
+                    entries.append(item.relative_to(output).as_posix())
                 if folder == "sites" and item.is_dir():
                     index = item / "index.html"
                     if index.is_file() and not index.is_symlink():
-                        entries.append(str(index.relative_to(output)))
+                        entries.append(index.relative_to(output).as_posix())
         return {"files": entries[:80], "truncated": len(entries)>80}
     if action == "read_output":
         relative = str(args.get("path", ""))
