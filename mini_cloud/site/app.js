@@ -312,10 +312,10 @@ function renderCloud(w){
  w.body.innerHTML='<div class="toolbar"><span class="app-muted">🔒 Ponte Cloud 2.0 • conexão autenticada e saída HTTPS do PC</span><button class="btn" id="cloudLogout">Sair</button></div><div class="app-content" style="display:flex;flex-direction:column;gap:12px">'
  +'<div class="settings-group" style="margin:0"><h3>Chave de administrador</h3><p class="app-muted">A chave está no arquivo CLOUD_ACESSO_PRIVADO.txt do seu Windows. Não compartilhe.</p><div style="display:flex;gap:8px"><input id="cloudToken" type="password" autocomplete="off" style="min-width:80px;flex:1;padding:11px;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:10px" placeholder="Cole sua chave privada"><button class="btn primary" id="cloudLogin">Conectar</button></div><div class="app-muted" id="cloudConnection" style="margin-top:8px">Não autenticado</div></div>'
  +'<div class="settings-group" style="margin:0"><h3>Computadores autorizados</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="cloudAgent" value="pc-principal" placeholder="Identificador do PC" style="flex:1;min-width:130px;padding:10px;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:9px"><button class="btn" id="cloudAgents">Atualizar</button><button class="btn" id="cloudStatus">Verificar PC</button></div><div id="cloudAgentList" class="app-muted" style="margin-top:8px">Nenhum agente conectado ainda.</div></div>'
- +'<div class="settings-group" style="margin:0"><h3>Missão segura</h3><input id="cloudTitle" maxlength="100" placeholder="Nome do projeto ou anotação" style="width:100%;padding:11px;margin-bottom:8px;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:9px"><textarea id="cloudDetail" maxlength="8000" rows="3" placeholder="Descrição do site ou conteúdo da anotação" style="width:100%;padding:11px;resize:vertical;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:9px"></textarea><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px"><button class="btn primary" id="cloudSite">Criar site no PC</button><button class="btn" id="cloudNote">Salvar anotação</button><button class="btn" id="cloudProjects">Listar projetos</button><button class="btn" id="cloudOutputs">Resultados criados</button></div><div style="display:flex;gap:8px;align-items:center;margin-top:9px"><input id="cloudReadPath" placeholder="Ex.: sites/site-123/index.html" style="flex:1;min-width:0;padding:9px;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:9px"><button class="btn" id="cloudRead">Ler resultado</button></div></div>'
- +'<div class="settings-group" style="margin:0"><h3>Prova de execução</h3><pre id="cloudResult" style="max-height:230px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:12px;color:var(--muted)">Aguardando conexão.</pre><iframe id="cloudPreview" sandbox="" title="Prévia isolada do site gerado" style="display:none;height:220px;width:100%;background:white;border-radius:9px"></iframe></div>'
+ +'<div class="settings-group" style="margin:0"><h3>Missão segura</h3><input id="cloudTitle" maxlength="100" placeholder="Nome do projeto ou anotação" style="width:100%;padding:11px;margin-bottom:8px;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:9px"><textarea id="cloudDetail" maxlength="8000" rows="3" placeholder="Descrição do site ou conteúdo da anotação" style="width:100%;padding:11px;resize:vertical;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:9px"></textarea><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px"><button class="btn primary" id="cloudMission">🚀 Criar + testar + fotografar</button><button class="btn" id="cloudSite">Criar site simples</button><button class="btn" id="cloudNote">Salvar anotação</button><button class="btn" id="cloudProjects">Listar projetos</button><button class="btn" id="cloudOutputs">Resultados criados</button></div><div style="display:flex;gap:8px;align-items:center;margin-top:9px"><input id="cloudReadPath" placeholder="Ex.: sites/site-123/index.html" style="flex:1;min-width:0;padding:9px;background:var(--panel2);color:var(--text);border:1px solid var(--stroke);border-radius:9px"><button class="btn" id="cloudRead">Ler resultado</button></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="btn" id="cloudInspect">📷 Inspecionar site</button><button class="btn" id="cloudRepair">🛠 Corrigir e testar novamente</button></div><p class="app-muted">Visão do site criado, não da sua tela pessoal. Resultado e prints ficam na pasta CLOUD_OUTPUTS/missions.</p></div>'
+ +'<div class="settings-group" style="margin:0"><h3>Prova de execução</h3><pre id="cloudResult" style="max-height:230px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:12px;color:var(--muted)">Aguardando conexão.</pre><img id="cloudVision" alt="Print real do site gerado no navegador isolado" style="display:none;max-width:100%;max-height:360px;object-fit:contain;border:1px solid var(--stroke);border-radius:10px;margin-top:10px"><iframe id="cloudPreview" sandbox="" title="Prévia isolada do site gerado" style="display:none;height:220px;width:100%;background:white;border-radius:9px"></iframe></div>'
  +'<p class="app-muted">O servidor apenas retransmite tarefas autorizadas. O PC precisa estar ligado e o agente local ativo. Não é um controle remoto irrestrito do Windows.</p></div>';
- const el=id=>$("#"+id,w.body),display=el("cloudResult"),status=el("cloudConnection"),preview=el("cloudPreview");
+ const el=id=>$("#"+id,w.body),display=el("cloudResult"),status=el("cloudConnection"),preview=el("cloudPreview"),vision=el("cloudVision");
  let token="";try{token=sessionStorage.getItem("steiner_cloud_admin")||"";}catch{}
  if(token)el("cloudToken").value=token;
  const show=data=>{display.textContent=typeof data==="string"?data:JSON.stringify(data,null,2);};
@@ -337,17 +337,19 @@ function renderCloud(w){
  async function task(action,args={}){
   const id=el("cloudAgent").value.trim();
   if(!/^[a-zA-Z0-9_-]{1,32}$/.test(id))throw Error("Identificador de computador inválido.");
-  preview.style.display="none";
+  preview.style.display="none";vision.style.display="none";
   show("Solicitando "+action+" para "+id+"...");
   const res=await req("POST","/api/jobs",{agent:id,action,args});
   const jobId=res.job.id;
-  const deadline=Date.now()+90000;
+  const deadline=Date.now()+180000;
   while(Date.now()<deadline){
    if(!w.el.isConnected)return;
    const check=await req("GET","/api/jobs/"+jobId);
    if(check.job.status==="done"){
-    show({"job":check.job.id,"action":action,"status":"CONCLUÍDO","result":check.job.result});
     const result=check.job.result||{};
+    const visibleResult={...result};delete visibleResult.screenshot_data_uri;
+    show({"job":check.job.id,"action":action,"status":"CONCLUÍDO","result":visibleResult});
+    if(typeof result.screenshot_data_uri==="string"&&/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(result.screenshot_data_uri)&&result.screenshot_data_uri.length<65000){vision.src=result.screenshot_data_uri;vision.style.display="block";}
     if(typeof result.preview_html==="string"){
       preview.srcdoc=result.preview_html;preview.style.display="block";
     }else if(action==="read_output"&&typeof result.content==="string"&&String(result.path).endsWith(".html")){
@@ -373,6 +375,9 @@ function renderCloud(w){
  const actions=[
   ["cloudStatus","status",()=>({})],
   ["cloudSite","create_site",()=>({title:el("cloudTitle").value.trim(),description:el("cloudDetail").value.trim()})],
+  ["cloudMission","mission_site",()=>({title:el("cloudTitle").value.trim(),description:el("cloudDetail").value.trim()})],
+  ["cloudInspect","inspect_site",()=>({path:el("cloudReadPath").value.trim()})],
+  ["cloudRepair","repair_site",()=>({path:el("cloudReadPath").value.trim()})],
   ["cloudNote","create_note",()=>({title:el("cloudTitle").value.trim(),text:el("cloudDetail").value.trim()})],
   ["cloudProjects","list_projects",()=>({})],
   ["cloudOutputs","list_outputs",()=>({})],
@@ -396,6 +401,7 @@ $("#startApps").innerHTML=APPS.filter(a=>a.name.toLowerCase().includes(query.toL
 $$(".start-app").forEach(b=>b.onclick=()=>makeWindow(b.dataset.app));
 }
 fillStart();
+$("#startBtn").onclick=()=>{const menu=$("#startMenu");menu.classList.toggle("open");if(menu.classList.contains("open"))$("#appSearch").focus();};
 $("#appSearch").addEventListener("input",e=>fillStart(e.target.value));
 document.addEventListener("pointerdown",e=>{if(!e.target.closest("#startMenu")&&!e.target.closest("#startBtn"))$("#startMenu").classList.remove("open");});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#startMenu").classList.remove("open");});
