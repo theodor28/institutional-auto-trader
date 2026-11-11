@@ -122,7 +122,7 @@ def browser_observe(target:Path, report_dir:Path, stage:str):
                            +(["missing_h1"] if not state["heading"] else [])
                            +(["screenshot_failed"] if not screenshot else []),
                   "metrics":state,"console_errors":errors[:6],
-                  "screenshot":str(namefile.relative_to(report_dir.parent)) if screenshot else None,
+                  "screenshot":namefile.relative_to(report_dir.parent.parent).as_posix() if screenshot else None,
                   "screenshot_error":screenshot_error if not screenshot else None,
                   "screenshot_bytes":len(screenshot),"screenshot_sha256":sha(screenshot) if screenshot else None
                 }
