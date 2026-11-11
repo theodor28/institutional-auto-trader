@@ -1,0 +1,6 @@
+{
+  "server_url": "https://your-service.onrender.com",
+  "agent_id": "pc-principal",
+  "agent_token": "PASTE_THE_PRIVATE_RENDER_STEINER_AGENT_TOKEN_HERE",
+  "workspace": "C:\\Users\\YOUR_USER\\Documents\\STEINER_DEV"
+}
