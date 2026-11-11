@@ -417,7 +417,7 @@ function clock(){const now=new Date();$("#clockBtn").innerHTML=now.toLocaleTimeS
 clock();setInterval(clock,10000);
 $("#clockBtn").onclick=()=>toast(new Date().toLocaleString("pt-BR",{dateStyle:"full",timeStyle:"medium"}));
 applyPrefs();
-makeWindow("about");
+if(new URLSearchParams(location.search).get("cloud")==="1")makeWindow("cloud");else makeWindow("about");
 }
 initDesktop();
 })();
