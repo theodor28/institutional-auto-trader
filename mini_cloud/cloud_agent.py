@@ -69,8 +69,8 @@ def create_unique_file(path, data):
     if hasattr(os, "O_NOFOLLOW"):
         flags |= os.O_NOFOLLOW
     fd = os.open(str(path), flags, 0o600)
-    with os.fdopen(fd, "w", encoding="utf-8") as f:
-        f.write(data)
+    with os.fdopen(fd, "wb") as f:
+        f.write(data.encode("utf-8"))
     return path
 
 def generate_site(title, description):
@@ -185,6 +185,7 @@ def test_self():
         assert note["saved"]
         result = execute(conf, "read_output", {"path": note["relative_path"]})
         assert "Feito" in result["content"]
+        assert hashlib.sha256(result["content"].encode("utf-8")).hexdigest() == note["sha256"]
         assert len(execute(conf, "list_outputs", {})["files"]) == 2
         assert execute(conf, "list_projects", {})["total"] == 1
         try:
