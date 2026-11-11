@@ -95,13 +95,23 @@ def execute(conf, action, args):
     if not isinstance(args, dict):
         args = {}
     output = results_root(conf)
+    if action == "mission_site":
+        from mini_cloud_engine import mission
+        return mission(conf, args, execute)
+    if action == "inspect_site":
+        from mini_cloud_engine import inspect_generated
+        return inspect_generated(conf, args, auto_repair=False)
+    if action == "repair_site":
+        from mini_cloud_engine import inspect_generated
+        return inspect_generated(conf, args, auto_repair=True)
     if action == "status":
         return {"agent_id": conf["agent"], "hostname": socket.gethostname(),
                 "os": platform.system(), "python": platform.python_version(),
                 "workspace_ready": conf["workspace"].exists(),
                 "safe_mode": True,
                 "features": ["status", "list_projects", "create_note",
-                             "create_site", "list_outputs", "read_output"]}
+                             "create_site", "list_outputs", "read_output",
+                             "mission_site", "inspect_site", "repair_site"]}
     if action == "list_projects":
         root = conf["workspace"]
         projects = sorted(p.name for p in root.iterdir()
@@ -218,28 +228,3 @@ def run(conf, once=False):
                     print("job",str(job.get("id", ""))[:8],job.get("action"),"OK" if payload["ok"] else "FAILED")
                 except Exception as exc:
                     print("Unable to report job result:", type(exc).__name__)
-            if once:
-                break
-            time.sleep(4)
-        except (urllib.error.URLError, TimeoutError, ValueError, OSError, RuntimeError) as exc:
-            failures += 1
-            print("Cloud connection unavailable:",type(exc).__name__,"(retry)")
-            if once:
-                break
-            time.sleep(min(30,4+failures*2))
-
-if __name__ == "__main__":
-    parser=argparse.ArgumentParser(description="STEINER MINI CLOUD opt-in local agent")
-    parser.add_argument("--selftest",action="store_true")
-    parser.add_argument("--once",action="store_true")
-    parser.add_argument("--config",default=str(DEFAULT_CONFIG))
-    args=parser.parse_args()
-    if args.selftest:
-        sys.exit(0 if test_self() else 1)
-    try:
-        run(config_load(args.config), once=args.once)
-    except KeyboardInterrupt:
-        print("Stopped locally")
-    except Exception as exc:
-        print("Cannot start agent:",exc)
-        sys.exit(1)
