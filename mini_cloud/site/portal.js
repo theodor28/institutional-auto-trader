@@ -24,13 +24,7 @@
   function unlockDesktop(openCloud){
     location.href='/mini-os'+(openCloud?'?cloud=1':'');
   }
-  $('portalDesktop').addEventListener('click',()=>unlockDesktop(false));
-  // The original desktop stays usable. Return to this portal using a small taskbar shortcut.
-  let returnButton=document.getElementById('portalReturn');
-  if(!returnButton){returnButton=document.createElement('button');returnButton.id='portalReturn';returnButton.className='task-item';returnButton.textContent='✧';returnButton.title='Voltar ao Portal';
-    returnButton.addEventListener('click',()=>document.body.classList.add('portal-mode'));
-    const zone=document.getElementById('taskApps');if(zone)zone.parentNode.insertBefore(returnButton,zone);
-  }
+  // Mini Windows continua em /mini-os, mas a tela VIP nunca redireciona o usuário.
   function loginPrompt(pending){
     resultPanel('Conectar a Ponte','Este navegador ainda não tem autorização. Cole a chave privada uma única vez aqui embaixo; a tela VIP continuará aberta. Não escreva sua chave no campo de missão.','Conexão protegida');
     const wrap=document.createElement('div');wrap.className='portal-inline-auth';
