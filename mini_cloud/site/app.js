@@ -391,7 +391,15 @@ function renderCloud(w){
 }
 
 function renderAbout(w){
-w.body.innerHTML='<div class="app-content"><div class="setting-banner"><b>💠 STEINER MINI OS 1.0</b>Um desktop interativo inspirado em sistemas operacionais.</div><h3>O que funciona</h3><p>📁 Pastas e arquivos virtuais, importar e exportar documentos.<br>📝 Bloco de Notas com salvamento.<br>🧮 Calculadora com expressões.<br>🎨 Paint com desenho, borracha e PNG.<br>⌨️ Terminal virtual com comandos simples.<br>🌐 Navegador com abertura de sites.<br>⚙️ Preferências e janelas múltiplas.<br>📊 Gerenciamento de janelas.</p><h3>O que ele não faz</h3><p class="app-muted">Não é o Windows original, não executa .exe, não instala drivers, não acessa pastas privadas do PC, não modifica as configurações do Windows e não oferece virtualização real.</p><p class="app-muted">Criado pelo STEINER-PONTE • uso local • sem dependências externas obrigatórias.</p></div>';
+w.body.innerHTML = '<div class="app-content">'+
+'<div class="setting-banner"><b>💠 STEINER MINI OS + PONTE CLOUD 3.0</b>Desktop virtual online com Visão, Executor e Autocorreção de sites de teste.</div>'+
+'<div class="settings-group"><h3>🚀 Módulos da Ponte 3.0</h3>'+
+'<p>🔌 Conectar ao PC autorizado.<br>⚙️ Criar sites e arquivos no workspace.<br>📷 Examinar sites gerados em navegador isolado e registrar prints.<br>🛠 Corrigir falhas simples de HTML e verificar novamente.<br>📑 Guardar relatórios e provas de execução.</p>'+
+'<button class="btn primary" id="openCloudFromAbout">🔌 Abrir Ponte Cloud 3.0</button>'+
+'<p class="app-muted">No modo Visitante, será necessário autenticar com sua chave privada. Para entrada automática, use o atalho no Windows.</p></div>'+
+'<h3>Apps do Mini OS</h3><p>📁 Arquivos virtuais • 📝 Bloco de Notas • 🧮 Calculadora • 🎨 Paint • ⌨️ Terminal virtual • 🌐 Navegador • ⚙️ Configurações • 📊 Gerenciador de janelas.</p>'+
+'<h3>Limitações</h3><p class="app-muted">Não é o Windows original: não executa EXEs ou drivers. A Visão 3.0 captura sites gerados no navegador isolado, não suas abas pessoais. Autocorreção limitada a problemas conhecidos; comandos remotos são autenticados e restritos.</p></div>';
+$("#openCloudFromAbout",w.body).onclick=()=>makeWindow("cloud");
 }
 function initDesktop(){
 $("#icons").innerHTML=APPS.filter(a=>a.id!=="about").map(a=>'<button class="desktop-icon" data-app="'+a.id+'" title="Duplo clique para abrir"><span class="app-glyph">'+a.icon+'</span><span>'+escapeHTML(a.name)+'</span></button>').join("");
