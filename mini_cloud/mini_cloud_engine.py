@@ -95,22 +95,36 @@ def browser_observe(target:Path, report_dir:Path, stage:str):
                     images:[...document.images].filter(i=>!i.complete||i.naturalWidth===0).length
                 })""")
                 namefile=report_dir/(stage+"_"+name+".png")
-                screenshot=page.screenshot(path=str(namefile),full_page=True,animations="disabled",timeout=15000)
+                screenshot=b""
+                screenshot_error=""
+                # Some Windows Chromium sessions fail Page.captureScreenshot transiently.
+                # Retry at most three times and fall back to viewport-only capture.
+                for attempt in range(3):
+                    try:
+                        screenshot=page.screenshot(
+                            path=str(namefile),full_page=(attempt==0),
+                            animations="disabled",timeout=7000)
+                        if screenshot:break
+                    except Exception as exc:
+                        screenshot_error=(type(exc).__name__+": "+str(exc))[:180]
+                        page.wait_for_timeout(250)
                 thumb=b""
                 if name=="desktop":
                     try:
                         thumb=page.screenshot(type="jpeg",quality=32,
-                            full_page=False,animations="disabled",timeout=15000)
+                            full_page=False,animations="disabled",timeout=7000)
                     except Exception:pass
                 trace={
                   "view":name,"width":width,"height":height,
                   "issues":(["horizontal_overflow"] if state["document"]>width+2 or state["body"]>width+2 else [])
                            +(["broken_images"] if state["images"] else [])
                            +(["console_errors"] if errors else [])
-                           +(["missing_h1"] if not state["heading"] else []),
+                           +(["missing_h1"] if not state["heading"] else [])
+                           +(["screenshot_failed"] if not screenshot else []),
                   "metrics":state,"console_errors":errors[:6],
-                  "screenshot":str(namefile.relative_to(report_dir.parent)),
-                  "screenshot_bytes":len(screenshot),"screenshot_sha256":sha(screenshot)
+                  "screenshot":str(namefile.relative_to(report_dir.parent)) if screenshot else None,
+                  "screenshot_error":screenshot_error if not screenshot else None,
+                  "screenshot_bytes":len(screenshot),"screenshot_sha256":sha(screenshot) if screenshot else None
                 }
                 if thumb and len(thumb)<45_000:
                     trace["thumbnail"]="data:image/jpeg;base64,"+base64.b64encode(thumb).decode("ascii")
