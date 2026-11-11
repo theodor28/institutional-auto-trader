@@ -61,9 +61,9 @@ function rate(name,max=70){
 }
 function agentId(v){return typeof v==="string"&&AGENT_RE.test(v);}
 function jobView(j){return {id:j.id,agent:j.agent,action:j.action,status:j.status,createdAt:new Date(j.created).toISOString(),updatedAt:new Date(j.updated).toISOString(),result:j.result||null,error:j.error||null};}
-function mime(filename){return ({"/":"text/html; charset=utf-8","index.html":"text/html; charset=utf-8","style.css":"text/css; charset=utf-8","app.js":"application/javascript; charset=utf-8"})[filename]||"application/octet-stream";}
+function mime(filename){return ({"/":"text/html; charset=utf-8","index.html":"text/html; charset=utf-8","portal.html":"text/html; charset=utf-8","style.css":"text/css; charset=utf-8","portal.css":"text/css; charset=utf-8","app.js":"application/javascript; charset=utf-8","portal.js":"application/javascript; charset=utf-8"})[filename]||"application/octet-stream";}
 function staticFile(req,res,pathname){
-  const allowed={"/":"index.html","/index.html":"index.html","/style.css":"style.css","/app.js":"app.js"};
+  const allowed={"/":"portal.html","/index.html":"portal.html","/portal":"portal.html","/portal.html":"portal.html","/mini-os":"index.html","/style.css":"style.css","/app.js":"app.js","/portal.css":"portal.css","/portal.js":"portal.js"};
   const file=allowed[pathname];if(!file){send(res,404,{error:"Not found"});return;}
   const loc=path.join(root,file);
   fs.readFile(loc,(err,data)=>{
