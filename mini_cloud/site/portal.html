@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>STEINER-PONTE VIP — Portal</title><link rel="stylesheet" href="/portal.css"></head><body class="portal-mode"><section id="steiner-portal" aria-label="Portal STEINER-PONTE">
+  <div class="portal-room" aria-hidden="true"></div>
+  <div class="portal-art" aria-hidden="true"></div>
+  <header class="portal-head">
+    <div class="portal-brand"><span class="portal-mark" aria-hidden="true"><span>✦</span></span><div>STEINER-PONTE<small>Crie. Execute. Comprove.</small></div></div>
+    <div class="portal-head-right"><span id="portalConnection" class="portal-status"><span class="portal-dot"></span> Ponte protegida</span><button type="button" id="portalDesktop">Abrir Mini Windows ↗</button></div>
+  </header>
+  <main class="portal-center">
+    <div class="portal-logo" aria-hidden="true">✧</div>
+    <h1 class="portal-heading">Diga o que você precisa.<span>A Ponte faz o resto.</span></h1>
+    <p class="portal-subtitle">Crie &nbsp;·&nbsp; Execute &nbsp;·&nbsp; Teste &nbsp;·&nbsp; Corrija</p>
+    <form class="portal-form" id="portalForm" autocomplete="off">
+      <span class="portal-star" aria-hidden="true">✦</span>
+      <input type="text" id="portalPrompt" maxlength="320" placeholder="Ex.: Crie um site para meu negócio" aria-label="Descreva sua missão em poucas palavras" required>
+      <button type="submit" id="portalSubmit" title="Enviar missão" aria-label="Enviar missão">➜</button>
+    </form>
+    <nav class="portal-suggest" aria-label="Sugestões rápidas">
+      <button type="button" data-prompt="Crie um site para meu negócio">⌘ &nbsp; Criar um site</button>
+      <button type="button" data-prompt="Verificar meu computador">◉ &nbsp; Verificar PC</button>
+      <button type="button" data-prompt="Mostrar meus projetos">▤ &nbsp; Meus projetos</button>
+      <button type="button" data-prompt="Mostrar resultados criados">✧ &nbsp; Resultados</button>
+    </nav>
+    <p class="portal-tip">✧ &nbsp; Seja direto. Uma frase curta é suficiente.</p>
+    <section class="portal-results" id="portalResults" aria-live="polite" aria-label="Resposta da Ponte">
+      <div class="portal-result-top"><span class="portal-result-kicker">RESULTADO DA PONTE</span><span id="portalResultStatus" class="portal-result-status">Aguardando</span></div>
+      <h2 id="portalResultTitle" class="portal-result-title">Sua missão</h2>
+      <div id="portalResultText" class="portal-result-text"></div>
+      <img id="portalShot" alt="Print de teste do site gerado">
+      <iframe id="portalPreview" sandbox="" title="Prévia isolada do site criado"></iframe>
+      <div id="portalResultActions" class="portal-result-actions"></div>
+    </section>
+  </main>
+  <div class="portal-characters" aria-hidden="true"><span class="portal-character">😎</span><span class="portal-character">👽</span><span class="portal-character">🤖</span></div>
+  <footer class="portal-foot">♢ Seguro <i></i> Missões com resultado verificável <i></i> Sem comandos irrestritos</footer>
+</section>
+<script src="/portal.js"></script></body></html>
