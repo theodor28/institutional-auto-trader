@@ -1,5 +1,5 @@
 "use strict";
-const SETTINGS={contactWhatsapp:"5511972247766",contactEmail:"",brand:"Piano Express",verifiedContact:true};
+const SETTINGS={contactWhatsapp:"5511982247766",contactEmail:"",brand:"Piano Express",verifiedContact:true};
 function toast(m){const box=document.getElementById("toast");if(!box)return;box.textContent=m;box.classList.remove("hidden");clearTimeout(toast.timer);toast.timer=setTimeout(()=>box.classList.add("hidden"),5500);}
 function toClean(value){return String(value||"").trim().replace(/[<>]/g,"");}
 function messageFromForm(form){
