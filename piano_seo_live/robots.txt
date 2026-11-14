@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://piano-express-seo-pro.onrender.com/sitemap.xml
