@@ -3,7 +3,7 @@
 document.documentElement.classList.add('has-js');
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-const phone='5511972247766';
+const phone='5511982247766';
 const menu=$('#menuToggle'), mobile=$('#mobileNav');
 function setMenu(open){
   if(!menu||!mobile)return;
