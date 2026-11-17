@@ -1,0 +1,33 @@
+STEINER CACADOR | Mercado Livre OAuth | MVP
+
+Pasta:
+  C:\Users\Usuario\Documents\STEINER_DEV\STEINER_ML_OAUTH
+
+O que esta pronto:
+- /health verifica se o servidor esta online e configurado.
+- /oauth/start inicia OAuth Authorization Code com PKCE S256 e state.
+- /oauth/callback valida state/cookie e troca o codigo por tokens.
+- Codigos e tokens nao aparecem no HTML nem nos logs.
+
+IMPORTANTE:
+- Nao insira Client Secret, Access Token ou Refresh Token neste projeto,
+  nem em GitHub ou na conversa.
+- As credenciais devem entrar por variaveis de ambiente privadas, apenas
+  no servidor confiavel onde o processo for executado.
+- Tokens ficam SOMENTE em memoria enquanto o servidor roda; nao existe
+  persistencia nem renovacao automatica. Esta etapa e uma prova de conexao,
+  NAO e ainda uma integracao pronta para operar 24h.
+- Nao exponha este MVP sem revisar controle de acesso, armazenamento cifrado,
+  auditoria, rotacao segura de refresh token e HTTPS.
+- Para Render, criar um NOVO web service separado (nao usar site Piano Express).
+  Configuracoes: Python, build (sem dependencias), start: python server.py,
+  BIND_HOST=0.0.0.0, ML_REDIRECT_URI=https://SEU-SERVICO.onrender.com/oauth/callback,
+  ML_CLIENT_SECRET somente na aba privada Environment.
+- O endereco exato precisa ser testado e cadastrado em Mercado Livre DevCenter.
+- O app do Mercado Livre deve habilitar Authorization Code, Refresh Token e PKCE.
+- O login e consentimento sao feitos apenas pelo usuario no Mercado Livre.
+- A autenticacao so pode ser considerada concluida quando o callback real
+  retornar sucesso e o servidor estiver configurado para armazenar tokens.
+
+Documentacao oficial:
+https://developers.mercadolivre.com.br/pt_br/autenticacao-e-autorizacao
