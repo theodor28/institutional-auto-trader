@@ -1,4 +1,6 @@
-"""STEINER CACADOR: receptor OAuth Mercado Livre (MVP, sem gravar credenciais)."""
+"""STEINER CACADOR OAuth: recebe autorizacao e entrega tokens ao Windows sob HTTPS.
+Nunca armazena segredos no GitHub nem expõe tokens em URL/log.
+"""
 import base64
 import hashlib
 import json
@@ -15,12 +17,15 @@ from urllib.request import Request, urlopen
 CLIENT_ID = os.environ.get("ML_CLIENT_ID", "412633737688838")
 CLIENT_SECRET = os.environ.get("ML_CLIENT_SECRET", "")
 REDIRECT_URI = os.environ.get("ML_REDIRECT_URI", "")
-PENDING = {}
-CONNECTED = {}
-LOCK = threading.Lock()
-STATE_TTL = 600
+BRIDGE_SECRET = os.environ.get("BRIDGE_SHARED_SECRET", "")
 AUTH_URL = "https://auth.mercadolivre.com.br/authorization"
 TOKEN_URL = "https://api.mercadolibre.com/oauth/token"
+SESSIONS = {}
+INBOX = {}
+LOCK = threading.RLock()
+STATE_TTL = 600
+INBOX_TTL = 900
+MAX_JSON = 4096
 
 
 def b64url(blob):
@@ -34,134 +39,201 @@ def challenge(verifier):
 def ready():
     return bool(CLIENT_ID and CLIENT_SECRET and
                 REDIRECT_URI.startswith("https://") and
-                urlsplit(REDIRECT_URI).path == "/oauth/callback")
+                urlsplit(REDIRECT_URI).path == "/oauth/callback" and
+                len(BRIDGE_SECRET) >= 32)
 
 
-def make_auth_params(state, verifier):
-    return {
-        "response_type": "code",
-        "client_id": CLIENT_ID,
-        "redirect_uri": REDIRECT_URI,
-        "state": state,
-        "code_challenge": challenge(verifier),
-        "code_challenge_method": "S256",
-    }
+def exchange(params):
+    body = urlencode(params).encode("utf-8")
+    req = Request(TOKEN_URL, data=body, method="POST", headers={
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+    })
+    with urlopen(req, timeout=20) as res:
+        payload = json.load(res)
+    if not isinstance(payload, dict) or not payload.get("access_token"):
+        raise ValueError("Resposta de token sem access_token")
+    return payload
 
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
-        # Nunca registrar "code", "state", tokens ou URLs completas.
+        # O caminho nunca inclui query string de autorizacao, codigo ou state.
         print("HTTP", self.command, urlsplit(self.path).path, flush=True)
 
-    def send(self, status, body, content_type="text/plain; charset=utf-8", extra=None):
-        data = body.encode("utf-8")
+    def send(self, status, message, content_type="text/plain; charset=utf-8", headers=None):
+        data = message.encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("X-Content-Type-Options", "nosniff")
-        for name, value in (extra or {}).items():
-            self.send_header(name, value)
+        self.send_header("X-Frame-Options", "DENY")
+        for key, val in (headers or {}).items():
+            self.send_header(key, val)
         self.end_headers()
         self.wfile.write(data)
 
+    def json(self, status, obj):
+        self.send(status, json.dumps(obj, ensure_ascii=False),
+                  "application/json; charset=utf-8")
+
+    def redirect(self, to, clear_cookie=False):
+        self.send_response(303)
+        self.send_header("Location", to)
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Referrer-Policy", "no-referrer")
+        if clear_cookie:
+            self.send_header("Set-Cookie", "ml_oauth_session=; Max-Age=0; HttpOnly; Secure; SameSite=Lax; Path=/")
+        self.end_headers()
+
+    def authed(self):
+        value = self.headers.get("Authorization", "")
+        return bool(ready() and value.startswith("Bearer ") and
+                    secrets.compare_digest(value[7:], BRIDGE_SECRET))
+
+    def read_body(self):
+        try:
+            count = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            return None
+        if not 0 < count <= MAX_JSON:
+            return None
+        try:
+            obj = json.loads(self.rfile.read(count))
+            return obj if isinstance(obj, dict) else None
+        except (ValueError, UnicodeDecodeError):
+            return None
+
     def do_GET(self):
-        url = urlsplit(self.path)
-        path = url.path
+        uri = urlsplit(self.path)
+        path = uri.path
         if path == "/health":
-            self.send(200, json.dumps({"service": "STEINER_ML_OAUTH",
-                                       "online": True,
-                                       "configured": ready()}),
-                      "application/json; charset=utf-8")
+            self.json(200, {"service": "STEINER_ML_OAUTH", "online": True,
+                            "configured": ready(), "mode": "windows_token_vault"})
         elif path == "/":
-            self.send(200, "STEINER CACADOR - Receptor OAuth\n"
-                           "Configure ML_CLIENT_SECRET e ML_REDIRECT_URI no servidor.\n"
-                           "Para autorizar, visite /oauth/start.\n")
+            self.send(200, "STEINER CACADOR: OAuth / Windows Bridge.\n"
+                           "Conectar: /oauth/start. Estado: /health.\n")
         elif path == "/oauth/start":
             self.start_auth()
         elif path == "/oauth/callback":
-            self.callback(parse_qs(url.query))
+            self.callback(parse_qs(uri.query))
+        elif path == "/oauth/done":
+            self.send(200, "Mercado Livre autorizado.\n"
+                           "O computador STEINER-PONTE precisa receber e guardar "
+                           "a autorizacao. Acesse o ChatGPT para confirmar o teste.\n")
+        elif path == "/bridge/status":
+            if not self.authed():
+                self.json(401, {"error": "nao_autorizado"})
+                return
+            with LOCK:
+                present = bool(INBOX and time.time() - INBOX.get("created", 0) <= INBOX_TTL)
+            self.json(200, {"configured": ready(), "pending_delivery": present})
+        elif path == "/bridge/pull":
+            if not self.authed():
+                self.json(401, {"error": "nao_autorizado"})
+                return
+            with LOCK:
+                if not INBOX or time.time() - INBOX.get("created", 0) > INBOX_TTL:
+                    self.json(200, {"pending": False})
+                else:
+                    self.json(200, {"pending": True, "delivery_id": INBOX["delivery_id"],
+                                    "tokens": INBOX["tokens"]})
         else:
-            self.send(404, "Rota inexistente.")
+            self.send(404, "Rota desconhecida.")
+
+    def do_POST(self):
+        path = urlsplit(self.path).path
+        if path not in ("/bridge/ack", "/bridge/refresh") or not self.authed():
+            self.json(401, {"error": "nao_autorizado"})
+            return
+        body = self.read_body()
+        if not body:
+            self.json(400, {"error": "dados_invalidos"})
+            return
+        if path == "/bridge/ack":
+            delivery_id = str(body.get("delivery_id", ""))
+            with LOCK:
+                if INBOX and secrets.compare_digest(delivery_id, INBOX.get("delivery_id", "")):
+                    INBOX.clear()
+                    self.json(200, {"ack": True})
+                else:
+                    self.json(404, {"ack": False})
+            return
+        refresh_token = body.get("refresh_token")
+        if not isinstance(refresh_token, str) or not 10 < len(refresh_token) < 2048:
+            self.json(400, {"error": "refresh_token_invalido"})
+            return
+        try:
+            result = exchange({"grant_type": "refresh_token",
+                               "client_id": CLIENT_ID,
+                               "client_secret": CLIENT_SECRET,
+                               "refresh_token": refresh_token})
+            self.json(200, {"ok": True, "tokens": result})
+        except (HTTPError, URLError, TimeoutError, ValueError):
+            self.json(502, {"ok": False, "error": "falha_renovacao_ml"})
 
     def start_auth(self):
         if not ready():
-            self.send(503, "Integracao ainda nao configurada no servidor.")
+            self.send(503, "Servico ainda nao configurado.")
             return
-        state = secrets.token_urlsafe(32)
-        browser_nonce = secrets.token_urlsafe(32)
-        verifier = secrets.token_urlsafe(64)
+        state, nonce, verifier = (secrets.token_urlsafe(32),
+                                  secrets.token_urlsafe(32),
+                                  secrets.token_urlsafe(64))
         with LOCK:
-            now = time.time()
-            for old in list(PENDING):
-                if now - PENDING[old]["created"] > STATE_TTL:
-                    del PENDING[old]
-            PENDING[state] = {
-                "nonce": browser_nonce, "verifier": verifier, "created": now
-            }
-        auth_link = AUTH_URL + "?" + urlencode(make_auth_params(state, verifier))
+            for key in list(SESSIONS):
+                if time.time() - SESSIONS[key]["created"] > STATE_TTL:
+                    del SESSIONS[key]
+            SESSIONS[state] = {"nonce": nonce, "verifier": verifier,
+                               "created": time.time()}
+        url = AUTH_URL + "?" + urlencode({
+            "response_type": "code", "client_id": CLIENT_ID,
+            "redirect_uri": REDIRECT_URI, "state": state,
+            "code_challenge": challenge(verifier), "code_challenge_method": "S256"
+        })
         self.send_response(302)
-        self.send_header("Location", auth_link)
-        self.send_header("Set-Cookie", "ml_oauth_session=" + browser_nonce +
+        self.send_header("Location", url)
+        self.send_header("Set-Cookie", "ml_oauth_session=" + nonce +
                          "; Max-Age=600; HttpOnly; Secure; SameSite=Lax; Path=/")
-        self.send_header("Cache-Control", "no-store")
         self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
 
-    def callback(self, qs):
-        state = (qs.get("state") or [""])[0]
-        code = (qs.get("code") or [""])[0]
-        if not state or not code or len(qs.get("state", [])) != 1:
-            self.send(400, "Retorno OAuth incompleto ou recusado.")
+    def callback(self, query):
+        code = (query.get("code") or [""])[0]
+        state = (query.get("state") or [""])[0]
+        if not code or not state or len(query.get("code", [])) != 1 or len(query.get("state", [])) != 1:
+            self.send(400, "Retorno OAuth incompleto.")
             return
-        cookies = SimpleCookie()
         try:
+            cookies = SimpleCookie()
             cookies.load(self.headers.get("Cookie", ""))
+            nonce = cookies["ml_oauth_session"].value if "ml_oauth_session" in cookies else ""
         except Exception:
-            self.send(400, "Cookie OAuth invalido.")
-            return
-        nonce = cookies["ml_oauth_session"].value if "ml_oauth_session" in cookies else ""
+            nonce = ""
         with LOCK:
-            session = PENDING.pop(state, None)
-        if (not session or time.time() - session["created"] > STATE_TTL or
-                not secrets.compare_digest(nonce, session["nonce"])):
-            self.send(403, "Sessao OAuth invalida ou expirada. Reinicie a autorizacao.")
+            session = SESSIONS.pop(state, None)
+        if not session or time.time() - session["created"] > STATE_TTL or not secrets.compare_digest(nonce, session["nonce"]):
+            self.send(403, "Sessao OAuth invalida ou expirada.")
             return
-        if not ready():
-            self.send(503, "Servidor nao configurado.")
-            return
-        body = urlencode({
-            "grant_type": "authorization_code",
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "redirect_uri": REDIRECT_URI,
-            "code": code,
-            "code_verifier": session["verifier"],
-        }).encode("utf-8")
-        request = Request(TOKEN_URL, data=body, method="POST", headers={
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded",
-        })
         try:
-            with urlopen(request, timeout=15) as resp:
-                payload = json.load(resp)
-            if "access_token" not in payload:
-                self.send(502, "Mercado Livre nao retornou token.")
-                return
+            tokens = exchange({
+                "grant_type": "authorization_code",
+                "client_id": CLIENT_ID, "client_secret": CLIENT_SECRET,
+                "redirect_uri": REDIRECT_URI, "code": code,
+                "code_verifier": session["verifier"],
+            })
             with LOCK:
-                CONNECTED.clear()
-                CONNECTED.update(payload)
-            self.send(200, "Mercado Livre conectado com sucesso.\n"
-                           "Tokens mantidos apenas na memoria deste servidor.\n"
-                           "Nao feche o servico ate configurar armazenamento seguro.\n")
-        except (HTTPError, URLError, ValueError, TimeoutError):
-            # Nunca exibir/registrar corpo da resposta, tokens ou credenciais.
-            self.send(502, "Falha na troca do codigo OAuth. Verifique configuracoes.")
+                INBOX.clear()
+                INBOX.update({"delivery_id": secrets.token_urlsafe(24),
+                              "tokens": tokens, "created": time.time()})
+            self.redirect("/oauth/done", clear_cookie=True)
+        except (HTTPError, URLError, TimeoutError, ValueError):
+            self.send(502, "Mercado Livre nao concluiu a troca do codigo.")
 
 
 if __name__ == "__main__":
-    host = os.environ.get("BIND_HOST", "127.0.0.1")
-    port = int(os.environ.get("PORT", "5106"))
-    print("STEINER ML OAuth iniciado; pronto:", ready(), flush=True)
-    ThreadingHTTPServer((host, port), Handler).serve_forever()
+    print("STEINER ML OAuth bridge iniciado; pronto:", ready(), flush=True)
+    ThreadingHTTPServer((os.environ.get("BIND_HOST", "127.0.0.1"),
+                         int(os.environ.get("PORT", "5106"))), Handler).serve_forever()
