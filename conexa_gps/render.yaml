@@ -1,10 +1,10 @@
-# Public pilot only. Requires review and an approved Render workspace before deployment.
 services:
   - type: web
     name: conexa-gps-publico
     runtime: python
     plan: free
-    region: ohio
+    region: virginia
+    rootDir: conexa_gps
     buildCommand: pip install -r requirements.txt
     startCommand: python app.py
     envVars:
@@ -12,14 +12,14 @@ services:
         value: production
       - key: DATABASE_URL
         fromDatabase:
-          name: conexa-gps-db
+          name: conexa-gps-db-20261119
           property: connectionString
       - key: PYTHON_VERSION
         value: 3.13.9
 
 databases:
-  - name: conexa-gps-db
+  - name: conexa-gps-db-20261119
     plan: free
-    region: ohio
-    databaseName: conexagps
-    user: conexagps
+    region: virginia
+    databaseName: conexa_gps_db_20261119
+    user: conexa_gps_db_20261119_user
