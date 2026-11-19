@@ -90,6 +90,19 @@ class AdversarialTests(unittest.TestCase):
         for t in threads:t.join(timeout=10)
         self.assertEqual(sorted(outcome),[201,409],outcome)
 
+    def test_reject_unsupported_transfer_encoding(self):
+        import http.client
+        port=self.server.server_address[1]
+        conn=http.client.HTTPConnection('127.0.0.1',port,timeout=8)
+        conn.putrequest('POST','/api/login')
+        conn.putheader('Content-Type','application/json')
+        conn.putheader('Transfer-Encoding','chunked')
+        conn.endheaders()
+        result=conn.getresponse()
+        self.assertEqual(result.status,400)
+        result.read()
+        conn.close()
+
     def test_geometry_never_invents_road_time(self):
         ride=self.sample()|{'kind':'ride','capacity_kg':200,
                             'length_cm':180,'width_cm':140,'height_cm':90,'max_detour_km':100}
