@@ -159,6 +159,22 @@ def text(value, name, minlen=1, maxlen=160):
     return value.strip()
 
 
+def public_text(value, name, minlen=1, maxlen=160):
+    """Block common direct contact details from public listing fields.
+
+    Private offer messages are intentionally separate. This is a best-effort
+    privacy guard, not a complete personally identifiable data detector.
+    """
+    clean = text(value, name, minlen, maxlen)
+    if re.search(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", clean):
+        raise APIError(400, f"{name}: não publique e-mail; converse após a proposta.")
+    if re.search(r"(?<!\d)(?:\+?55[\s().-]*)?(?:\(?\d{2}\)?[\s.-]*)?9?\d{4}[\s.-]*\d{4}(?!\d)", clean):
+        raise APIError(400, f"{name}: não publique telefone; converse após a proposta.")
+    if re.search(r"(?<!\d)\d{3}[. ]?\d{3}[. ]?\d{3}[- ]?\d{2}(?!\d)", clean):
+        raise APIError(400, f"{name}: não publique CPF.")
+    return clean
+
+
 def number(value, name, low, high):
     if type(value) not in (int, float) or not math.isfinite(value) or not low <= value <= high:
         raise APIError(400, f"{name}: valor fora dos limites.")
@@ -227,7 +243,12 @@ class APIError(Exception):
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "CONEXA/0.1"
+    server_version = "CONEXA/0.2"
+
+    def setup(self):
+        super().setup()
+        # Limit slow-header / stalled-body resource exhaustion.
+        self.connection.settimeout(12)
 
     def log_message(self, fmt, *args):
         # Do not log request query strings, location, messages, or credentials.
@@ -237,6 +258,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("X-Frame-Options", "DENY")
+        if IS_PROD:
+            self.send_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
         self.send_header("Cache-Control", "no-store")
         self.send_header("Permissions-Policy", "geolocation=(self), microphone=()")
         self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' https://unpkg.com; img-src 'self' data: https://tile.openstreetmap.org https://unpkg.com; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
@@ -298,6 +321,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def body(self):
         length = self.headers.get("Content-Length", "")
+        if self.headers.get("Transfer-Encoding"):
+            raise APIError(400, "Codificação de transferência não suportada.")
         if not length.isdigit() or int(length) > MAX_BODY:
             raise APIError(413, "Pedido muito grande ou inválido.")
         if "application/json" not in self.headers.get("Content-Type", ""):
@@ -418,9 +443,9 @@ class Handler(BaseHTTPRequestHandler):
                     rate_limit(db,"post:"+str(u["id"]),5,24*3600)
                     kind=data.get("kind")
                     if kind not in KINDS: raise APIError(400,"Tipo de publicação inválido.")
-                    title=text(data.get("title"),"Título",8,90)
-                    start_name=text(data.get("start_name"),"Origem",2,70)
-                    end_name=text(data.get("end_name"),"Destino",2,70)
+                    title=public_text(data.get("title"),"Título",8,90)
+                    start_name=public_text(data.get("start_name"),"Origem",2,70)
+                    end_name=public_text(data.get("end_name"),"Destino",2,70)
                     start_lat,start_lon=coordinates(data,"start")
                     end_lat,end_lon=coordinates(data,"end")
                     if km((start_lat,start_lon),(end_lat,end_lon)) < 1:
@@ -435,7 +460,7 @@ class Handler(BaseHTTPRequestHandler):
                     detour=number(data.get("max_detour_km",0),"Desvio máximo km",0,100) if kind=="ride" else 0
                     price=number(data.get("price",0),"Valor R$",0,100000)
                     vehicle=text(data.get("vehicle","Não informado") if kind=="ride" else "Encomenda","Veículo",1,60)
-                    details=text(data.get("details","Sem observações") or "Sem observações","Observações",1,400)
+                    details=public_text(data.get("details","Sem observações") or "Sem observações","Observações",1,400)
                     row=db.one("""INSERT INTO posts(user_id,kind,title,start_name,end_name,start_lat,start_lon,
                                    end_lat,end_lon,departure,capacity_kg,length_cm,width_cm,height_cm,max_detour_km,price,vehicle,details,
                                    status,created_at,expires_at)
@@ -474,8 +499,16 @@ class Handler(BaseHTTPRequestHandler):
                     msg=text(data.get("message"),"Mensagem",10,500)
                     if db.one("SELECT id FROM offers WHERE post_id=? AND author_id=?",(pid,u["id"])):
                         raise APIError(409,"Você já enviou uma proposta para este anúncio.")
-                    row=db.one("INSERT INTO offers(post_id,author_id,message,created_at) VALUES(?,?,?,?) RETURNING id",
-                               (pid,u["id"],msg,now()))
+                    try:
+                        row=db.one("INSERT INTO offers(post_id,author_id,message,created_at) VALUES(?,?,?,?) RETURNING id",
+                                   (pid,u["id"],msg,now()))
+                    except sqlite3.IntegrityError:
+                        raise APIError(409,"Você já enviou uma proposta para este anúncio.")
+                    except Exception as exc:
+                        # PostgreSQL unique-conflict from concurrent requests.
+                        if exc.__class__.__name__ == "UniqueViolation":
+                            raise APIError(409,"Você já enviou uma proposta para este anúncio.") from exc
+                        raise
                     return self.response(201,{"ok":True,"id":row["id"]})
                 if path == "/api/respond":
                     oid=safe_int(data.get("offer_id"),"offer_id")
