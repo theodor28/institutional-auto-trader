@@ -139,15 +139,20 @@ def hash_token(value):
 
 
 def rate_limit(db, key, limit=20, period=3600):
+    """Atomically consume an allowance, including under concurrent requests.
+
+    One SQL statement prevents read/check/write races that can over-admit
+    simultaneous signups or login attempts. SQLite and PostgreSQL both
+    support ON CONFLICT DO UPDATE + RETURNING.
+    """
     current = now()
-    row = db.one("SELECT count,reset_at FROM limits WHERE key=?", (key,))
-    if row and row["reset_at"] > current:
-        if row["count"] >= limit:
-            raise APIError(429, "Muitas tentativas. Tente mais tarde.")
-        db.query("UPDATE limits SET count=count+1 WHERE key=?", (key,))
-    else:
-        db.query("""INSERT INTO limits(key,count,reset_at) VALUES(?,1,?)
-                    ON CONFLICT(key) DO UPDATE SET count=1,reset_at=excluded.reset_at""", (key, current+period))
+    row = db.one("""INSERT INTO limits(key,count,reset_at) VALUES(?,1,?)
+        ON CONFLICT(key) DO UPDATE SET
+            count=CASE WHEN limits.reset_at<=? THEN 1 ELSE limits.count+1 END,
+            reset_at=CASE WHEN limits.reset_at<=? THEN excluded.reset_at ELSE limits.reset_at END
+        RETURNING count""", (key,current+period,current,current))
+    if row["count"] > limit:
+        raise APIError(429, "Muitas tentativas. Tente mais tarde.")
 
 
 def text(value, name, minlen=1, maxlen=160):
