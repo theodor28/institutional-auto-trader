@@ -37,11 +37,11 @@ python seo_autopilot.py report --db dados/piano_express.sqlite3 --output dados/o
 
 ## Painel web
 
-Após publicação do site, o painel privado (marcado como `noindex,nofollow`) fica em:
+Após publicação do site, o painel operacional (marcado como `noindex,nofollow`) fica em. O endereço não tem autenticação; qualquer pessoa com o link pode abrir, embora os dados importados sejam processados localmente no navegador:
 
 `/monitor/`
 
-Ele aceita o CSV exportado do Search Console diretamente no navegador. O arquivo não é enviado ao servidor e os dados permanecem somente na aba atual.
+Ele aceita o CSV exportado do Search Console diretamente no navegador. O arquivo não é enviado ao servidor e os dados permanecem somente na aba atual. Não abra o painel em computador compartilhado.
 
 ## Critérios da pontuação
 
