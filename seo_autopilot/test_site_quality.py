@@ -60,7 +60,10 @@ class PageParser(HTMLParser):
 
 
 def indexable_html_pages() -> list[Path]:
-    return sorted(path for path in ROOT.rglob("*.html") if "monitor" not in path.parts)
+    return sorted(
+        path for path in ROOT.rglob("*.html")
+        if "monitor" not in path.parts and not path.name.startswith("google")
+    )
 
 
 class SiteQualityTests(unittest.TestCase):
@@ -90,7 +93,7 @@ class SiteQualityTests(unittest.TestCase):
             parser.feed(source.read_text(encoding="utf-8"))
             for href in parser.links:
                 parts = urlsplit(href)
-                if not parts.path.startswith("/") or href.startswith("//"):
+                if parts.scheme or parts.netloc or not parts.path.startswith("/") or href.startswith("//"):
                     continue
                 local_path = Path(unquote(parts.path.lstrip("/")))
                 target = ROOT / local_path
