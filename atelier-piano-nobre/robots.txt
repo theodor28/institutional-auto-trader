@@ -1,0 +1,3 @@
+User-agent: *
+2: Allow: /
+3: Sitemap: https://atelier-piano-nobre.onrender.com/sitemap.xml
