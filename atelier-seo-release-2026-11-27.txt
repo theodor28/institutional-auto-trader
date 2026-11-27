@@ -1,0 +1,3 @@
+Atelier Piano Nobre SEO release
+Commit anterior com conteúdo e assets: 2c12c6e647746cb5b8ba42294eabce2e16aafcc9
+Publicado via deploy automático do Render.
