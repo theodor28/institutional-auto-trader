@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
 Sitemap: https://piano-express-seo-pro.onrender.com/sitemap.xml
+
+Sitemap: https://piano-express-seo-pro.onrender.com/atelier-piano-nobre/sitemap-atelier-piano-nobre.xml
